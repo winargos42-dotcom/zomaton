@@ -1,0 +1,2143 @@
+<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark"><meta name="referrer" content="no-referrer">
+<title>ZomATON · Лист внутри мира</title><style>
+:root{font:16px/1.45 system-ui,sans-serif;color-scheme:dark;--paper:#080f13;--panel:#121d20;--text:#f7f4e9;--soft:#bfcbc5;--leaf:#a8ecc4;--line:#374952;background:var(--paper);color:var(--text)}
+*{box-sizing:border-box}[hidden]{display:none!important}body{margin:0;background:radial-gradient(ellipse at 50% -20%,#1a3b3b,transparent 59%)}main{max-width:1030px;margin:auto;padding:10px clamp(11px,3vw,28px) 24px}
+header{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);padding:1px 0 10px}.brand{font-weight:900;letter-spacing:.10em;font-size:1rem;color:var(--text);text-decoration:none}.brand span,.mode,.eyebrow,.depth{color:var(--leaf)}.eyebrow,.mode,.depth span{font:760 .69rem/1.35 ui-monospace,monospace;letter-spacing:.075em}
+.explorer{max-width:515px;margin:auto}.intro{display:flex;align-items:center;justify-content:space-between;gap:6px;margin:11px 1px 9px}.intro h1{font-size:clamp(1.58rem,6vw,2.5rem);line-height:1.12;margin:2px 0 0;letter-spacing:-.045em}.depth{min-width:63px;display:grid;text-align:right}.depth strong{font:800 1.5rem/1.02 system-ui,sans-serif}
+.frame{position:relative;border:1px solid #56747a;border-radius:11px;overflow:hidden;background:#0a151b;line-height:0}canvas{display:block;width:100%;height:auto;aspect-ratio:4/3;cursor:zoom-in;touch-action:manipulation}
+canvas:focus-visible{outline:3px solid var(--leaf);outline-offset:-4px}#target{position:absolute;z-index:1;width:24px;height:24px;transform:translate(-50%,-50%);background:#80dfba30;border:2px solid #eef9e8;border-radius:100%;pointer-events:none;box-shadow:0 0 0 1px #142c31,0 0 15px #000b}#target[data-confirmed=true]{background:#9ff7bd9c;box-shadow:0 0 0 3px #092c31,0 0 17px #d4ffd0}
+.status{margin:7px 1px 9px;min-height:1.55rem;color:var(--text);font-weight:660;font-size:.94rem}.actions{display:grid;grid-template-columns:1fr 1.5fr 1.2fr;gap:5px}.actions:has(#cancel:not([hidden])){grid-template-columns:1fr 1fr 1.4fr 1.25fr}
+input,textarea,button{min-width:0;color:var(--text);font:inherit;background:#192c32;border:1px solid #627f83;border-radius:8px;padding:8px 9px;min-height:47px}
+button{cursor:pointer;font-weight:700}button:disabled{opacity:.50;cursor:default}button.action{background:var(--leaf);color:#10241b;border-color:transparent}button:focus-visible,textarea:focus-visible,a:focus-visible{outline:2px solid var(--leaf);outline-offset:2px}
+.explore-info{max-width:515px;margin:15px auto 0;padding:14px;background:var(--panel);border:1px solid var(--line);border-radius:10px;display:grid;gap:12px;grid-template-columns:1fr 1fr}.explore-info h2{margin:4px 0 0;font-size:1.03rem}.explore-info p{margin:6px 0}.fine,footer{font-size:.80rem;color:var(--soft)}textarea{width:100%;min-height:48px;resize:vertical;background:#101b20}label{display:block;margin-bottom:5px;font-weight:700}form button{margin-top:3px}footer{text-align:center;padding:13px 0 3px}
+@media(max-width:430px){.actions{grid-template-columns:1fr 1.55fr 1.15fr}.actions button{font-size:.83rem;padding:7px 3px}.actions:has(#cancel:not([hidden])){grid-template-columns:.82fr .95fr 1.28fr 1.1fr}.explore-info{grid-template-columns:1fr}.intro h1{max-width:77vw}}
+@media(min-width:850px){main{display:grid;grid-template-columns:minmax(0,530px) minmax(250px,1fr);column-gap:24px;align-items:start}header,footer{grid-column:1/-1}.explorer{width:100%;max-width:none;margin:0}.explore-info{width:100%;margin-top:55px;grid-template-columns:1fr}}
+.material{margin:6px 0 2px;padding:6px 8px;border-left:3px solid #f7bf7c;color:#fff0d7;background:#262e29;line-height:1.35}.material strong{font-weight:780}.status{min-height:2.9rem}
+
+.life-toggle{width:100%;margin-top:5px}.life-toggle[aria-pressed=true]{border-color:var(--leaf);color:var(--leaf)}
+
+</style>
+
+
+
+</head><body><main>
+<header><div class="brand">Zom<span>ATON</span> <small>БОТАНИКА</small></div><span class="mode">GENESIS №0</span></header>
+<section class="explorer" aria-label="Живой мир">
+ <div class="intro"><div><div class="eyebrow" id="world-kind">МАТЕРИЯ ВНУТРИ МИРА</div><h1 id="world-title">Genesis №0</h1></div><div class="depth"><strong id="depth">0</strong><span>ГЛУБИНА</span></div></div>
+ <div class="frame"><canvas id="world" width="480" height="360" tabindex="0" aria-label="Коснитесь растения, животного или поверхности местности. Клавиша Enter входит в видимую точку в центре." aria-describedby="status"></canvas><i id="target" hidden aria-hidden="true"></i></div>
+ <p class="status" id="status" role="status">Готовлю первый мир…</p>
+ <div class="actions" aria-label="Управление исследованием"><button id="back" disabled>← Назад</button><button id="cancel" hidden>Отменить</button><button id="center" class="action">Погрузиться</button><button id="copy" disabled>Копировать путь</button></div>
+ <button type="button" id="life-toggle" class="life-toggle" aria-pressed="false">Жизнь в движении</button>
+</section>
+<aside class="explore-info">
+ <div><div class="eyebrow">ОТКРЫТОЕ МЕСТО</div><h2>Из чего открыт мир</h2><p id="life"></p><p class="material" id="material" hidden></p><p class="fine">Откройте лист или его жилку. В клеточной ткани отдельные организмы ведут к кронам и сосудам растительного макромира.</p></div>
+ <div><form id="route-form"><label for="route">Вставить путь</label><textarea rows="2" id="route" placeholder="Код маршрута или ссылка" required spellcheck="false" autocomplete="off"></textarea><button id="open" type="submit">Открыть</button></form><p class="fine" id="breadcrumbs"></p></div>
+</aside>
+<footer>Процедурный прототип работает без сети. В маршруте сохраняются объект и точка входа. NFT не выпускаются.</footer>
+</main><script>
+/* ZomATON offline living-world engine; deterministic geometry + ecology. */
+(function(g,f){const x=f();if(typeof module==='object'&&module.exports)module.exports=x;else g.ZATLiving=x;})(globalThis,()=>{
+'use strict';
+const ROOT_HASH='7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1';
+const P='zlw1:'+ROOT_HASH+':', ROOT=P+'-', Q=65535, SIZE=128;
+const clamp=(x,l,u)=>Math.max(l,Math.min(u,x)),sat=x=>clamp(x,0,1),mix=(a,b,t)=>a+(b-a)*t;
+const ease=x=>{x=sat(x);return x*x*(3-2*x)};
+const quant=x=>{if(!Number.isFinite(x)||x<0||x>1)throw Error('Координата вне [0,1]');return Math.round(x*Q)};
+const u16=x=>Math.round(sat(x)*Q);
+function noise(x,y,s){let z=Math.imul(x,374761393)^Math.imul(y,668265263)^s;z=Math.imul(z^(z>>>13),1274126177);return ((z^(z>>>16))>>>0)/4294967296;}
+function smooth(x,y,s){const i=Math.floor(x),j=Math.floor(y),u=ease(x-i),v=ease(y-j);
+ return mix(mix(noise(i,j,s),noise(i+1,j,s),u),mix(noise(i,j+1,s),noise(i+1,j+1,s),u),v);}
+function fbm(x,y,s){return .59*smooth(x,y,s)+.27*smooth(x*2.19+19,y*2.19+13,s^5412)+.14*smooth(x*5.07,y*5.07,s^6189);}
+const rootSeed=0x98636cd7;
+function nextSeed(old,a,b){let h=Math.imul(old^a,16777619)>>>0;return Math.imul(h^b,16777619)>>>0;}
+function boxQ(a,b){return {x:.75*a/Q,y:.75*b/Q,width:.25,height:.25};}
+function box(a,b){return boxQ(quant(a),quant(b));}
+function seg(a,b){return a.toString(16).padStart(4,'0')+b.toString(16).padStart(4,'0');}
+function decode(id){
+ if(typeof id!=='string'||!id.startsWith(P))throw Error('Неизвестный корень или версия');
+ if(id===ROOT)return [];
+ const p=id.slice(P.length);if(p.length%9!==8||!/^[0-9a-f]{8}(?:\.[0-9a-f]{8})*$/.test(p))throw Error('Повреждённый маршрут');
+ const route=new Array((p.length+1)/9);
+ for(let i=0;i<route.length;i++)route[i]=[parseInt(p.slice(i*9,i*9+4),16),parseInt(p.slice(i*9+4,i*9+8),16)];
+ return route;
+}
+function parse(id){return decode(id).map(([a,b])=>[a/Q,b/Q]);}
+function ancestor(id){decode(id);const end=id.lastIndexOf('.');return end<0?ROOT:id.slice(0,end);}
+function checkSize(n){if(!Number.isInteger(n)||n<32||n>256)throw Error('Размер мира 32–256');}
+function sampleMap(d,n,u,v){
+ const x=clamp(u*n-.5,0,n-1),y=clamp(v*n-.5,0,n-1),i=Math.floor(x),j=Math.floor(y),r=Math.min(n-1,i+1),s=Math.min(n-1,j+1);
+ return Math.round(mix(mix(d[j*n+i],d[j*n+r],x-i),mix(d[s*n+i],d[s*n+r],x-i),y-j));
+}
+function nearest(d,n,u,v){return d[clamp(Math.floor(u*n),0,n-1)+n*clamp(Math.floor(v*n),0,n-1)];}
+function grad(h,n,i){
+ const x=i%n,y=Math.floor(i/n),l=x?i-1:i,r=x<n-1?i+1:i,t=y?i-n:i,b=y<n-1?i+n:i;
+ return [(h[r]-h[l])/Q,(h[b]-h[t])/Q];
+}
+const BIOMES=[
+ {id:'river',title:'Речные острова',flora:['willow','reed'],fauna:['dragonfly','fish'],palette:[[6,37,68],[22,104,105],[73,128,63],[235,191,108]]},
+ {id:'grove',title:'Лесистые террасы',flora:['conifer','fern'],fauna:['bird','beetle'],palette:[[13,28,47],[33,81,64],[103,129,65],[233,192,143]]},
+ {id:'reef',title:'Коралловая бухта',flora:['coral','fan'],fauna:['ray','fish'],palette:[[16,33,72],[29,100,124],[176,102,126],[255,203,139]]},
+ {id:'dune',title:'Дюны и оазисы',flora:['palm','reed'],fauna:['lizard','bird'],palette:[[45,30,79],[126,87,91],[198,137,83],[252,221,141]]},
+ {id:'basin',title:'Долина горячих источников',flora:['fern','fungus'],fauna:['beetle','lizard'],palette:[[18,30,50],[46,113,103],[133,109,137],[238,176,125]]},
+ {id:'crystal',title:'Кристальные гряды',flora:['crystal','filament'],fauna:['mite','ciliate'],palette:[[13,21,55],[52,71,136],[57,174,166],[230,218,255]]},
+ {id:'mycelium',title:'Сады мицелия',flora:['fungus','filament'],fauna:['mite','larva'],palette:[[24,17,53],[85,53,117],[175,120,114],[249,225,177]]},
+ {id:'cells',title:'Долина микроорганизмов',flora:['colony','fan'],fauna:['ciliate','larva'],palette:[[13,24,64],[34,107,121],[150,139,93],[231,234,178]]},
+ {id:'spores',title:'Поля спор',flora:['fungus','colony'],fauna:['beetle','ciliate'],palette:[[24,23,64],[113,54,106],[205,107,116],[252,221,164]]},
+ {id:'filament',title:'Лабиринт волокон',flora:['filament','crystal'],fauna:['mite','larva'],palette:[[12,25,66],[60,62,128],[57,145,172],[244,193,139]]},
+ {id:'shelf',title:'Многоярусные плато',flora:['conifer','coral'],fauna:['ray','bird'],palette:[[12,37,52],[30,105,97],[151,124,104],[244,208,158]]},
+ {id:'springs',title:'Архипелаг минеральных чаш',flora:['fern','crystal'],fauna:['dragonfly','mite'],palette:[[17,21,57],[52,82,129],[144,115,151],[248,209,170]]},
+ {id:'threads',title:'Лесные нити под корой',flora:['fern','filament'],fauna:['larva','beetle'],palette:[[12,34,54],[48,77,111],[115,133,94],[238,219,123]]},
+ {id:'caves',title:'Подземные террасы',flora:['fungus','coral'],fauna:['lizard','ciliate'],palette:[[17,20,58],[69,64,127],[114,128,145],[238,194,143]]},
+];
+const STRUCTURE={genesis:'source',river:'canyon',grove:'terraced-ridges',reef:'archipelago',dune:'crossed-dunes',basin:'nested-calderas',crystal:'crystal-facets',mycelium:'branching-filaments',cells:'cellular-hollows',spores:'spore-knolls',filament:'woven-veins',shelf:'terraced-shelves',springs:'mineral-basins',threads:'organic-fibres',caves:'collapsed-chambers'};
+const genesis={title:'Genesis №0',id:'genesis',flora:['willow','fern'],fauna:['bird','dragonfly'],palette:[[4,18,40],[16,72,99],[26,146,156],[238,196,115]]};
+function root(size=SIZE){
+ checkSize(size);const heights=new Uint16Array(size*size),material=new Uint8Array(heights.length);
+ for(let y=0;y<size;y++)for(let x=0;x<size;x++){
+  const re=-.743643887+((x+.5)/size-.5)*.031,im=.131825904+((y+.5)/size-.5)*.031;
+  let a=0,b=0,k=0;for(;k<270;k++){const n=a*a-b*b+re;b=2*a*b+im;a=n;if(a*a+b*b>256)break}
+  const i=y*size+x;heights[i]=u16(k===270?.115:.24+.65*(1-1/(1+(k+1)/36)));
+  material[i]=k===270?1:4;
+ }
+ return populate({id:ROOT,depth:0,size,kind:'genesis',heights,material,source:null,window:null,seed:rootSeed},genesis);
+}
+function pick(seed,depth,wet,edge,parent){
+ const list=depth===1?BIOMES.slice(0,5):depth===2?BIOMES.slice(5,10):BIOMES;
+ const shift=Math.floor(wet*11+edge*19+noise(0,depth,seed)*73);
+ let i=shift%list.length;if(list[i].id===parent.biome)i=(i+1)%list.length;
+ return list[i];
+}
+function populate(w,b){
+ const n=w.size,s=w.seed,flora=[],fauna=[];
+ const water=(x,y)=>nearest(w.material,n,x,y)<=2;
+ function ground(x,y){
+  const px=clamp(Math.floor(x*n),0,n-1),py=clamp(Math.floor(y*n),0,n-1),i=py*n+px;
+  const [gx,gy]=grad(w.heights,n,i);return {h:w.heights[i]/Q,wet:water(x,y),slope:Math.abs(gx)+Math.abs(gy)};
+ }
+ const isWater=k=>k==='fish'||k==='ray'||k==='ciliate';
+ const isAir=k=>k==='bird'||k==='dragonfly';
+ const wetPlants=['reed','coral','fan','colony','filament'];
+ const tries=96;
+ for(let i=0;i<tries&&flora.length<48;i++){
+  const x=.05+.9*noise(i,3,s),y=.05+.9*noise(i,9,s),g=ground(x,y),kind=b.flora[i%2];
+  if(g.slope>.23||g.wet&&!wetPlants.includes(kind))continue;
+  if(flora.some(p=>(p.x-x)**2+(p.y-y)**2<.058**2))continue;
+  // The rock grade and local moisture determine which plants are large enough to see.
+  flora.push({x,y,scale:.64+.6*noise(i,11,s)+g.h*.32,kind,phase:noise(i,12,s)});
+ }
+ for(let i=0;i<138&&fauna.length<10;i++){
+  const x=.08+.84*noise(i,30,s),y=.08+.84*noise(i,35,s),kind=b.fauna[i%2],g=ground(x,y);
+  if(!isAir(kind)&&(isWater(kind)!==g.wet||g.slope>.2))continue;
+  if(fauna.some(p=>(p.x-x)**2+(p.y-y)**2<.10**2))continue;
+  let ax=.020+.033*noise(i,41,s),ay=.014+.024*noise(i,55,s);
+  for(let j=0;j<4&&!isAir(kind);j++){
+   let ok=true;for(let q=0;q<12;q++){
+    const t=q/12*2*Math.PI,k=ground(x+Math.cos(t)*ax,y+Math.sin(t)*ay);
+    if(k.wet!==g.wet||k.slope>.24){ok=false;break;}
+   }
+   if(ok)break;ax*=.62;ay*=.62;
+  }
+  fauna.push({x,y,scale:.8+.54*noise(i,45,s),kind,phase:noise(i,46,s),ax,ay,period:3.5+6.2*noise(i,47,s)});
+ }
+ return {...w,biome:b.id,structure:STRUCTURE[b.id],title:b.title,levelName:w.depth===0?'Корень Genesis':w.depth===1?'Макромир':w.depth===2?'Микромир':'Вложенный мир · '+w.depth,
+  palette:b.palette,flora,fauna};
+}
+function cellular(x,y,s){
+ const a=Math.floor(x),b=Math.floor(y);let d=3,e=3;
+ for(let j=-1;j<=1;j++)for(let i=-1;i<=1;i++){
+  const X=a+i,Y=b+j,W=Math.abs(x-X-.18-.64*noise(X,Y,s))+.83*Math.abs(y-Y-.18-.64*noise(X,Y,s^9461));
+  if(W<d){e=d;d=W;}else if(W<e)e=W;
+ }
+ return [sat(1-d),sat(1-(e-d)*3.2)];
+}
+function make(parent,a,b,id,depth,seed,life=true){
+ const size=parent.size,count=size*size,window=boxQ(a,b),heights=new Uint16Array(count),material=new Uint8Array(count),source=new Uint16Array(count);
+ let wet=0,edge=0,m=0;
+ for(let y=0;y<size;y++)for(let x=0;x<size;x++){
+  const i=y*size+x,u=window.x+(x+.5)*window.width/size,v=window.y+(y+.5)*window.height/size;
+  const h=sampleMap(parent.heights,size,u,v);source[i]=h;wet+=nearest(parent.material,size,u,v)<=2;m+=h;
+  if(x)edge+=Math.abs(h-source[i-1]);if(y)edge+=Math.abs(h-source[i-size]);
+ }
+ const biome=pick(seed,depth,wet/count,edge/(count*Q),parent);
+ const sorted=source.slice();sorted.sort();
+ const lo=sorted[Math.floor(count*.12)],hi=sorted[Math.floor(count*.87)],delta=Math.max(6600,hi-lo),mean=m/(count*Q);
+ const detail=new Float64Array(count),weight=new Float64Array(count),rich=new Uint8Array(count);
+ const river=['river','reef','basin','springs','shelf'].includes(biome.id),cell=['crystal','mycelium','cells','spores','filament','threads','caves'].includes(biome.id);
+ const freq=3.7+noise(depth,6,seed)*8.6,variant=1+noise(depth,4,seed)*1.1;
+ for(let y=0;y<size;y++)for(let x=0;x<size;x++){
+  const i=y*size+x,u=(x+.5)/size,v=(y+.5)/size,a=source[i]/Q,g=(source[i]-lo)/delta,[gx,gy]=grad(source,size,i);
+  const f=fbm(u*freq+2.4*g,v*freq-1.9*g,seed)-.5;
+  const d=Math.min(x,y,size-1-x,size-1-y);weight[i]=ease((d-1)/Math.max(4,size*.09));
+  // Bring very high/low inherited windows towards a usable middle without repainting their contour.
+  const baseline=.47+.70*(a-mean)+.27*(a-.5);
+  if(cell){
+   const [facets,rim]=cellular(u*(freq+4)+3*g+19*gy+2*f,v*(freq+4)-2*g-19*gx-3*f,seed);
+   const vein=sat(1-Math.abs(g-.42+(smooth(u*4,v*4,seed^615)-.5)*.24)*4.9);
+   rich[i]=rim>.71?5:4;
+   let shape;
+   if(biome.id==='crystal')shape=.18*facets+.10*rim+.035*vein-.064;
+   else if(biome.id==='mycelium'||biome.id==='filament'||biome.id==='threads'){
+    const stitch=sat(1-4*Math.abs(.51-smooth(u*11+g*1.8,v*7+g*2.3,seed^552677)));
+    shape=.033*facets+.087*rim+.135*vein*stitch+.057*stitch-.077;
+   }else if(biome.id==='cells'||biome.id==='caves'){
+    shape=.14*rim-.208*facets*facets+.014*vein;rich[i]=rim>.8?5:4;
+   }else{
+    shape=.23*facets**3-.052*rim+.05*vein-.026;
+   }
+   detail[i]=sat(baseline+shape*variant + f*.062);
+  }else{
+   const path=g*.32+(smooth(u*5+2*g,v*5,seed^527)-.5)*.26;
+   const trough=sat(1-Math.abs(path-.34)*10.5);
+   let shape=.13*sat(g)-.07+f*.22*variant-.145*trough*trough;
+   if(biome.id==='reef'){
+    const [island,shore]=cellular(u*4.1+g*.62,v*4.1-g*.67,seed^81643);
+    shape=.53*island**1.7-.14*shore-.20+.079*sat(g)+.11*f;
+   }else if(biome.id==='grove'||biome.id==='shelf'){
+    const a=(sat(g+.30*f)*5),terrace=(Math.floor(a)+ease((a-Math.floor(a)-.35)*3.1))/5;
+    shape=.275*terrace+.14*f-(biome.id==='shelf'?.116:.071)*trough-.116;
+   }else if(biome.id==='dune'){
+    const z=(u*6.4+v*2+g*1.1+f*.82);
+    const ridge=1-Math.abs(2*(z-Math.floor(z))-1);
+    const k=v*3.2+u*.8+g*.52;
+    shape=.17*ridge**1.8+.078*smooth(k*4.2,u*2,seed^67261)+.068*f-.132;
+   }else if(biome.id==='basin'||biome.id==='springs'){
+    const [hollow,rim]=cellular(u*2.75+g*.85,v*3.1+g*.69,seed^218681);
+    shape=.104*rim-.29*hollow**1.7+.085*f+.07*sat(g)-.028;
+   }
+   detail[i]=sat(baseline+shape);
+  }
+ }
+ const drain=new Uint32Array(count);
+ if(river){
+  const rank=Uint32Array.from({length:count},(_,i)=>i);
+  rank.sort((a,b)=>detail[b]-detail[a]||a-b);drain.fill(1);
+  for(const j of rank){
+   const x=j%size,y=Math.floor(j/size);let receiver=-1,grade=0;
+   for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){
+    const X=x+dx,Y=y+dy;
+    if((!dx&&!dy)||X<0||Y<0||X>=size||Y>=size)continue;
+    const i=Y*size+X,h=(detail[j]-detail[i])*(dx&&dy?.707106781:1);
+    if(h>grade){grade=h;receiver=i}
+   }
+   if(receiver>=0)drain[receiver]+=drain[j];
+  }
+ }
+ const cutoff=Math.max(5,Math.floor(size*.082)),pool=river?.38:cell?.435:.395;
+ for(let j=0;j<count;j++){
+  const f=drain[j],channel=f>=cutoff;
+  if(channel)detail[j]=Math.max(0,detail[j]-.092*sat(f/(size*.61)));
+  material[j]=channel?2:detail[j]<pool?1:cell?rich[j]:4;
+  heights[j]=u16(mix(source[j]/Q,detail[j],weight[j]));
+ }
+ const w={id,depth,size,kind:depth===1?'macro':depth===2?'micro':'layer',heights,material,source,window,seed,biome:biome.id};
+ return life?populate(w,biome):w;
+}
+function descend(parent,x,y){
+ const a=quant(x),b=quant(y);if(!parent||typeof parent.id!=='string'||!Number.isInteger(parent.depth)||!Number.isInteger(parent.seed))throw Error('Нужен родительский мир');
+ checkSize(parent.size);
+ if(!(parent.heights instanceof Uint16Array)||parent.heights.length!==parent.size**2||
+ !(parent.material instanceof Uint8Array)||parent.material.length!==parent.size**2)throw Error('Некорректная геометрия');
+ const id=parent.depth===0?P+seg(a,b):parent.id+'.'+seg(a,b);
+ return make(parent,a,b,id,parent.depth+1,nextSeed(parent.seed,a,b));
+}
+function replay(id,size=SIZE){
+ const route=decode(id);let p=root(size);
+ if(!route.length)return p;
+ for(let i=0;i<route.length;i++){
+  const [a,b]=route[i];
+  // Retain only a parent/child pair; do not expand an entire chain into RAM.
+  p=make(p,a,b,i===route.length-1?id:null,i+1,nextSeed(p.seed,a,b),i===route.length-1);
+ }
+ return p;
+}
+async function replayAsync(id,size=SIZE,{signal,yieldEvery=1}={}){
+ const route=decode(id);let p=root(size);
+ const stride=Math.max(1,Math.trunc(yieldEvery)||1);
+ for(let i=0;i<route.length;i++){
+  if(signal?.aborted)throw Error('Загрузка отменена');
+  const [a,b]=route[i];p=make(p,a,b,i===route.length-1?id:null,i+1,nextSeed(p.seed,a,b),i===route.length-1);
+  if(i<route.length-1&&(i+1)%stride===0)await new Promise(resolve=>setTimeout(resolve,0));
+ }
+ if(signal?.aborted)throw Error('Загрузка отменена');
+ return p;
+}
+function shade(w){
+ const n=w.size,out=new Uint8ClampedArray(n*n*4),palette=w.palette;
+ for(let i=0;i<w.heights.length;i++){
+  const h=w.heights[i]/Q,[gx,gy]=grad(w.heights,n,i),v=sat((h-.15)*1.71)*3,j=Math.min(2,Math.floor(v)),t=v-j;
+  const light=.81+.48*sat(.46+(gx+gy)*8),m=w.material[i];
+  for(let k=0;k<3;k++){
+   let q=mix(palette[j][k],palette[j+1][k],t)*light;
+   if(m<=2)q=mix(q,[24,112,149][k],m===2?.39:.34);
+   if(m===5)q=mix(q,[201,224,245][k],.24);
+   out[4*i+k]=Math.round(q);
+  }
+  out[4*i+3]=255;
+ }
+ return out;
+}
+function pose(animal,timeSeconds){
+ const t=(timeSeconds/animal.period+animal.phase)*2*Math.PI;
+ const a=animal.ax,b=animal.ay;
+ return {x:animal.x+Math.cos(t)*a,y:animal.y+Math.sin(t)*b,angle:Math.atan2(Math.cos(t)*b,-Math.sin(t)*a)};
+}
+function drawLife(ctx,w,timeSeconds=0,project){
+ const canvas=ctx.canvas,W=canvas.width,H=canvas.height;
+ const map=project||((x,y)=>({x:x*W,y:y*H,scale:1}));
+ const scale=Math.min(W,H)/444;
+ const list=[...w.flora.map(f=>({p:f,x:f.x,y:f.y,angle:0,plant:true})),
+  ...w.fauna.map(f=>({p:f,...pose(f,timeSeconds),plant:false}))].sort((a,b)=>a.y-b.y);
+ const line=(...pts)=>{ctx.beginPath();ctx.moveTo(...pts[0]);for(const v of pts.slice(1))ctx.lineTo(...v);ctx.stroke()};
+ const leaf=(x,y,a,b,rot,col)=>{ctx.fillStyle=col;ctx.beginPath();ctx.ellipse(x,y,a,b,rot,0,Math.PI*2);ctx.fill()};
+ const poly=(col,...pts)=>{ctx.fillStyle=col;ctx.beginPath();ctx.moveTo(...pts[0]);for(const v of pts.slice(1))ctx.lineTo(...v);ctx.closePath();ctx.fill()};
+ for(const e of list){
+  const p=e.p,point=map(e.x,e.y);
+  if(!point||!Number.isFinite(point.x)||!Number.isFinite(point.y))continue;
+  ctx.save();ctx.translate(point.x,point.y);const z=p.scale*scale*(Number.isFinite(point.scale)?point.scale:1);ctx.scale(z,z);
+  ctx.lineCap='round';ctx.lineJoin='round';
+  leaf(0,1,e.plant?4.1:5,1.85,0,'rgba(4,18,25,.51)');
+  if(e.plant){
+   ctx.lineWidth=1.45;
+   const sway=Math.sin(timeSeconds*1.1+p.phase*6.28)*.65;
+   if(p.kind==='conifer'){
+    ctx.strokeStyle='#493938';line([0,1],[sway,-12]);
+    poly('#163f44',[-5,-2],[1,-13],[6,-2]);poly('#247260',[-4,-5],[.5,-15],[4,-5]);poly('#64b689',[-2,-9],[sway,-16],[2,-9]);
+   }else if(p.kind==='willow'||p.kind==='palm'){
+    ctx.strokeStyle='#604b37';line([0,0],[-1,-5],[sway,-10]);
+    const c=p.kind==='palm'?'#78bd79':'#6ba65f';
+    leaf(-3+sway,-9,4,1.3,-.61,c);leaf(4+sway,-9,4,1.42,.54,c);leaf(sway,-12,3.4,1.5,.17,'#b7cb78');leaf(1+sway,-7,4,1.3,1.2,'#7eae6f');
+   }else if(p.kind==='reed'||p.kind==='fern'||p.kind==='filament'){
+    const c=p.kind==='filament'?'#dfb5ee':p.kind==='reed'?'#d4c379':'#8abe79';
+    ctx.strokeStyle=c;
+    for(let k=-2;k<=2;k++){line([0,1],[k*2,-5],[k*2.6+sway,-9-Math.abs(k)]);leaf(k*2.5+sway,-8-Math.abs(k),1.22,1.8,k*.24,c)}
+   }else if(p.kind==='coral'||p.kind==='fan'){
+    ctx.strokeStyle=p.kind==='coral'?'#ffb9a4':'#e9bc95';
+    for(let k=-2;k<=2;k++){line([0,0],[k*1.7,-3],[k*2.8,-7]);line([k*1.7,-3],[k*3.1+sway,-5],[k*3.2+sway,-9]);}
+   }else if(p.kind==='crystal'){
+    for(let k=-1;k<=1;k++){
+     const x=k*3,y=k===0?-13:-8;
+     poly('#4d8ca2',[x-2,0],[x-3,y+4],[x,y],[x+2,y+4],[x+2,0]);
+     poly('#dff4f8',[x,y],[x+2,y+4],[x+2,0],[x,y+5]);
+    }
+   }else if(p.kind==='fungus'){
+    ctx.strokeStyle='#edc9ad';line([0,0],[sway,-6]);leaf(sway,-7,3.6,2.25,0,'#ee9db1');leaf(-1+sway,-7.8,1,.65,0,'#ffe4c7');
+   }else{
+    for(let k=0;k<5;k++){const a=k*1.256;leaf(Math.cos(a)*3,-2+Math.sin(a)*3,1.8,1.35,a,'#adbf94')}
+   }
+  }else{
+   ctx.rotate(e.angle);
+   const motion=Math.sin(timeSeconds*(p.kind==='dragonfly'?32:10)+p.phase*6.28),wings=3.3+Math.abs(motion)*3.5;
+   ctx.lineWidth=1.2;const k=p.kind;
+   if(k==='fish'||k==='ray'){
+    poly('#26576f',[-2,0],[-7,-3.6],[-6,3.8]);leaf(0,0,k==='ray'?5:4,k==='ray'?4.5:2.5,0,'#b4def1');
+    if(k==='ray'){poly('#7eabc7',[3,0],[-2,-6],[-4,0],[-2,6]);leaf(.9,0,2.1,1.4,0,'#cbe8f0');}
+    leaf(2.3,0,.66,.6,0,'#132936');
+   }else if(k==='bird'||k==='dragonfly'){
+    const c=k==='bird'?'#f4dfb3':'#b1cfe4';
+    poly(c,[2,0],[-.5,-wings],[-3,-wings+1],[-2,0],[-3,wings-1],[-.5,wings]);
+    leaf(1,0,4,1.35,0,k==='bird'?'#8b5a4a':'#335f72');leaf(3.8,0,1.2,.9,0,'#ffeac5');
+   }else if(k==='lizard'){
+    ctx.strokeStyle='#385e3d';line([-3,0],[-6,motion],[-8,motion*1.4]);
+    for(const x of [-2,2])for(const y of [-1,1])line([x,0],[x+y*.6,y*3],[x+.7,y*4]);
+    leaf(0,0,4.4,2.15,0,'#a9c480');leaf(3,0,1.9,1.46,0,'#d0d986');
+   }else if(k==='ciliate'||k==='larva'){
+    for(let j=0;j<4;j++)leaf(j*2-3,Math.sin(motion+j*.83)*.95,2.25,1.85,0,j%2?'#e6a8c1':'#9bd8d5');
+    ctx.strokeStyle='#d3ecdb';for(let x=-4;x<=4;x+=2)for(const y of [-1,1])line([x,y],[x+.6,y*3]);
+   }else{
+    ctx.strokeStyle='#472c57';
+    for(const x of [-2.5,0,2.5])for(const y of [-1,1])line([x,0],[x+motion*.7,y*3.7],[x-.55,y*4.8]);
+    leaf(-.75,0,3.15,2.55,0,'#b97969');leaf(1.75,0,1.6,1.8,0,'#624677');line([-3,0],[1,0]);
+   }
+  }
+  ctx.restore();
+ }
+}
+return Object.freeze({ROOT,SIZE,VERSION:'zlw1',root,descend,replay,replayAsync,parse,ancestor,box,sampleMap,shade,pose,drawLife});
+});
+
+</script>
+<script>
+/* ZomATON diverse topology v1; surface primitives are generated offline from the clicked ROI. */
+(function(g,f){if(typeof module==='object'&&module.exports)module.exports=f(require('./living-baseline.js'));else g.ZATDiverse=f(g.ZATLiving);})(globalThis,B=>{
+'use strict';
+const P='zdw1:',L='zlw1:',newID=x=>P+x.slice(L.length), oldID=x=>{
+ if(typeof x!=='string'||!x.startsWith(P))throw Error('Нужен адрес zdw1');return L+x.slice(P.length);
+};
+const ROOT=newID(B.ROOT),SIZE=B.SIZE,Q=65535;
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x)),sat=x=>clamp(x,0,1),mix=(a,b,t)=>a+(b-a)*t;
+const u16=x=>Math.round(sat(x)*Q);
+const ease=x=>{x=sat(x);return x*x*(3-2*x)};
+function rnd(x,y,s){let z=Math.imul(x,374761393)^Math.imul(y,668265263)^s;z=Math.imul(z^(z>>>13),1274126177);return ((z^(z>>>16))>>>0)/4294967296;}
+const read=(w,x,y)=>B.sampleMap(w.heights,w.size,x,y)/Q;
+const box=B.box;
+function exactSample(h,n,u,v){return B.sampleMap(h,n,u,v)/Q;}
+function dist(x,y,a,b){
+ const vx=b[0]-a[0],vy=b[1]-a[1],t=sat(((x-a[0])*vx+(y-a[1])*vy)/(vx*vx+vy*vy));
+ return Math.hypot(x-a[0]-vx*t,y-a[1]-vy*t);
+}
+function polyDist(x,y,lines){
+ let d=Infinity;for(const path of lines)for(let i=1;i<path.length;i++)d=Math.min(d,dist(x,y,path[i-1],path[i]));return d;
+}
+const titles={genesis:'Genesis №0',cavern:'Своды под корой',archipelago:'Острова над лагуной','forest-ravine':'Лес над развилкой'};
+const PALETTE={
+ cavern:[[12,19,30],[44,53,62],[98,99,111],[181,151,119]],
+ archipelago:[[11,48,72],[25,122,131],[90,151,92],[237,208,144]],
+ 'forest-ravine':[[14,32,47],[46,87,62],[99,126,77],[170,166,106]],
+};
+function habitat(base,x,y){
+ const p=base.source, n=base.size;
+ let wet=0,g=0;
+ for(let j=0;j<p.length;j++){wet+=p[j]<Q*.32;if(j%n)g+=Math.abs(p[j]-p[j-1]);}
+ const damp=wet/p.length, rough=sat(g/(p.length*Q)*11);
+ const score=x+.047*(y-.5)+.025*(damp-.5)+.020*(rough-.5);
+ return {dampness:damp,roughness:rough,score,structure:score<.465?'cavern':score<.535?'archipelago':'forest-ravine'};
+}
+function featureBundle(overrides={}){
+ return {waterPlane:null,ceilingGrid:null,caveMask:null,roofOpenings:[],caveWalls:[],
+  islands:[],trees:[],channel:[],channelWater:null,...overrides};
+}
+function cavern(base){
+ const n=base.size,p=base.source,h=new Uint16Array(n*n),m=new Uint8Array(n*n),ceilingGrid=new Float32Array(n*n),caveMask=new Uint8Array(n*n);
+ ceilingGrid.fill(NaN);
+ const s=base.seed, shift=(rnd(1,9,s)-.5)*.082;
+ const rooms=[[.48+shift,.48,.37,.37],[.748,.28+shift,.197,.19],[.252,.25-shift,.177,.18]];
+ const passages=[[[.49,.47],[.43+shift,.73],[.52,1.08]],[[.48,.48],[.748,.28+shift]],[[.48,.48],[.252,.25-shift]]];
+ const roofOpenings=[{x:.26+shift,y:.24,r:.068},{x:.72-shift,y:.319,r:.063},{x:.49,y:.658+shift,r:.055}];
+ for(let j=0;j<n*n;j++){
+  const x=(j%n+.5)/n,y=(Math.floor(j/n)+.5)/n, inherit=p[j]/Q;
+  const inside=Math.min(...rooms.map(([a,b,c,d])=>Math.hypot((x-a)/c,(y-b)/d)))<1+(.038*Math.sin(y*26+x*19));
+  const tunnel=polyDist(x,y,passages)<.073;
+  if(inside||tunnel){
+   caveMask[j]=1;m[j]=4;
+   const floor=.135+inherit*.14+.025*Math.sin(x*31+y*22+inherit*7);
+   h[j]=u16(floor);
+   const drilled=roofOpenings.some(({x:a,y:b,r})=>Math.hypot(x-a,y-b)<r*(.92+.12*Math.sin(x*45+3*y)));
+   if(!drilled)ceilingGrid[j]=.575+inherit*.17+.045*Math.sin(x*16-y*19)+.032*Math.sin(x*42+y*47);
+  }else{
+   h[j]=u16(.53+inherit*.21+.038*Math.sin(x*68+y*32));m[j]=6;
+  }
+ }
+ const caveWalls=[];
+ for(let j=0;j<n*n;j++)if(caveMask[j]){
+  const x=j%n,y=Math.floor(j/n),z=h[j]/Q,top=Number.isFinite(ceilingGrid[j])?ceilingGrid[j]:.69;
+  for(const [dx,dy,a,b] of [[-1,0,[x/n,y/n], [x/n,(y+1)/n]],[1,0,[(x+1)/n,y/n],[(x+1)/n,(y+1)/n]],
+    [0,-1,[x/n,y/n],[(x+1)/n,y/n]],[0,1,[x/n,(y+1)/n],[(x+1)/n,(y+1)/n]]]){
+   const X=x+dx,Y=y+dy;
+   if(X<0||Y<0||X>=n||Y>=n||caveMask[Y*n+X])continue;
+   caveWalls.push({a,b,z,top});
+  }
+ }
+ return {heights:h,material:m,features:featureBundle({ceilingGrid,caveMask,caveWalls,roofOpenings,corridors:passages}),waterLevel:null};
+}
+function archipelago(base){
+ const n=base.size,p=base.source,h=new Uint16Array(n*n),m=new Uint8Array(n*n),s=base.seed,z=.43;
+ const layout=[[.23,.23],[.67,.22],[.44,.49],[.79,.62],[.23,.76],[.64,.82]];
+ const islands=layout.map(([x,y],i)=>({x:x+(rnd(i,7,s)-.5)*.074,y:y+(rnd(i,9,s)-.5)*.062,r:.081+rnd(i,5,s)*.034,
+  elevation:.19+rnd(i,2,s)*.17,growth:1+rnd(i,11,s)*.24}));
+ for(let j=0;j<n*n;j++){
+  const x=(j%n+.5)/n,y=(Math.floor(j/n)+.5)/n,inherit=p[j]/Q;
+  let floor=z-.11+.049*inherit+.018*Math.sin(x*31+y*28);
+  for(const I of islands){
+   const dx=x-I.x,dy=y-I.y,t=Math.atan2(dy,dx);
+   const radii=I.r*(.87+.12*Math.sin(3*t+I.growth*3)+.095*Math.cos(5*t+I.growth*6));
+   const d=Math.hypot(dx,dy),value=1-d/(radii*(.91+.2*inherit));
+   if(value>-.48)floor=Math.max(floor,z+I.elevation*Math.max(0,value)**1.21+Math.min(value,0)*.25);
+  }
+  h[j]=u16(floor);m[j]=floor>z?4:1;
+ }
+ return {heights:h,material:m,features:featureBundle({waterPlane:{z,kind:'lagoon',bounds:[0,0,1,1]},islands}),waterLevel:z};
+}
+function forest(base){
+ const n=base.size,p=base.source,h=new Uint16Array(n*n),m=new Uint8Array(n*n),waterMask=new Uint8Array(n*n),s=base.seed,z=.27;
+ const ox=(rnd(1,17,s)-.5)*.10,oy=(rnd(3,17,s)-.5)*.12,node=[.505+ox,.558+oy];
+ const channel=[[[.10,.01],[.21+ox,.20],[.27+ox,.38],node],[[.94,.05],[.79+ox,.24],[.69+ox,.31],node],[node,[.472+ox,.68],[.585+ox,.84],[.55,1.04]],[[.025,.523],[.16,.555],[.258+ox,.542],[.346+ox,.467],[.27+ox,.38]]];
+ for(let j=0;j<n*n;j++){
+  const x=(j%n+.5)/n,y=(Math.floor(j/n)+.5)/n,inherit=p[j]/Q;
+  const D=polyDist(x,y,channel),width=.014+.007*(.5+.5*Math.sin(x*12+y*9+inherit));
+  const outer=.57+inherit*.18+.06*Math.sin(y*20+x*15)+.022*Math.cos(x*64-y*47);
+  const valley=ease((D-width)/.137);
+  const floor=mix(.166+inherit*.039,outer,valley);
+  h[j]=u16(floor);waterMask[j]=floor<=z?1:0;m[j]=waterMask[j]?2:4;
+ }
+ const trees=[];
+ for(let i=0;i<450&&trees.length<68;i++){
+  const x=.045+.91*rnd(i,29,s),y=.042+.916*rnd(i,36,s),d=polyDist(x,y,channel),g=exactSample(h,n,x,y);
+  if(d<.077||g<z+.13||trees.some(p=>(p.x-x)**2+(p.y-y)**2<.042**2))continue;
+  trees.push({x,y,z:g,kind:i%3?'conifer':'willow',height:.067+.074*rnd(i,47,s)+.03*g,radius:.012+.014*rnd(i,78,s)});
+ }
+ return {heights:h,material:m,features:featureBundle({channel,trees,junction:node,channelWater:{z,mask:waterMask}}),waterLevel:z};
+}
+function root(size=SIZE){
+ const g=B.root(size);
+ return {...g,id:ROOT,title:titles.genesis,structure:'genesis',features:featureBundle(),surface:{size,heights:g.heights,waterLevel:null}};
+}
+function descend(parent,x,y){
+ const id=oldID(parent.id),p={...parent,id};
+ const base=B.descend(p,x,y), qx=Math.round(x*Q)/Q,qy=Math.round(y*Q)/Q,hab=habitat(base,qx,qy);
+ const g=hab.structure==='cavern'?cavern(base):hab.structure==='archipelago'?archipelago(base):forest(base);
+ const {size}=base;
+ const newWorld={...base,id:newID(base.id),title:titles[hab.structure],structure:hab.structure,habitat:hab,
+  heights:g.heights,material:g.material,surface:{size,heights:g.heights,waterLevel:g.waterLevel},features:g.features};
+ // Ground each visible creature against new terrain (not the old baseline material).
+ const fauna=[];
+ for(let i=0;i<110&&fauna.length<8;i++){
+  const q=base.seed, x=.08+.84*rnd(i,88,q),y=.08+.84*rnd(i,91,q);
+  const j=Math.floor(y*size)*size+Math.floor(x*size),wet=g.material[j]<=2;
+  if(hab.structure==='cavern'&&!g.features.caveMask[j])continue;
+  const kind=hab.structure==='cavern'?'mite':hab.structure==='archipelago'?(wet?(i%3===0?'ray':'fish'):'dragonfly'):(wet?'fish':i%3===0?'bird':'lizard');
+  let ax=.026+.013*rnd(i,11,q),ay=.019+.015*rnd(i,55,q);
+  // Keep aquatic and cavern movement inside corresponding valid material.
+  if(kind!=='bird'&&kind!=='dragonfly')for(let r=0;r<5;r++){
+   let ok=true;
+   for(let a=0;a<24;a++){
+    const phase=a/24*Math.PI*2,dx=x+ax*Math.cos(phase),dy=y+ay*Math.sin(phase);
+    const ix=clamp(Math.floor(dx*size),0,size-1)+size*clamp(Math.floor(dy*size),0,size-1);
+    if((g.material[ix]<=2)!==wet||(hab.structure==='cavern'&&!g.features.caveMask[ix])){ok=false;break}
+   }
+   if(ok)break;ax*=.55;ay*=.55;
+  }
+  if(fauna.some(p=>(p.x-x)**2+(p.y-y)**2<.073**2))continue;
+  fauna.push({x,y,z:g.heights[j]/Q,phase:rnd(i,72,q),kind,ax,ay,period:3.7+5.1*rnd(i,18,q),scale:1.38});
+ }
+ const flora=hab.structure==='forest-ravine'?g.features.trees.map((t,i)=>({...t,phase:rnd(i,75,base.seed),scale:.91+t.height*2})):
+  base.flora.flatMap((p,i)=>{
+   const j=Math.floor(p.x*size)+size*Math.floor(p.y*size);
+   if(hab.structure==='cavern'&&!g.features.caveMask[j])return [];
+   return [{...p,z:g.heights[j]/Q,kind:hab.structure==='cavern'?(i%2?'crystal':'fungus'):(g.material[j]<=2?'coral':'palm')}];
+  });
+ return {...newWorld,fauna,flora};
+}
+function parse(id){return B.parse(oldID(id));}
+function ancestor(id){return newID(B.ancestor(oldID(id)));}
+function replay(id,size=SIZE){let p=root(size);for(const [x,y] of parse(id))p=descend(p,x,y);return p;}
+async function replayAsync(id,size=SIZE,{signal,yieldEvery=1}={}){
+ const path=parse(id),stride=Math.max(1,Math.trunc(yieldEvery)||1);let p=root(size);
+ for(let i=0;i<path.length;i++){
+  if(signal?.aborted)throw Error('Загрузка отменена');
+  p=descend(p,...path[i]);
+  if(i<path.length-1&&(i+1)%stride===0)await new Promise(resolve=>setTimeout(resolve,0));
+ }
+ if(signal?.aborted)throw Error('Загрузка отменена');
+ return p;
+}
+function shade(w){
+ if(w.structure==='genesis')return B.shade(w);
+ return B.shade({...w,palette:PALETTE[w.structure]});
+}
+function drawLife(ctx,w,t,project){B.drawLife(ctx,w,t,project);}
+function mesh(w,{resolution=56}={}){
+ const n=Math.max(6,Math.min(w.size,Math.trunc(resolution)||56)),out=[],Q2=65535;
+ const layers=new Map(),tri=(name,a,b,c)=>{let p=layers.get(name);if(!p){p=[];layers.set(name,p)}p.push(...a,...b,...c);};
+ const quad=(name,a,b,c,d)=>{tri(name,a,b,c);tri(name,a,c,d);};
+ const corner=(x,y)=>[x,y,B.sampleMap(w.heights,w.size,x,y)/Q2];
+ const mask=w.features.channelWater?.mask,roof=w.features.ceilingGrid,cave=w.structure==='cavern',caveMask=w.features.caveMask;
+ function nearest(field,x,y){const N=w.size;return field[Math.min(N-1,Math.floor(y*N))*N+Math.min(N-1,Math.floor(x*N))];}
+ for(let j=0;j<n;j++)for(let i=0;i<n;i++){
+  const a=i/n,b=j/n,c=(i+1)/n,d=(j+1)/n;
+  const u=(a+c)/2,v=(b+d)/2;
+  quad(cave&&nearest(caveMask,u,v)?'cave-floor':'terrain',corner(a,b),corner(c,b),corner(c,d),corner(a,d));
+  if(roof){
+   const z=nearest(roof,u,v);
+   if(Number.isFinite(z))quad('ceiling',[a,b,z],[a,d,z],[c,d,z],[c,b,z]);
+  }
+  if(mask&&nearest(mask,u,v)){
+   const z=w.features.channelWater.z;quad('channel-water',[a,b,z],[c,b,z],[c,d,z],[a,d,z]);
+  }
+ }
+ if(w.features.waterPlane){
+  const {z}=w.features.waterPlane;quad('open-water',[0,0,z],[1,0,z],[1,1,z],[0,1,z]);
+ }
+ for(const {a,b,z,top} of w.features.caveWalls)
+  quad('cave-wall',[...a,z],[...b,z],[...b,top],[...a,top]);
+ for(const {x,y,z,height,radius} of w.features.trees){
+  const r=radius*.32,t=z+height*.68;
+  for(let i=0;i<6;i++){
+   const f=i*Math.PI/3,g=(i+1)*Math.PI/3,df=[Math.cos(f),Math.sin(f)],dg=[Math.cos(g),Math.sin(g)];
+   const p=[x+r*df[0],y+r*df[1]],q=[x+r*dg[0],y+r*dg[1]];
+   quad('trunk',[...p,z],[...q,z],[...q,t],[...p,t]);
+   for(let j=0;j<2;j++){
+    const a=radius*(1-j*.22),b=z+height*(.37+j*.22),h=z+height*(.78+j*.22);
+    tri('canopy',[x+a*df[0],y+a*df[1],b],[x+a*dg[0],y+a*dg[1],b],[x,y,h]);
+   }
+  }
+ }
+ for(const [material,coords] of layers)out.push({material,positions:Float32Array.from(coords)});
+ return out;
+}
+return Object.freeze({ROOT,SIZE,VERSION:'zdw1',root,descend,parse,ancestor,replay,replayAsync,box,sampleMap:B.sampleMap,shade,mesh,drawLife,pose:B.pose});
+});
+
+</script>
+<script>
+/* ZomATON object portals, offline, version zow1. */
+(function(g,f){if(typeof module==='object'&&module.exports)module.exports=f(require('./diverse.js'));else g.ZATObject=f(g.ZATDiverse);})(globalThis,D=>{
+'use strict';
+const Q=65535,SIZE=D.SIZE,P='zow1:'+D.ROOT.split(':')[1]+':',ROOT=P+'-',VERSION='zow1';
+const sat=x=>Math.max(0,Math.min(1,x)),mix=(a,b,t)=>a+(b-a)*t;
+const quant=v=>{if(!Number.isFinite(v)||v<0||v>1)throw Error('Координата вне мира');return Math.round(v*Q);};
+const qcoord=v=>quant(v)/Q, hex=(n,d)=>n.toString(16).padStart(d,'0');
+function hash(x,y,s){let z=Math.imul(x,374761393)^Math.imul(y,668265263)^s;z=Math.imul(z^(z>>>13),1274126177);return (z^(z>>>16))>>>0}
+function rnd(x,y,s){return hash(x,y,s)/4294967296}
+function hashText(txt,s){let h=s>>>0;for(let i=0;i<txt.length;i++)h=Math.imul(h^txt.charCodeAt(i),16777619)>>>0;return h;}
+function parse(id){
+ if(typeof id!=='string'||!id.startsWith(P))throw Error('Нужен адрес zow1');
+ if(id===ROOT)return [];
+ return id.slice(P.length).split('.').map(s=>{
+  if(/^t[0-9a-f]{8}$/.test(s))return {type:'terrain',x:parseInt(s.slice(1,5),16)/Q,y:parseInt(s.slice(5),16)/Q};
+  const m=/^o([0-9a-z]{10})-([a-z]{1,12})$/.exec(s);
+  if(m)return {type:'object',id:m[1],partKey:m[2]};
+  throw Error('Некорректный сегмент перехода');
+ });
+}
+function ancestor(id){
+ const p=parse(id);if(p.length<2)return ROOT;
+ return id.slice(0,id.lastIndexOf('.'));
+}
+const append=(p,s)=>p.id===ROOT?P+s:p.id+'.'+s;
+function sample(w,u,v){return D.sampleMap(w.heights,w.size,sat(u),sat(v))/Q;}
+const portalRoles=Object.freeze({plant:'micro',animal:'micro','micro-material':'macro','micro-organism':'macro'});
+function parts(o){
+ const specimen=o.role==='animal',micro=o.role.startsWith('micro-');
+ const keys=micro?[['core',0,0,.94],['edge',-.65,.05,.48]]:specimen?[['body',.21,0,.69],['skin',-.54,-.32,.38]]:
+  [['leaf',-.46,-.34,.67],['stem',.43,.33,.49]];
+ return keys.map(([key,dx,dy,r])=>({key,dx,dy,r:r*o.radius,x:sat(o.x+dx*o.radius),y:sat(o.y+dy*o.radius),z:o.z}));
+}
+function specimen(w,p,index,role){
+ const s=hash(index,p.kind.length,w.seed),x=qcoord(sat(p.x)),y=qcoord(sat(p.y)),z=sample(w,x,y);
+ const id=hex(index,2)+hex(hashText(p.kind+'-'+role+'-'+hex(quant(x),4)+hex(quant(y),4),s),8);
+ const g={seed:s,boughs:3+Math.floor(rnd(1,2,s)*5),aspect:.52+rnd(2,3,s)*.49,
+  lobes:2+Math.floor(rnd(3,4,s)*5),fins:1+Math.floor(rnd(4,5,s)*3),
+  tilt:(rnd(5,6,s)-.5)*1.25,ring:1+Math.floor(rnd(6,7,s)*4),tones:rnd(8,9,s)};
+ const roleSize=role==='animal'?.023:role==='plant'?.022:role==='micro-organism'?.026:.028;
+ const n=w.size,j=Math.min(n-1,Math.floor(x*n))+n*Math.min(n-1,Math.floor(y*n));
+ const habitat={material:w.material[j],elevation:z,slope:Math.abs(sample(w,x+.011,y)-sample(w,x-.011,y))+Math.abs(sample(w,x,y+.011)-sample(w,x,y-.011))};
+ const o={id,role,kind:p.kind,x,y,z,scale:p.scale??1,radius:roleSize*(.9+.36*rnd(8,8,s)),
+  phase:rnd(7,8,s),genotype:g,habitat,
+  ax:p.ax??0,ay:p.ay??0,period:p.period??5,targetScale:portalRoles[role]};
+ return {...o,parts:parts(o)};
+}
+function objectPose(o,t=0){
+ if(o.ax||o.ay)return D.pose(o,t);
+ return {x:o.x,y:o.y,angle:o.genotype?.tilt??0};
+}
+function partPose(o,k,t=0){
+ const p=o.parts.find(p=>p.key===k);if(!p)throw Error('Объект не содержит эту часть');
+ const {x,y,angle:a}=objectPose(o,t),u=Math.cos(a),v=Math.sin(a);
+ return {x:sat(x+(p.dx*u-p.dy*v)*o.radius),y:sat(y+(p.dx*v+p.dy*u)*o.radius),z:p.z,r:p.r,angle:a};
+}
+function hit(w,x,y,t=0,tolerance=.014){
+ quant(x);quant(y);
+ let winner=null,best=Infinity;
+ for(const o of w.objects)for(const p of o.parts){
+  const at=partPose(o,p.key,t),d=Math.hypot(x-at.x,y-at.y);
+  if(d>p.r+tolerance)continue;
+  const score=d/Math.max(p.r,.005);
+  if(score<best){best=score;winner={id:o.id,partKey:p.key,object:o};}
+ }
+ return winner;
+}
+function fromD(b,id,depth,origin){
+ const objects=[];
+ for(let j=0;j<Math.min(46,b.flora.length);j++)objects.push(specimen(b,b.flora[j],j,'plant'));
+ for(let j=0;j<Math.min(14,b.fauna.length);j++)objects.push(specimen(b,b.fauna[j],80+j,'animal'));
+ return {...b,id,depth,scale:'macro',objects,origin,morphology:null};
+}
+function root(size=SIZE){return fromD(D.root(size),ROOT,0,null);}
+function exactSource(p,x,y){
+ const window=D.box(x,y),N=p.size,source=new Uint16Array(N*N);
+ for(let v=0;v<N;v++)for(let u=0;u<N;u++)source[v*N+u]=D.sampleMap(p.heights,N,
+  window.x+(u+.5)*window.width/N,window.y+(v+.5)*window.height/N);
+ return {source,window};
+}
+const pointSegment=(x,y,a,b)=>{
+ const X=b[0]-a[0],Y=b[1]-a[1],f=sat(((x-a[0])*X+(y-a[1])*Y)/(X*X+Y*Y||1));
+ return Math.hypot(x-a[0]-X*f,y-a[1]-Y*f);
+};
+const networkDistance=(x,y,lines)=>{
+ let d=2;for(const l of lines)for(let i=1;i<l.length;i++)d=Math.min(d,pointSegment(x,y,l[i-1],l[i]));
+ return d;
+};
+const tissueNames={
+ leaf:'Лист · сосудистые пучки',
+ stem:'Стебель · проводящие ткани',
+ gill:'Жабры · дыхательные ламеллы',
+ cuticle:'Панцирь · хитиновые камеры',
+ skin:'Кожа · покровные слои',
+ organ:'Тело · органные полости',
+ matrix:'Ткань · межклеточный матрикс',
+};
+function tissueProfile(o,part,w){
+ if(!o)return w.morphology?.family==='leaf'?'matrix':w.morphology?.family==='gill'?'gill':'matrix';
+ if(o.role==='plant')return part==='leaf'?'leaf':'stem';
+ if(['fish','ray'].includes(o.kind))return 'gill';
+ if(['beetle','mite','dragonfly'].includes(o.kind))return 'cuticle';
+ return part==='skin'?'skin':'organ';
+}
+function inside(parent,id,anchorX,anchorY,profile,object,origin){
+ const {size:N}=parent,{source,window}=exactSource(parent,anchorX,anchorY),Z=N*N;
+ const sg=hashText(profile+'|'+(origin.partKey??'terrain'),object?.genotype?.seed??parent.seed);
+ const low=source.slice();low.sort();
+ const a=low[Math.floor(Z*.12)]/Q,b=low[Math.floor(Z*.87)]/Q,range=Math.max(.10,b-a);
+ const s={seed:sg,boughs:object?.genotype?.boughs??4,aspect:object?.genotype?.aspect??.72,lobes:object?.genotype?.lobes??4};
+ const network=[], chambers=[], organs=[];
+ const spines=Math.max(3,s.boughs),wetness=source.reduce((sum,h)=>sum+h,0)/(Z*Q);
+ const livingPlant=profile==='leaf'||profile==='stem'||profile==='matrix';
+ const pegs=[];
+ if(livingPlant){
+  const tilt=(rnd(12,4,sg)-.5)*.15;
+  network.push([[.49+tilt,.04],[.54,.28],[.49,.52],[.55-tilt,.70],[.51,.96]]);
+  for(let i=0;i<spines;i++){
+   const y=.16+i*.68/spines,xd=.22+rnd(i,9,sg)*.25,side=(i%2===0?-1:1);
+   const pivot=[.50,y],tip=[.50+side*xd,.05+.76*y];
+   network.push([pivot,[.50+side*xd*.57,y-.018-rnd(i,12,sg)*.07],tip]);
+   pegs.push({x:.38+side*.045+rnd(i,27,sg)*.17,y:y+.05,kind:i%2?'cell-wall':'stoma'});
+  }
+  pegs.push({x:.50+(rnd(77,3,sg)-.5)*.044,y:.52+(rnd(78,3,sg)-.5)*.16,kind:'stoma'});
+  for(let i=0;i<12;i++)chambers.push({x:.13+.74*rnd(i,38,sg),y:.13+.74*rnd(i,39,sg),rx:.035+.047*rnd(i,40,sg),ry:.045+.033*rnd(i,41,sg)});
+ }else if(profile==='gill'){
+  for(let i=0;i<spines+3;i++){
+   const u=.13+i*.74/(spines+3);
+   const detail=[ [u,.16],[u+.033,.31],[u-.025,.47],[u+.033,.68],[u-.012,.85] ];
+   network.push(detail);chambers.push({x:u,y:.48,rx:.028+.017*rnd(i,15,sg),ry:.19+.062*rnd(i,16,sg)});
+   pegs.push({x:u+.023,y:.31+i*.039,kind:'gill-membrane'});
+  }
+ }else{
+  for(let i=0;i<s.lobes+2;i++){
+   const ang=i*2*Math.PI/(s.lobes+2),x=.50+Math.cos(ang)*(.222+.061*rnd(i,4,sg)),
+     y=.50+Math.sin(ang)*(.197+.075*rnd(i,5,sg));
+   const rx=.056+rnd(i,12,sg)*.086,ry=rx*(.65+s.aspect*.32);
+   chambers.push({x,y,rx,ry});
+   network.push([[.50,.50],[.45+(x-.45)*.55,.47+(y-.47)*.61],[x,y]]);
+   pegs.push({x,y,kind:i%2?'cuticle':'membrane'});
+  }
+ }
+ const heights=new Uint16Array(Z),material=new Uint8Array(Z);
+ for(let i=0;i<Z;i++){
+  const x=(i%N+.5)/N,y=(Math.floor(i/N)+.5)/N,v=source[i]/Q,local=(v-a)/range;
+  let volume=0,wall=0;
+  for(const c of chambers){
+   const dist=Math.hypot((x-c.x)/c.rx,(y-c.y)/c.ry);
+   volume=Math.max(volume,sat(1-dist));wall=Math.max(wall,sat(1-Math.abs(dist-.82)*5.4));
+  }
+  const line=networkDistance(x,y,network),vein=sat(1-line/(.024+.028*wetness));
+  const contour=Math.sin(x*119+y*136+sg*.017+v*19)*.014+Math.cos(x*171-y*72+local*11)*.013;
+  const h=livingPlant?.24+.26*v+.18*vein+.092*wall-.038*volume+contour:
+    .29+.18*v+.076*vein+.19*wall-.144*volume+contour;
+  heights[i]=Math.round(sat(h)*Q);material[i]=volume>.43?1:vein>.68?2:wall>.66?5:4;
+ }
+ const objects=[];
+ const w={id,seed:sg,depth:parent.depth+1,size:N,scale:'micro',kind:'micro',structure:profile,
+   title:tissueNames[profile],levelName:'Микромир',
+   heights,material,source,window,surface:{size:N,heights,waterLevel:null},origin,objects,
+   features:{waterPlane:null,caveMask:null,ceilingGrid:null,caveWalls:[],trees:[],channel:[],channelWater:null,tissueNetwork:network,tissueChambers:chambers},
+   morphology:{family:profile,channels:network.length,chambers:chambers.length,parentObjectId:object?.id??null},
+   flora:[],fauna:[]};
+ pegs.forEach((p,i)=>objects.push(specimen(w,p,i,'micro-material')));
+ let population=0;
+ const matAt=(x,y)=>material[Math.min(N-1,Math.floor(sat(x)*N))+N*Math.min(N-1,Math.floor(sat(y)*N))];
+ for(let i=0;i<210&&population<8;i++){
+  const x=.13+.74*rnd(i,72,sg),y=.13+.74*rnd(i,73,sg);
+  const m=matAt(x,y),fluid=m<=2;
+  const kind=i%2?'microbe':'ciliate';
+  if((kind==='ciliate')!==fluid)continue;
+  let ax=.022+.021*rnd(i,80,sg),ay=.013+.024*rnd(i,81,sg);
+  for(let j=0;j<4;j++){
+   let ok=true;for(let k=0;k<20;k++){const t=k*Math.PI/10;if((matAt(x+ax*Math.cos(t),y+ay*Math.sin(t))<=2)!==fluid){ok=false;break;}}
+   if(ok)break; ax*=.64;ay*=.64;
+  }
+  const g=specimen(w,{x,y,kind,ax,ay,period:3.4+4*rnd(i,82,sg)},90+population,'micro-organism');
+  objects.push(g);population++;
+ }
+ return w;
+}
+function basis(parent){return {...parent,id:D.ROOT,depth:0};}
+function descend(parent,x,y){
+ const u=qcoord(x),v=qcoord(y),id=append(parent,'t'+hex(quant(x),4)+hex(quant(y),4)),
+  origin={type:'terrain',x:u,y:v,parentId:parent.id,selectedScale:parent.scale};
+ if(parent.scale==='micro')return inside(parent,id,u,v,tissueProfile(null,null,parent),null,origin);
+ return fromD(D.descend(basis(parent),u,v),id,parent.depth+1,origin);
+}
+function enterObject(parent,id,partKey){
+ const o=parent.objects.find(o=>o.id===id);
+ if(!o)throw Error('Объект не найден в этом мире');
+ const key=partKey??o.parts[0].key;
+ const anchor=partPose(o,key,0);
+ const t=append(parent,'o'+o.id+'-'+key);
+ const origin={type:'object',parentId:parent.id,objectId:o.id,objectKind:o.kind,objectRole:o.role,partKey:key,
+  selectedScale:o.targetScale,anchor:[anchor.x,anchor.y],genotypeSeed:o.genotype.seed};
+ if(o.targetScale==='micro')return inside(parent,t,anchor.x,anchor.y,tissueProfile(o,key,parent),o,origin);
+ if(o.targetScale==='macro')return fromD(D.descend(basis(parent),anchor.x,anchor.y),t,parent.depth+1,origin);
+ throw Error('Для объекта не задан переход');
+}
+function enter(parent,x,y,time=0){
+ if(typeof x==='string')return enterObject(parent,x,y);
+ const match=hit(parent,x,y,time);return match?enterObject(parent,match.id,match.partKey):descend(parent,x,y);
+}
+function advance(w,s){return s.type==='terrain'?descend(w,s.x,s.y):enterObject(w,s.id,s.partKey);}
+function replay(id,n=SIZE){let w=root(n);for(const s of parse(id))w=advance(w,s);return w;}
+async function replayAsync(id,n=SIZE,{signal,yieldEvery=1}={}){
+ let w=root(n),i=0;const steps=parse(id);for(const s of steps){
+  if(signal?.aborted)throw Error('Загрузка отменена');
+  w=advance(w,s);if(++i<steps.length&&i%Math.max(1,Math.trunc(yieldEvery))===0)await new Promise(r=>setTimeout(r,0));
+ }if(signal?.aborted)throw Error('Загрузка отменена');
+ return w;
+}
+function shade(w){
+ if(w.scale!=='micro')return D.shade(w);
+ const n=w.size,out=new Uint8ClampedArray(n*n*4),c=w.morphology.family==='leaf'||w.morphology.family==='stem'||w.morphology.family==='matrix'?
+  [[17,39,55],[87,158,107],[198,229,161]]:[[27,21,61],[117,61,117],[247,164,131]];
+ for(let i=0;i<n*n;i++){
+  const x=i%n,y=Math.floor(i/n),d=(w.heights[x?i-1:i]-w.heights[x+1<n?i+1:i])/Q+
+   (w.heights[y?i-n:i]-w.heights[y+1<n?i+n:i])/Q;
+  const h=sat((w.heights[i]/Q-.16)*2.2)*2,b=Math.min(1,Math.floor(h)),m=w.material[i],l=.83+.36*sat(.50+d*21);
+  for(let k=0;k<3;k++){let q=mix(c[b][k],c[b+1][k],h-b)*l;if(m===1)q=mix(q,[34,97,143][k],.48);out[4*i+k]=q;}
+  out[4*i+3]=255;
+ }
+ return out;
+}
+function mesh(w,{resolution=48}={}){
+ if(w.scale!=='micro')return D.mesh(w,{resolution});
+ const n=Math.max(8,Math.min(w.size,Math.trunc(resolution)||48)),groups=new Map;
+ function tri(name,a,b,c){const p=groups.get(name)||[];if(!groups.has(name))groups.set(name,p);p.push(...a,...b,...c);}
+ function quad(name,a,b,c,d){tri(name,a,b,c);tri(name,a,c,d);}
+ const xyz=(u,v)=>[u,v,sample(w,u,v)];
+ for(let y=0;y<n;y++)for(let x=0;x<n;x++){
+  const a=x/n,b=y/n,c=(x+1)/n,d=(y+1)/n,j=Math.floor((a+c)/2*w.size)+w.size*Math.floor((b+d)/2*w.size);
+  quad(w.material[j]===1?'tissue-fluid':'tissue',xyz(a,b),xyz(c,b),xyz(c,d),xyz(a,d));
+ }
+ for(const path of w.features.tissueNetwork)for(let i=1;i<path.length;i++){
+  const a=path[i-1],b=path[i],N=Math.hypot(b[0]-a[0],b[1]-a[1]),r=.010,
+   dx=(a[1]-b[1])*r/N,dy=(b[0]-a[0])*r/N;
+  const A=xyz(...a),B=xyz(...b),p=[a[0]+dx,a[1]+dy,A[2]],q=[a[0]-dx,a[1]-dy,A[2]],r1=[b[0]-dx,b[1]-dy,B[2]],s=[b[0]+dx,b[1]+dy,B[2]],
+    U=[a[0],a[1],A[2]+.034],V=[b[0],b[1],B[2]+.034];
+  quad('tissue-vein',p,U,V,s);quad('tissue-vein',q,U,V,r1);
+ }
+ for(const a of w.features.tissueChambers)for(let i=0;i<10;i++){
+  const at=(t,r)=>xyz(a.x+r*a.rx*Math.cos(t),a.y+r*a.ry*Math.sin(t));
+  const t=i*Math.PI/5,s=(i+1)*Math.PI/5,A=at(t,.82),B=at(s,.82),C=at(s,1),D=at(t,1);
+  A[2]+=.040;B[2]+=.040;quad('tissue-wall',A,B,C,D);
+ }
+ return [...groups].map(([material,coords])=>({material,positions:Float32Array.from(coords)}));
+}
+function drawLife(ctx,w,t=0,project){
+ const W=ctx.canvas.width,H=ctx.canvas.height,map=project||((x,y)=>({x:x*W,y:y*H,scale:1}));
+ const order=w.objects.map(o=>({o,p:objectPose(o,t)})).sort((a,b)=>a.p.y-b.p.y);
+ function ellipse(x,y,a,b,phi,color){ctx.fillStyle=color;ctx.beginPath();ctx.ellipse(x,y,a,b,phi,0,2*Math.PI);ctx.fill();}
+ function line(color,width,...points){ctx.strokeStyle=color;ctx.lineWidth=width;ctx.beginPath();ctx.moveTo(...points[0]);for(const p of points.slice(1))ctx.lineTo(...p);ctx.stroke();}
+ function triangle(color,a,b,c){ctx.fillStyle=color;ctx.beginPath();ctx.moveTo(...a);ctx.lineTo(...b);ctx.lineTo(...c);ctx.closePath();ctx.fill();}
+ for(const {o,p} of order){
+  const q=map(p.x,p.y);if(!q||!Number.isFinite(q.x)||!Number.isFinite(q.y))continue;
+  const v=o.genotype,g=(q.scale??1)*Math.min(W,H)*o.radius*.89;
+  ctx.save();ctx.translate(q.x,q.y);ctx.rotate(p.angle*.72);ctx.scale(g,g);ctx.lineCap='round';
+  ellipse(0,.12,.59,.36,0,'rgba(5,19,24,.40)');
+  if(o.role==='plant'){
+   const aquatic=['coral','fan','reed'].includes(o.kind),color=aquatic?'#edbd96':'#82be83',stalk=aquatic?'#ca906f':'#5c7252';
+   line(stalk,.18,[.43,.43],[.09,-.17],[-.45,-.69]);
+   for(let i=0;i<v.boughs;i++){
+    const y=-.65+i*.92/v.boughs,side=i%2?-1:1,x=-.42+(y+.65)*.75;
+    const r=.23+v.aspect*.38-.13*(i/v.boughs);const tilt=side*(.55+v.tilt*.46);
+    line(stalk,.087,[x,y],[x+side*r*.80,y-.16]);
+    ellipse(x+side*r*.72,y-.11,r*.62,aquatic?.075:.13,tilt,color);
+    if(!aquatic&&v.lobes>4)ellipse(x+side*r*.99,y-.20,r*.27,.087,tilt*.77,'#b5d58e');
+   }
+  }else if(o.role==='animal'){
+   const aquatic=['fish','ray'].includes(o.kind),air=['bird','dragonfly'].includes(o.kind),pulse=Math.sin(t*7+o.phase*7);
+   const a=.33+v.aspect*.35,b=.18+v.aspect*.21,body=aquatic?'#80c3d8':air?'#e5c391':'#be8a73';
+   ellipse(.08,0,a,b,0,body);ellipse(a*.89,-.012,.19,.19,0,'#eddfb2');
+   ellipse(a*.98,-.045,.045,.048,0,'#112133');
+   for(let i=0;i<v.fins;i++){
+    const x=-a+i*(a*1.32)/v.fins;
+    for(const side of [-1,1]){
+     if(aquatic||air)triangle(air?'#dfddce':'#4c83a7',[x,0],[x-.27,side*(.43+.17*v.aspect+pulse*.12)],[x+.24,side*.12]);
+     else line('#655053',.077,[x,side*.10],[x-.15,side*(.41+pulse*.06)],[x-.31,side*.46]);
+    }
+   }
+   if(aquatic)triangle('#679eb7',[-a+.03,0],[-a-.33,-.22-pulse*.08],[-a-.31,.22-pulse*.08]);
+  }else{
+   const isLive=o.role==='micro-organism',col=isLive?'#ebc9e9':o.kind==='stoma'?'#b9df9d':'#94c0d3';
+   ellipse(0,0,.51+v.aspect*.22,.40+v.aspect*.19,0,col);
+   ellipse(0,0,.36,.28,0,o.kind==='stoma'?'#3d704e':'#56618d');
+   if(isLive)for(let i=0;i<v.lobes+5;i++){
+    const a=i*(Math.PI*2)/(v.lobes+5),s=.77+.08*Math.sin(t*10+i);
+    line('#ddc6ef',.065,[Math.cos(a)*.43,Math.sin(a)*.39],[Math.cos(a)*s,Math.sin(a)*s]);
+   }
+   else for(let i=0;i<v.ring;i++)ellipse((i-v.ring*.5)*.095,.04,.052,.12,.34,'#d3eacf');
+  }
+  ctx.restore();
+ }
+}
+return Object.freeze({ROOT,SIZE,VERSION,root,descend,enter,enterObject,hit,objectPose,partPose,ancestor,parse,replay,replayAsync,box:D.box,sampleMap:D.sampleMap,shade,mesh,pose:objectPose,drawLife});
+});
+
+</script>
+<script>
+/* ZomATON material portals. Version zow2 uses the exact substrate at the recorded entry point. */
+(function(g,f){if(typeof module==='object'&&module.exports)module.exports=f(require('./engine.js'));else g.ZATMaterial=f(g.ZATObject);})(globalThis,O=>{
+'use strict';
+const Q=65535,S=O.SIZE,P='zow2:'+O.ROOT.split(':')[1]+':',ROOT=P+'-',DETAIL=17;
+const MATERIALS=Object.freeze({stone:1,melt:2,leaf:3,vein:4,water:5,soil:6,membrane:7,shell:8,crystal:9,'lava-crust':10,ember:11,'plant-cell':12});
+const R=Object.freeze({stone:'stone',crystal:'stone',melt:'fire','lava-crust':'fire',ember:'fire',leaf:'plant',vein:'plant','plant-cell':'plant',water:'water',soil:'soil',membrane:'animal',shell:'animal'});
+const NAMES=Object.fromEntries(Object.entries(MATERIALS).map(([k,v])=>[v,k]));
+const clamp=(v,a,b)=>Math.min(b,Math.max(a,v)),sat=v=>clamp(v,0,1),mix=(a,b,t)=>a+(b-a)*t;
+const u16=x=>Math.round(sat(x)*Q);
+function q(x){if(!Number.isFinite(x)||x<0||x>1)throw Error('Координата вне поверхности');return Math.round(x*Q);}
+const hx=(x,n)=>x.toString(16).padStart(n,'0'),fq=x=>q(x)/Q;
+function rng(x,y,s){let h=Math.imul(x,374761393)^Math.imul(y,668265263)^s;h=Math.imul(h^(h>>>13),1274126177);return ((h^(h>>>16))>>>0)/4294967296;}
+function seedFor(w,x,y,key){let s=Math.imul(w.seed^q(x),16777619)>>>0;s=Math.imul(s^q(y),16777619)>>>0;for(let i=0;i<key.length;i++)s=Math.imul(s^key.charCodeAt(i),16777619)>>>0;return s;}
+function index(n,x,y){return Math.min(n-1,Math.floor(fq(x)*n))+n*Math.min(n-1,Math.floor(fq(y)*n));}
+const near=(n,x,y)=>Math.min(n-1,Math.floor(sat(x)*n))+n*Math.min(n-1,Math.floor(sat(y)*n));
+function parse(id){
+ if(typeof id!=='string'||!id.startsWith(P))throw Error('Нужен адрес zow2');
+ if(id===ROOT)return [];
+ return id.slice(P.length).split('.').map(token=>{
+  if(/^t[0-9a-f]{8}$/.test(token))return {type:'terrain',x:parseInt(token.slice(1,5),16)/Q,y:parseInt(token.slice(5),16)/Q};
+  const m=/^o([0-9a-z]{10})-([a-z]{1,12})-([0-9a-f]{4})([0-9a-f]{4})$/.exec(token);
+  if(m)return {type:'object',id:m[1],partKey:m[2],u:parseInt(m[3],16)/Q,v:parseInt(m[4],16)/Q};
+  throw Error('Неизвестный сегмент материала');
+ });
+}
+const append=(w,s)=>w.id===ROOT?P+s:w.id+'.'+s;
+function ancestor(id){return parse(id).length<2?ROOT:id.slice(0,id.lastIndexOf('.'));}
+function phys(n){return {heat:new Uint16Array(n*n),strain:new Uint16Array(n*n),channel:new Uint16Array(n*n),vein:new Uint16Array(n*n),lattice:new Uint16Array(n*n)};}
+function readings(m,p,i){
+ return {code:m[i],material:NAMES[m[i]],realm:R[NAMES[m[i]]],heat:p.heat[i]/Q,strain:p.strain[i]/Q,flow:p.channel[i]/Q,vascular:p.vein[i]/Q,lattice:p.lattice[i]/Q};
+}
+function terrainAt(w,x,y){
+ const X=fq(x),Y=fq(y),n=w.size,i=index(n,X,Y);
+ return {...readings(w.materialField,w.physics,i),x:X,y:Y,kind:'terrain',cell:[i%n,Math.floor(i/n)],height:w.heights[i]/Q};
+}
+const rockPart=new Set(['cell-wall','cuticle','gill-membrane','membrane','stoma']);
+function partSurface(w,o,part){
+ const size=DETAIL,field=new Uint8Array(size*size),p=phys(size),oPos=O.partPose(o,part.key,0);
+ const substrate=terrainAt(w,oPos.x,oPos.y),g=o.genotype,lf=o.role==='plant',live=o.role==='animal'||o.role==='micro-organism';
+ const pool=o.role==='micro-material',temperature=substrate.heat*(live?.70:.79);
+ for(let i=0;i<field.length;i++){
+  const x=(i%size+.5)/size,y=(Math.floor(i/size)+.5)/size,G=rng(i,14,g.seed);
+  const jitter=.065*Math.sin(y*10+g.tilt),rib=Math.abs(x-.49-jitter);
+  const twig=Math.abs((y+x*.65+g.tilt*.15)*(g.boughs+1)-Math.round((y+x*.65+g.tilt*.15)*(g.boughs+1)));
+  const vascular=lf?Math.max(sat(1-rib*10),sat(1-twig*6)*sat(1-rib*1.9)):0;
+  const membrane=Math.hypot((x-.5)*1.12,(y-.5)*1.24);
+  let local;
+  if(lf)local=vascular>.68?MATERIALS.vein:MATERIALS.leaf;
+  else if(live)local=(part.key==='skin'||membrane>.55)?MATERIALS.shell:MATERIALS.membrane;
+  else if(pool&&rockPart.has(o.kind)&&['leaf','vein','membrane'].includes(substrate.material)){
+   local=(o.kind==='stoma'||o.kind==='cell-wall')?(vascular>.6?MATERIALS.vein:MATERIALS.leaf):MATERIALS.membrane;
+  }else if(pool)local=substrate.code;
+  else local=MATERIALS.shell;
+  if(w.realm==='plant')local=vascular>.68||substrate.vascular*.98>.72?MATERIALS.vein:pool?MATERIALS['plant-cell']:MATERIALS.leaf;
+  if(w.realm==='fire')local=substrate.flow>.48||G>.77?MATERIALS.melt:live?MATERIALS.ember:MATERIALS['lava-crust'];
+  if(w.realm==='stone')local=G>.62||substrate.lattice>.55?MATERIALS.crystal:MATERIALS.stone;
+  if(w.realm==='animal')local=part.key==='skin'||membrane>.60?MATERIALS.shell:MATERIALS.membrane;
+  if(w.realm==='water')local=MATERIALS.water;
+  if(w.realm==='soil')local=MATERIALS.soil;
+  field[i]=local;p.heat[i]=u16(temperature+G*.10);
+  p.strain[i]=u16(substrate.strain*.60+membrane*.20+G*.07);
+  p.channel[i]=u16(substrate.flow*.58+(local===MATERIALS.melt?G*.33:0));
+  p.vein[i]=u16(Math.max(vascular,substrate.vascular*.57));
+  p.lattice[i]=u16(substrate.lattice*.75+(local===MATERIALS.shell?membrane*.31:0));
+ }
+ return {size,field,physics:p,substrate};
+}
+function prepareObjects(w){
+ return w.objects.map(o=>{
+  const pos=terrainAt(w,o.x,o.y);
+  const parts=o.parts.map(k=>({...k,surface:partSurface(w,o,k)}));
+  const forms={plant:['willow','sap-walker','stoma','ciliate'],fire:['fire-sprout','ember-drifter','lava-crust','hot-mote'],
+   stone:['crystal','rock-crawler','crystal-face','mineral-mote']};
+  const family=forms[w.realm],role=['plant','animal','micro-material','micro-organism'].indexOf(o.role);
+  return {...o,nativeKind:o.kind,kind:family?.[role]??o.kind,parts,traits:Object.freeze({
+   thermalTolerance:sat(pos.heat*.53+o.genotype.tones*.27),
+   rockyGrip:sat(pos.strain*.63+o.genotype.aspect*.26),
+   vascularReliance:sat(pos.vascular*.68+(o.role==='plant'?.18:0)),
+   substrate:pos.material})};
+ });
+}
+function getPart(w,id,key){
+ const o=w.objects.find(o=>o.id===id);if(!o)throw Error('Нет такого объекта');
+ const part=o.parts.find(p=>p.key===key);if(!part)throw Error('Нет такой части');
+ return {o,part};
+}
+function objectMaterialAt(w,id,key,u=.5,v=.5){
+ const {o,part}=getPart(w,id,key),g=part.surface,at=O.partPose(o,key,0);
+ const U=fq(u),V=fq(v),i=index(g.size,U,V),c=Math.cos(at.angle),s=Math.sin(at.angle),
+  dx=(U-.5)*at.r*2,dy=(V-.5)*at.r*2;
+ return {...readings(g.field,g.physics,i),kind:'object',objectId:id,partKey:key,u:U,v:V,
+  cell:[i%g.size,Math.floor(i/g.size)],x:fq(sat(at.x+c*dx-s*dy)),y:fq(sat(at.y+s*dx+c*dy)),
+  sourceSubstrate:g.substrate.material};
+}
+function hit(w,x,y,t=0,tolerance=.014){
+ const h=O.hit(w,x,y,t,tolerance);if(!h)return null;
+ const at=O.partPose(h.object,h.partKey,t),c=Math.cos(at.angle),s=Math.sin(at.angle),a=x-at.x,b=y-at.y;
+ const u=fq(sat(.5+(a*c+b*s)/(2*at.r))),v=fq(sat(.5+(-a*s+b*c)/(2*at.r)));
+ return {...h,u,v,material:objectMaterialAt(w,h.id,h.partKey,u,v)};
+}
+function materialAt(w,x,y,t=0,pick='auto'){const h=pick==='terrain'?null:hit(w,x,y,t);return h?h.material:terrainAt(w,x,y);}
+function root(size=S){
+ const base=O.root(size),materialField=new Uint8Array(size*size),physics=phys(size),heights=base.heights.slice(),features={...base.features},crack=[];
+ for(let j=0;j<=20;j++){const y=j/20,x=.50+.045*Math.sin(y*10.6);crack.push([x,y]);}
+ for(let i=0;i<size*size;i++){
+  const x=(i%size+.5)/size,y=(Math.floor(i/size)+.5)/size;
+  const fault=.50+.045*Math.sin(y*10.6),d=Math.abs(x-fault),rock=base.heights[i]/Q;
+  const riverWidth=.017+.006*Math.sin(y*18+rock*2)+.003*Math.sin(x*98+y*64);
+  const vent=sat(1-d/(.055+.024*rock)),sig=sat(1-Math.abs(d-.036)*16);
+  const molten=d<riverWidth;
+  materialField[i]=molten?MATERIALS.melt:rock<.16&&d>.11?MATERIALS.soil:MATERIALS.stone;
+  heights[i]=u16(rock+(molten?-.054*vent:.062*sig));
+  physics.heat[i]=u16(molten?.77+.22*vent:.11+.42*vent);
+  physics.channel[i]=u16(molten?vent*.84:0);physics.strain[i]=u16((1-vent)*.24+.61*sig);
+  physics.lattice[i]=u16(molten?0:.20+.55*sig);
+ }
+ features.moltenFault=[crack];
+ const w={...base,id:ROOT,heights,surface:{...base.surface,heights},materialField,physics,features,
+  materialProfile:'genesis',realm:'genesis',materialDomain:'genesis',traits:{},objects:base.objects};
+ return {...w,objects:prepareObjects(w)};
+}
+function sourceWindow(parent,e){
+ const window=O.box(e.x,e.y),n=parent.size,source=new Uint16Array(n*n),sourceCode=new Uint8Array(n*n),sourcePhysics=phys(n);
+ for(let i=0;i<n*n;i++){
+  const x=window.x+(i%n+.5)*window.width/n,y=window.y+(Math.floor(i/n)+.5)*window.height/n;
+  source[i]=O.sampleMap(parent.heights,n,x,y);
+  const k=near(n,x,y);sourceCode[i]=parent.materialField[k];
+  for(const name of Object.keys(sourcePhysics))sourcePhysics[name][i]=parent.physics[name][k];
+ }
+ return {window,source,sourceCode,sourcePhysics};
+}
+function dLine(x,y,line){
+ let d=2;
+ for(let i=1;i<line.length;i++){
+  const [a,b]=line[i-1],[c,e]=line[i],X=c-a,Y=e-b,t=sat(((x-a)*X+(y-b)*Y)/(X*X+Y*Y||1));
+  d=Math.min(d,Math.hypot(x-a-X*t,y-b-Y*t));
+ }
+ return d;
+}
+function networkDistance(x,y,net){let d=2;for(const p of net)d=Math.min(d,dLine(x,y,p));return d;}
+const profiles={fire:'molten',plant:'vascular',stone:'fractured',animal:'cellular',water:'aqueous',soil:'granular'};
+const families={
+ fire:{macro:[['molten-deltas','Огненные разливы'],['thermal-volcanoes','Террасы расплава'],['flame-ravines','Огненные ущелья']],micro:[['molten-grains','Зёрна расплава'],['heat-lattice','Тепловая решётка'],['ember-veins','Каналы жара']]},
+ plant:{macro:[['plant-canopy','Кроны растительного мира'],['vascular-terraces','Сосудистые террасы'],['plant-corridors','Заросли проводящих стеблей']],micro:[['leaf-tissue','Ткань листа'],['vein-lattice','Решётка проводящих сосудов'],['plant-cells','Лабиринт клеток']]},
+ stone:{macro:[['stone-fault','Каменный разлом'],['crystal-terraces','Каменные террасы'],['mineral-chambers','Кристаллические камеры']],micro:[['stone-grains','Минеральные зёрна'],['fracture-network','Трещины минерала'],['solid-lattice','Кристаллическая решётка']]},
+ animal:{macro:[['animal-colony','Мир живой ткани']],micro:[['cellular-membranes','Клеточные мембраны']]},
+ water:{macro:[['water-delta','Водный мир']],micro:[['water-currents','Водные микротечения']]},
+ soil:{macro:[['soil-dunes','Грунтовый мир']],micro:[['soil-grains','Зёрна почвы']]},
+};
+function childDesign(base,parent,e,id){
+ const {size:n}=parent,Z=n*n,{window,source,sourceCode,sourcePhysics}=sourceWindow(parent,e);
+ const realm=parent.realm==='genesis'?e.realm:parent.realm;
+ if(e.realm!==realm)throw Error('Поверхность не принадлежит наследуемой области');
+ const op=profiles[realm],s=seedFor(parent,e.x,e.y,e.material+'|'+(e.partKey??'')),mass=e.strain,heat=e.heat;
+ const candidates=families[realm][base.scale],kind=Math.floor(rng(3,78,s)*candidates.length),
+  [structure,title]=candidates[kind],frequency=1+kind*.43;
+
+ const lines=[],lobes=4+Math.floor(rng(7,12,s)*4),chambers=[];
+ const x0=.48+.15*(rng(19,10,s)-.5);
+ lines.push(Array.from({length:17},(_,j)=>{
+  const y=j/16,curve=.067*Math.sin(y*(8.1+e.flow*7.4)*frequency+rng(7,10,s)*3.1)+.029*Math.sin(y*31+e.lattice*7.3);
+  return [x0+curve+((e.u??.5)-.5)*.17,y];
+ }));
+ for(let j=0;j<lobes;j++){
+  const y=.12+j*.12,side=j%2?1:-1,x=x0+side*(.19+rng(j,37,s)*.19);
+  const at=lines[0][Math.round(y*16)][0];
+  lines.push([[at,y],[mix(x,at,.37),y+.028+(e.v??.5)*.06],[x,y-.07-rng(j,19,s)*.05]]);
+  chambers.push({x,y,r:.026+.045*rng(j,40,s)});
+ }
+ const materialField=new Uint8Array(Z),physics=phys(n),heights=new Uint16Array(Z);
+ let flowCount=0,fractureCount=0,vascularCount=0;
+ for(let i=0;i<Z;i++){
+  const x=(i%n+.5)/n,y=(Math.floor(i/n)+.5)/n,v=source[i]/Q,old=.36+.34*v+.09*Math.sin(x*19*frequency+y*16+v*7)+.032*Math.cos(y*31-x*23*frequency);
+  const width=.020+.01*e.flow+.012*heat+kind*.004,d=networkDistance(x,y,lines),line=sat(1-d/width);
+  const grain=Math.sin(x*111+y*84+v*21+mass*4)*Math.sin(x*58-y*107+e.lattice*8);
+  const lattice=sat(1-Math.abs(grain)*2.26);
+  let cell=0;
+  for(const c of chambers){const k=Math.hypot(x-c.x,y-c.y)/c.r;cell=Math.max(cell,sat(1-Math.abs(k-.7)*3));}
+  const memory=sourcePhysics.heat[i]/Q,stratum=sourcePhysics.strain[i]/Q;
+  let h,code,T,R,F,V,L;
+  if(op==='molten'){
+   h=mix(old,.23+.34*v,.45)-line*(.11+heat*.099)+.085*cell;
+   T=sat(.24+heat*.34+memory*.12+line*.39);R=sat(mass*.36+stratum*.17+(1-line)*.19);
+   F=sat(line*(.49+e.flow*.41));V=0;L=lattice*(1-line)*.3;
+   code=line>.50?MATERIALS.melt:line>.23?MATERIALS.ember:MATERIALS['lava-crust'];
+  }else if(op==='fractured'){
+   h=mix(old,.31+.31*v,.54)-line*(.080+.134*mass)+lattice*.052+.049*cell;
+   T=sat(.08+heat*.19+memory*.12);R=sat(mass*.39+stratum*.22+line*.45);F=0;V=0;L=sat(lattice*(.51+.31*e.lattice));
+   code=line>.63?MATERIALS.stone:lattice>.69?MATERIALS.crystal:MATERIALS.stone;
+  }else if(op==='vascular'||op==='cellular'){
+   h=mix(old,.20+.44*v,.48)+line*(.096+e.vascular*.11)+cell*.084-lattice*.027;
+   T=sat(.12+heat*.42+memory*.09);R=sat(mass*.50+stratum*.18+cell*.14);
+   F=0;V=sat(.18+e.vascular*.30+line*.48);L=lattice*.24;
+   code=op==='cellular'?line>.51?MATERIALS.membrane:cell>.64?MATERIALS.shell:MATERIALS.membrane:line>.48?MATERIALS.vein:cell>.62?MATERIALS['plant-cell']:MATERIALS.leaf;
+  }else{
+   h=mix(old,.22+.43*v,.40)-line*.065+grain*.024;
+   T=sat(.1+heat*.37+memory*.10);R=sat(mass*.30+stratum*.30+grain*.13);F=op==='aqueous'?line*.85:0;V=0;L=lattice*.50;
+   code=op==='aqueous'?MATERIALS.water:MATERIALS.soil;
+  }
+  heights[i]=u16(h);
+  materialField[i]=code;physics.heat[i]=u16(T);physics.strain[i]=u16(R);physics.channel[i]=u16(F);physics.vein[i]=u16(V);physics.lattice[i]=u16(L);
+  if(F>.24)flowCount++;if(R>.49)fractureCount++;if(V>.54)vascularCount++;
+ }
+ const features={waterPlane:null,caveMask:null,ceilingGrid:null,caveWalls:[],trees:[],channel:[],channelWater:null,
+  tissueNetwork:op==='vascular'||op==='cellular'?lines:[],tissueChambers:op==='vascular'||op==='cellular'?chambers.map(c=>({...c,rx:c.r,ry:c.r*.78})):[],
+  moltenFault:op==='molten'?lines:[],fractures:op==='fractured'?lines:[],materialVeins:op==='vascular'||op==='cellular'?lines:[],
+  materialCells:chambers,materialSourceCode:sourceCode};
+ const traits={realm,material:e.material,profile:op,thermalGradient:heat,fragility:op==='fractured'?sat(.51+mass*.45):sat(mass*.55),
+   conductance:op==='molten'?sat(.36+heat*.39+e.flow*.23):op==='vascular'?sat(.29+e.vascular*.51):sat(.13+e.lattice*.34),
+   fracturedCells:fractureCount,flowingCells:flowCount,vascularCells:vascularCount};
+ const w={...base,id,depth:parent.depth+1,realm,materialDomain:realm,structure,title,
+  origin:{...base.origin,parentId:parent.id,material:e,realm,local:e.kind==='object'?[e.u,e.v]:null},
+  materialField,physics,heights,source,sourcePhysics,window,surface:{size:n,heights,waterLevel:null},features,materialProfile:op,traits,
+  morphology:{family:op,channels:lines.length,chambers:chambers.length,parentObjectId:e.objectId??null,scale:base.scale,realm}};
+ return {...w,objects:prepareObjects(w)};
+}
+function oldBasis(p){return {...p,id:O.ROOT};}
+function descend(p,x,y){
+ const e=terrainAt(p,x,y),id=append(p,'t'+hx(q(e.x),4)+hx(q(e.y),4));
+ return childDesign(O.descend(oldBasis(p),e.x,e.y),p,e,id);
+}
+function enterObject(p,id,key,u=.5,v=.5){
+ const k=key??p.objects.find(o=>o.id===id)?.parts[0].key,e=objectMaterialAt(p,id,k,u,v);
+ const out=append(p,'o'+id+'-'+k+'-'+hx(q(e.u),4)+hx(q(e.v),4));
+ return childDesign(O.enterObject(oldBasis(p),id,k),p,e,out);
+}
+function enter(w,x,y,time=0){const r=hit(w,x,y,time);return r?enterObject(w,r.id,r.partKey,r.u,r.v):descend(w,x,y);}
+function next(w,s){return s.type==='terrain'?descend(w,s.x,s.y):enterObject(w,s.id,s.partKey,s.u,s.v);}
+function replay(id,size=S){let w=root(size);for(const s of parse(id))w=next(w,s);return w;}
+async function replayAsync(id,size=S,{signal,yieldEvery=1}={}){
+ let w=root(size),i=0,steps=parse(id);
+ const stride=Math.max(1,Math.trunc(yieldEvery)||1);
+ for(const s of steps){
+  if(signal?.aborted)throw Error('Загрузка отменена');
+  w=next(w,s);
+  if(++i<steps.length&&i%stride===0)await new Promise(r=>setTimeout(r,0));
+ }
+ if(signal?.aborted)throw Error('Загрузка отменена');return w;
+}
+const PALETTE={
+ 1:[110,115,132],2:[255,106,37],3:[48,124,68],4:[147,203,90],5:[36,111,163],6:[114,94,82],
+ 7:[192,103,145],8:[181,141,123],9:[134,196,212],10:[104,39,51],11:[234,123,57],12:[86,153,107]
+};
+function shade(w){
+ const n=w.size,out=new Uint8ClampedArray(n*n*4);
+ for(let i=0;i<n*n;i++){
+  const j=i*4,x=i%n,y=Math.floor(i/n),h=w.heights[i]/Q,heat=w.physics.heat[i]/Q;
+  const gx=(w.heights[x?i-1:i]-w.heights[x<n-1?i+1:i])/Q,
+   gy=(w.heights[y?i-n:i]-w.heights[y<n-1?i+n:i])/Q,code=w.materialField[i],c=PALETTE[code];
+  const f=.67+.42*sat(h*1.18+.17)+.32*sat(.46+gx*11+gy*13);
+  for(let k=0;k<3;k++){
+   let v=c[k]*f;if(code===2||code===11)v+=heat*[45,96,28][k];
+   out[j+k]=Math.round(v);
+  }
+  out[j+3]=255;
+ }
+ return out;
+}
+const groupName={1:'stone-ground',2:'molten-channel',3:'leaf-ground',4:'vascular-ridge',5:'water-ground',6:'soil-ground',
+ 7:'tissue-ground',8:'shell-ground',9:'crystal-surface',10:'lava-crust',11:'ember-surface',12:'plant-cell'};
+function mesh(w,{resolution=48}={}){
+ const n=Math.max(8,Math.min(w.size,Math.trunc(resolution)||48)),groups=new Map;
+ const xyz=(u,v)=>[u,v,O.sampleMap(w.heights,w.size,sat(u),sat(v))/Q];
+ function tri(name,a,b,c){const x=groups.get(name)||[];if(!groups.has(name))groups.set(name,x);x.push(...a,...b,...c);}
+ function quad(name,a,b,c,d){tri(name,a,b,c);tri(name,a,c,d);}
+ for(let y=0;y<n;y++)for(let x=0;x<n;x++){
+  const a=x/n,b=y/n,c=(x+1)/n,d=(y+1)/n,code=w.materialField[near(w.size,(a+c)*.5,(b+d)*.5)];
+  quad(groupName[code],xyz(a,b),xyz(c,b),xyz(c,d),xyz(a,d));
+ }
+ for(const [name,paths] of [['fracture-wall',w.features.fractures??[]],['molten-channel',w.features.moltenFault??[]],['vascular-ridge',w.features.materialVeins??[]]])for(const p of paths)for(let i=1;i<p.length;i++){
+  const [a,b]=p.slice(i-1,i+1),len=Math.hypot(a[0]-b[0],a[1]-b[1]);if(!len)continue;
+  const r=name==='molten-channel'?.008:.006,nx=(a[1]-b[1])*r/len,ny=(b[0]-a[0])*r/len,
+  A=xyz(a[0]+nx,a[1]+ny),B=xyz(b[0]+nx,b[1]+ny),C=xyz(b[0]-nx,b[1]-ny),D=xyz(a[0]-nx,a[1]-ny);
+  const h=name==='molten-channel'?.008:name==='fracture-wall'?.038:.025;
+  B[2]+=h;C[2]+=h;if(name==='molten-channel'){A[2]+=h;D[2]+=h}
+  quad(name,A,B,C,D);
+ }
+ return [...groups].map(([material,coords])=>({material,positions:Float32Array.from(coords)}));
+}
+function drawLife(ctx,w,time=0,project){
+ if(w.realm==='genesis'||w.realm==='animal'||w.realm==='water'||w.realm==='soil')return O.drawLife(ctx,w,time,project);
+ const W=ctx.canvas.width,H=ctx.canvas.height,map=project||((x,y)=>({x:x*W,y:y*H,scale:1}));
+ const items=w.objects.map(o=>({o,p:O.objectPose(o,time)})).sort((a,b)=>a.p.y-b.p.y);
+ function poly(col,...points){ctx.fillStyle=col;ctx.beginPath();ctx.moveTo(...points[0]);for(const v of points.slice(1))ctx.lineTo(...v);ctx.closePath();ctx.fill()}
+ for(const {o,p} of items){
+  const pos=map(p.x,p.y);if(!pos||!Number.isFinite(pos.x)||!Number.isFinite(pos.y))continue;
+  const r=Math.min(W,H)*o.radius*(pos.scale??1),g=o.genotype,gene=g.tones;
+  ctx.save();ctx.translate(pos.x,pos.y);ctx.rotate(p.angle*.39);ctx.scale(r,r);
+  if(w.realm==='fire'){
+   const sway=.16*Math.sin(time*3+o.phase*5),heat=o.traits.thermalTolerance;
+   for(let j=0;j<g.fins+1;j++){
+    const x=(j-g.fins/2)*.33,h=.7+.36*heat+gene*.44+.16*Math.sin(time*6+j+o.phase*6);
+    poly('#d34a3b',[x-.21,.32],[x-.29,-.07],[x+sway,-h],[x+.2,-.26],[x+.24,.36]);
+    poly('#ffdc67',[x-.1,.31],[x-.14,.06],[x+sway*.7,-h*.68],[x+.09,.03],[x+.12,.33]);
+   }
+  }else if(w.realm==='stone'){
+   const c=o.role==='animal'||o.role==='micro-organism';
+   for(let j=0;j<g.fins+2;j++){
+    const x=(j-g.fins/2-1)*.28,h=.48+.84*(j===1?g.aspect:.23+gene*.43);
+    poly(c?'#728299':'#688697',[x-.14,.25],[x-.19,-h*.65],[x,-h],[x+.16,-h*.61],[x+.15,.3]);
+    poly('#bfdae0',[x,-h],[x+.16,-h*.61],[x+.15,.3],[x+.035,.16]);
+   }
+  }else{
+   const sway=Math.sin(time*.8+o.phase*5)*.16;
+   ctx.strokeStyle='#add089';ctx.lineWidth=.135;ctx.beginPath();ctx.moveTo(.16,.30);ctx.lineTo(.0,-.18);ctx.lineTo(sway,-1);ctx.stroke();
+   for(let j=0;j<g.boughs;j++){
+    const y=-.17-j*.10,q=j%2?1:-1,l=.33+.20*g.aspect-j*.026;
+    poly(j%2?'#8dbd7a':'#a9cd79',[.02+sway*.35,y+.11],[l*q,y-.15],[l*q*.57,y-.25],[sway*.5,y-.03]);
+   }
+  }
+  ctx.restore();
+ }
+}
+return Object.freeze({ROOT,SIZE:S,DETAIL,MATERIALS,VERSION:'zow2',root,descend,enter,enterObject,materialAt,objectMaterialAt,
+ hit,objectPose:O.objectPose,partPose:O.partPose,pose:O.pose,box:O.box,sampleMap:O.sampleMap,shade,mesh,drawLife,ancestor,parse,replay,replayAsync});
+});
+
+</script>
+<script>
+/* ZomATON botanical geometry extension. Offline and versioned, zow3. */
+(function(g,f){if(typeof module==='object'&&module.exports)module.exports=f(require('./baseline/material-engine.js'));else g.ZATBotanical=f(g.ZATMaterial);})(globalThis,M=>{
+'use strict';
+const Q=65535,SIZE=M.SIZE, V='zow3:', O='zow2:', ROOT=V+M.ROOT.slice(O.length);
+const clamp=(v,l,r)=>Math.min(r,Math.max(l,v)),sat=v=>clamp(v,0,1),mix=(a,b,t)=>a+(b-a)*t;
+const u16=v=>Math.round(sat(v)*Q);
+function rng(x,y,s){let h=Math.imul(x,374761393)^Math.imul(y,668265263)^s;h=Math.imul(h^(h>>>13),1274126177);return ((h^(h>>>16))>>>0)/4294967296;}
+function oldID(id){if(typeof id!=='string'||!id.startsWith(V))throw Error('Нужен адрес zow3');return O+id.slice(V.length);}
+function newID(id){return V+id.slice(O.length);}
+function base(w){return {...w,id:oldID(w.id)};}
+function nearest(n,x,y){return Math.min(n-1,Math.floor(sat(x)*n))+n*Math.min(n-1,Math.floor(sat(y)*n));}
+function slope(w,x,y){
+ const v=(dx,dy)=>w.physics.vein[nearest(w.size,x+dx,y+dy)]/Q;
+ return [v(.032,0)-v(-.032,0),v(0,.032)-v(0,-.032)];
+}
+function physicalSignal(w,p){
+ const e=w.origin.material, parentGradient=slope(p,e.x,e.y);
+ let gx=parentGradient[0],gy=parentGradient[1], anatomical=0;
+ if(e.kind==='object'){
+  const s=p.objects.find(x=>x.id===e.objectId)?.parts.find(q=>q.key===e.partKey)?.surface;
+  if(s){
+   const r=(u,v)=>s.physics.vein[nearest(s.size,u,v)]/Q,k=1/s.size;
+   gx=mix(gx,r(e.u+k,e.v)-r(e.u-k,e.v),.72);
+   gy=mix(gy,r(e.u,e.v+k)-r(e.u,e.v-k),.72);
+   anatomical=r(e.u,e.v);
+  }
+ }
+ const q=(e.material==='vein'? .82 :e.material==='plant-cell'?.28:.37),strength=sat(.22+q*.45+e.vascular*.31+anatomical*.16);
+ const angle=Math.abs(gx)+Math.abs(gy)>.0001?Math.atan2(gy,gx)+Math.PI/2:(rng(13,15,w.seed)-.5)*2.4;
+ const s=(w.seed^Math.round(strength*Q)^Math.round((gx+gy)*97831)^Math.round(e.x*Q)<<3)>>>0;
+ return {material:e.material,coordinate:[e.x,e.y],local:e.kind==='object'?[e.u,e.v]:null,vascular:e.vascular,anatomical,
+  parentGradient,gradient:[gx,gy],orientation:angle,strength,seed:s};
+}
+function polyClip(poly,p,q){
+ const A=q.x-p.x,B=q.y-p.y,C=(q.x*q.x+q.y*q.y-p.x*p.x-p.y*p.y)*.5,out=[];
+ if(!poly.length)return out;
+ for(let i=0;i<poly.length;i++){
+  const X=poly[i],Y=poly[(i+1)%poly.length],dx=A*X[0]+B*X[1]-C,dy=A*Y[0]+B*Y[1]-C;
+  if(dx<=0)out.push(X);
+  if((dx<=0)!==(dy<=0)){const t=dx/(dx-dy);out.push([mix(X[0],Y[0],t),mix(X[1],Y[1],t)]);}
+ }
+ return out;
+}
+function lineDist(x,y,paths){
+ let d=2;
+ for(const tube of paths)for(let i=1;i<tube.points.length;i++){
+  const [a,b]=tube.points[i-1],[c,e]=tube.points[i],X=c-a,Y=e-b,t=sat(((x-a)*X+(y-b)*Y)/(X*X+Y*Y||1));
+  d=Math.min(d,Math.hypot(x-a-X*t,y-b-Y*t));
+ }
+ return d;
+}
+const point=(x,y,z)=>[clamp(x,.025,.975),clamp(y,.025,.975),clamp(z,.09,.97)];
+function microGeometry(w,s){
+ const veinDominant=s.material==='vein',count=veinDominant?13:22,sites=[],cells=[],bridges=[],veins=[];
+ const osc=rng(1,7,s.seed),theta=Math.sin(s.orientation)*.27;
+ const warp=(x,y)=>[clamp(x+theta*(y-.5),.055,.945),y];
+ // Seeded sites + exact Voronoi half-spaces. Chambers are recessed closed walls with an open lumen.
+ for(let i=0;i<count;i++){
+  const cols=veinDominant?4:5,row=Math.floor(i/cols);
+  const [x,y]=warp(.09+(i%cols+.25+.52*rng(i,4,s.seed))*.81/cols,.11+(row+.17+.61*rng(i,5,s.seed))*.79/Math.ceil(count/cols));
+  const source=M.sampleMap(w.source,w.size,x,y)/Q;
+  sites.push({id:i,x,y,floor:.216+source*.10+((i%3)*.005),height:(veinDominant?.091:.125)+.075*rng(i,9,s.seed)});
+ }
+ for(const p of sites){
+  let polygon=[[.036,.04],[.964,.04],[.964,.96],[.036,.96]];
+  for(const q of sites)if(p!==q)polygon=polyClip(polygon,p,q);
+  if(polygon.length<3)continue;
+  polygon=polygon.map(([x,y])=>[mix(p.x,x,.83),mix(p.y,y,.83)]);
+  const roof=p.floor+p.height, aperture=.66+.12*rng(p.id,17,s.seed);
+  cells.push({...p,roof,aperture,polygon});
+ }
+ const width=(veinDominant?.088:.047)+.025*s.strength;
+ const center=.43+.16*rng(2,5,s.seed),main=[];
+ for(let i=0;i<10;i++){const y=.03+.94*i/9,x=center+theta*(y-.45)+.071*Math.sin(y*(4.1+5*s.strength)+osc*Math.PI);main.push(point(x,y,.36+.077*s.strength+.057*Math.sin(y*4.3+osc)));}
+ veins.push({kind:'primary',points:main,radius:width,lumen:veinDominant?.61:.52});
+ const branches=(veinDominant?6:3)+Math.floor(rng(8,6,s.seed)*2);
+ for(let i=0;i<branches;i++){
+  const c=main[1+i%8],d=i%2?1:-1,edge=point(.47+d*(.32+.06*rng(i,15,s.seed)),c[1]-.05+(rng(i,19,s.seed)-.5)*.28,c[2]-.037);
+  veins.push({kind:'secondary',points:[c,point(mix(c[0],edge[0],.44),mix(c[1],edge[1],.45)+.052,c[2]+.031),edge],radius:width*(.32+.18*rng(i,44,s.seed)),lumen:.54});
+ }
+ const pairs=new Set();
+ for(const c of cells){
+  const order=cells.filter(d=>d!==c).sort((a,b)=>Math.hypot(c.x-a.x,c.y-a.y)-Math.hypot(c.x-b.x,c.y-b.y));
+  for(const q of order.slice(0,2)){
+   const key=Math.min(c.id,q.id)+':'+Math.max(c.id,q.id);if(pairs.has(key))continue;pairs.add(key);
+   const a=point(c.x,c.y,c.roof-.029),b=point(q.x,q.y,q.roof-.029),radius=.012+.011*rng(c.id,q.id,s.seed);
+   bridges.push({kind:'stroma',from:c.id,to:q.id,points:[a,point(mix(a[0],b[0],.5),mix(a[1],b[1],.5),Math.max(a[2],b[2])+.033),b],radius,lumen:.32});
+  }
+ }
+ return {kind:veinDominant?'vascular-cross-section':'cellular-lamina',cells,bridges,veins,roots:[],leaves:[],signal:s};
+}
+function macroGeometry(w,s){
+ const roots=[],leaves=[],veins=[],bridges=[],origin=point(.43+.16*rng(0,7,s.seed),.51+rng(4,11,s.seed)*.13,.28);
+ const mainTop=point(origin[0]+(rng(3,33,s.seed)-.5)*.17,origin[1]-.055,.69+s.strength*.13);
+ const main=[origin,point(origin[0]-.08,origin[1]+.021,.46),mainTop];
+ roots.push({kind:'pillar',points:main,radius:.066+.042*s.strength,lumen:.10});
+ const count=7+Math.floor(rng(3,14,s.seed)*4),rotate=s.orientation;
+ for(let i=0;i<count;i++){
+  const a=(i/count)*Math.PI*2+rotate,dx=Math.cos(a),dy=Math.sin(a),len=.19+.24*rng(i,11,s.seed);
+  const end=point(origin[0]+dx*len,origin[1]+dy*len,.22+.130*rng(i,8,s.seed)),bend=point(origin[0]+dx*len*.46,origin[1]+dy*len*.51,.36+.06*rng(i,6,s.seed));
+  roots.push({kind:'anchor-root',points:[origin,bend,end],radius:.030+.022*rng(i,41,s.seed),lumen:.06});
+  if(i%2===0){
+   const L=point(end[0]+dy*len*.23,end[1]-dx*len*.20,.21+.061*rng(i,12,s.seed));
+   roots.push({kind:'rootlet',points:[bend,end,L],radius:.013+.009*rng(i,57,s.seed),lumen:0});
+  }
+  const stem=[.475+.074*rng(i,18,s.seed),.34+.122*rng(i,22,s.seed),.46+.14*rng(i,23,s.seed)];
+  const axis=point(mix(mainTop[0],origin[0],.55),mix(mainTop[1],origin[1],.55),stem[2]+.03);
+  const attachment=point(mainTop[0]+dx*(.12+.14*rng(i,52,s.seed)),mainTop[1]+dy*(.11+.14*rng(i,55,s.seed)),.64+.13*rng(i,42,s.seed));
+  roots.push({kind:'canopy-branch',points:[axis,point(mix(axis[0],attachment[0],.64),mix(axis[1],attachment[1],.64),mix(axis[2],attachment[2],.72)-.03),attachment],radius:.014+.016*rng(i,66,s.seed),lumen:0});
+  const tip=point(attachment[0]+dx*(.19+.16*rng(i,67,s.seed)),attachment[1]+dy*(.18+.15*rng(i,69,s.seed)),.64+.23*rng(i,48,s.seed));
+  const l={id:i,base:attachment,tip,width:.054+.037*rng(i,88,s.seed)+.021*s.strength,ribs:5+Math.floor(rng(i,74,s.seed)*6),curl:(rng(i,85,s.seed)-.35)*.085,kind:i%2?'canopy-lamina':'lamina'};
+  leaves.push(l);
+ }
+ return {kind:'root-canopy-architecture',cells:[],bridges,veins,roots,leaves,signal:s};
+}
+function enrich(w,parent){
+ const id=newID(w.id),origin=w.origin&&({...w.origin,parentId:newID(w.origin.parentId)});
+ if(w.realm!=='plant')return {...w,id,origin,botanical:null};
+ const signal=physicalSignal(w,parent),botanical=w.scale==='micro'?microGeometry(w,signal):macroGeometry(w,signal);
+ const n=w.size,N=n*n,heights=new Uint16Array(N),vein=new Uint16Array(N),materialField=new Uint8Array(N);
+ const tubes=w.scale==='micro'?botanical.veins:botanical.roots;
+ for(let i=0;i<N;i++){
+  const x=(i%n+.5)/n,y=(Math.floor(i/n)+.5)/n,source=w.source[i]/Q,d=lineDist(x,y,tubes);
+  const power=sat(1-d/(.041+.032*signal.strength));
+  const veins=sat(power*.64+w.physics.vein[i]/Q*.36);vein[i]=u16(veins);
+  heights[i]=u16(.17+.26*source+.067*power+.027*Math.sin(x*14+y*18+source*.6));
+  materialField[i]=veins>.485?4:source>.47?12:3;
+ }
+ const physics={...w.physics,vein};
+ const organisms=[];
+ const objects=w.objects.map((o,i)=>{
+  let x=o.x,y=o.y,z=heights[nearest(n,o.x,o.y)]/Q,model='root-dweller',ax=o.ax,ay=o.ay;
+  if(w.scale==='micro'){
+   if(o.role==='micro-material'){
+    const c=botanical.cells[i%botanical.cells.length],k=i%3;
+    if(k===0){x=c.x;y=c.y;z=c.floor+.016;model='open-cell-lumen';}
+    else {const v=c.polygon[(i+2)%c.polygon.length];x=mix(c.x,v[0],.76);y=mix(c.y,v[1],.76);z=c.roof+.012;model='membrane-rim';}
+   }else{
+    const c=botanical.cells[(i*71)%botanical.cells.length];
+    x=c.x;y=c.y;z=c.roof+.029;ax=.009+.009*rng(i,24,signal.seed);ay=.005+.011*rng(i,31,signal.seed);model='stromal-swimmer';
+   }
+  }else if(o.role==='plant'){
+   const l=botanical.leaves[i%botanical.leaves.length],a=.33+.45*rng(i,50,signal.seed);
+   x=mix(l.base[0],l.tip[0],a);y=mix(l.base[1],l.tip[1],a);z=mix(l.base[2],l.tip[2],a)+Math.sin(a*Math.PI)*(l.curl+.06)+.009;model='lamina';
+  }else{
+   const anchor=botanical.roots[(i*31)%botanical.roots.length],p=anchor.points.at(-1);
+   x=p[0];y=p[1];z=p[2]+.013;ax=.008+.011*rng(i,8,signal.seed);ay=.007+.008*rng(i,18,signal.seed);model='canopy-glider';
+  }
+  const local=vein[nearest(n,x,y)]/Q;
+  const parts=o.parts.map(p=>{
+   const surface=p.surface,texture=surface.physics.vein;
+   const v=Uint16Array.from(texture,q=>u16(sat(.79*q/Q+.21*local)));
+   const f=Uint8Array.from(surface.field,(q,i)=>v[i]/Q>.685?4:q===4?3:q);
+   return {...p,x:sat(x+p.dx*o.radius),y:sat(y+p.dy*o.radius),z,surface:{...surface,field:f,physics:{...surface.physics,vein:v}}};
+  });
+  if(o.role==='animal'||o.role==='micro-organism')organisms.push({id:o.id,model,anchor:[x,y,z],vascular:local});
+  return {...o,x,y,z,ax,ay,model,parts,traits:{...o.traits,vascularReliance:sat(local*.67+o.traits.vascularReliance*.33)}};
+ });
+ botanical.organisms=organisms;
+ const title=w.scale==='macro'?'Кроны и гигантские корни':signal.material==='vein'?'Сечение сосудистого пучка':'Клетки и строма листа';
+ return {...w,id,origin,botanical,heights,materialField,physics,objects,title,structure:botanical.kind,
+  surface:{...w.surface,heights},features:{...w.features,botanical},morphology:{...w.morphology,family:botanical.kind,
+  cells:botanical.cells.length,tubes:botanical.veins.length,roots:botanical.roots.length,leaves:botanical.leaves.length}};
+}
+function root(n=SIZE){return enrich(M.root(n));}
+function descend(p,x,y){return enrich(M.descend(base(p),x,y),p);}
+function enterObject(p,id,key,u=.5,v=.5){return enrich(M.enterObject(base(p),id,key,u,v),p);}
+function enter(p,x,y,t=0){const h=M.hit(p,x,y,t);return h?enterObject(p,h.id,h.partKey,h.u,h.v):descend(p,x,y);}
+function parse(id){return M.parse(oldID(id));}
+function ancestor(id){return newID(M.ancestor(oldID(id)));}
+function next(p,s){return s.type==='terrain'?descend(p,s.x,s.y):enterObject(p,s.id,s.partKey,s.u,s.v);}
+function replay(id,n=SIZE){let p=root(n);for(const s of parse(id))p=next(p,s);return p;}
+async function replayAsync(id,n=SIZE,{signal,yieldEvery=1}={}){
+ let p=root(n),i=0;const steps=parse(id),stride=Math.max(1,Math.trunc(yieldEvery)||1);
+ for(const s of steps){if(signal?.aborted)throw Error('Отменено');p=next(p,s);if(++i<steps.length&&i%stride===0)await new Promise(r=>setTimeout(r,0));}
+ if(signal?.aborted)throw Error('Отменено');return p;
+}
+function mesh(w,{resolution=48}={}){
+ if(!w.botanical)return M.mesh(w,{resolution});
+ const groups=new Map(),P=w.botanical,n=Math.max(8,Math.min(w.size,Math.trunc(resolution)||48));
+ function push(name,...a){const data=groups.get(name)||[];if(!groups.has(name))groups.set(name,data);for(const p of a)data.push(...p);}
+ const quad=(g,a,b,c,d)=>{push(g,a,b,c);push(g,a,c,d);};
+ const bed=(x,y)=>[x,y,M.sampleMap(w.heights,w.size,x,y)/Q];
+ for(let y=0;y<n;y++)for(let x=0;x<n;x++){
+  const a=x/n,b=y/n,c=(x+1)/n,d=(y+1)/n;quad('botanical-bed',bed(a,b),bed(c,b),bed(c,d),bed(a,d));
+ }
+ function tube(T,outerName,innerName,{cut=false,sides=9}={}){
+  const len=T.points.length,outer=[],inner=[];
+  for(let i=0;i<len;i++){
+   const p=T.points[i],a=T.points[Math.max(0,i-1)],b=T.points[Math.min(len-1,i+1)],dx=b[0]-a[0],dy=b[1]-a[1],dz=b[2]-a[2];
+   const L=Math.hypot(dx,dy,dz)||1,d=Math.hypot(dx,dy),v=d>.00001?[-dy/d,dx/d,0]:[1,0,0];
+   const u=[(dy*v[2]-dz*v[1])/L,(dz*v[0]-dx*v[2])/L,(dx*v[1]-dy*v[0])/L];
+   const r=T.radius*(1-(T.kind==='primary'?.17:.42)*i/Math.max(1,len-1));let R=[],r1=[];
+   for(let j=0;j<sides;j++){
+    const angle=j*Math.PI*2/sides,A=Math.cos(angle),B=Math.sin(angle),k=[v[0]*A+u[0]*B,v[1]*A+u[1]*B,v[2]*A+u[2]*B];
+    R.push(p.map((q,c)=>q+k[c]*r));r1.push(p.map((q,c)=>q+k[c]*r*T.lumen));
+   }
+   outer.push(R);inner.push(r1);
+  }
+  for(let i=1;i<len;i++)for(let j=0;j<sides;j++){
+   const k=(j+1)%sides,A=outer[i-1][j],B=outer[i-1][k],C=outer[i][k],D=outer[i][j];
+   const removed=cut&&i<len-1&&i>0&&(A[2]+B[2]+C[2]+D[2])*.25>(T.points[i][2]+T.points[i-1][2])*.5;
+   if(!removed)quad(outerName,A,B,C,D);
+   if(T.lumen&&innerName&&(!cut||(j%2===0&&!removed)))quad(innerName,inner[i-1][j],inner[i][j],inner[i][k],inner[i-1][k]);
+  }
+  for(const i of [0,len-1])for(let j=0;j<sides;j++){
+   const k=(j+1)%sides;
+   quad(outerName,outer[i][j],outer[i][k],inner[i][k],inner[i][j]);
+  }
+ }
+ for(const c of P.cells){
+  const b=c.polygon,z0=c.floor,z1=c.roof;
+  const pos=(p,z,r=1)=>[mix(c.x,p[0],r),mix(c.y,p[1],r),z];
+  for(let i=0;i<b.length;i++){
+   const p=b[i],q=b[(i+1)%b.length];
+   // Outer high walls. The annulus leaves the central chamber physically open.
+   quad('cell-membrane',pos(p,z0,.87),pos(q,z0,.87),pos(q,z1),pos(p,z1));
+   quad('cell-rim',pos(p,z1),pos(q,z1),pos(q,z1+.006,c.aperture),pos(p,z1+.006,c.aperture));
+   quad('cell-inner',pos(p,z1+.006,c.aperture),pos(q,z1+.006,c.aperture),pos(q,z0+.008,c.aperture*.90),pos(p,z0+.008,c.aperture*.90));
+   push('cell-floor',[c.x,c.y,z0+.008],pos(p,z0+.008,c.aperture*.90),pos(q,z0+.008,c.aperture*.90));
+  }
+ }
+ P.veins.forEach(t=>tube(t,'vein-outer','vein-inner',{cut:true,sides:12}));
+ P.bridges.forEach(t=>tube(t,'stroma-bridge','stroma-lumen',{sides:7}));
+ P.roots.forEach(t=>tube(t,t.kind==='pillar'?'plant-column':t.kind==='canopy-branch'?'canopy-branch':'giant-root',null,{sides:10}));
+ for(const l of P.leaves){
+  const a=l.base,b=l.tip,dx=b[0]-a[0],dy=b[1]-a[1],len=Math.hypot(dx,dy)||1,nx=-dy/len,ny=dx/len;
+  const V=(f,u)=>{
+   const width=l.width*Math.sin(Math.PI*f)**1.20*(1+.12*Math.sin(l.ribs*f*Math.PI));
+   const k=width*u,z=mix(a[2],b[2],f)+Math.sin(f*Math.PI)*(l.curl+.06*(1-u*u))+.014*Math.sin(3*Math.PI*f)*u;
+   return [clamp(mix(a[0],b[0],f)+nx*k,0,1),clamp(mix(a[1],b[1],f)+ny*k,0,1),z];
+  };
+  const seg=12,wide=6;
+  for(let s=0;s<seg;s++)for(let j=0;j<wide;j++){
+   const f=s/seg,e=(s+1)/seg,p=-1+2*j/wide,q=-1+2*(j+1)/wide;quad(l.kind,V(f,p),V(e,p),V(e,q),V(f,q));
+  }
+  const points=Array.from({length:11},(_,j)=>{const p=V(j/10,0);p[2]+=.007;return p;});
+  tube({kind:'leaf-vein',points,radius:.008,lumen:0},'lamina-vein',null,{sides:6});
+  for(let r=1;r<l.ribs;r++)for(const side of [-1,1]){
+   const pos=r/l.ribs,a=V(pos,0),b=V(Math.min(.98,pos+.09),side*.54),c=V(Math.min(.99,pos+.17),side*.88);
+   [a,b,c].forEach(p=>p[2]+=.006);
+   tube({kind:'leaf-vein',points:[a,b,c],radius:.0037,lumen:0},'lamina-vein',null,{sides:5});
+  }
+ }
+ return [...groups].map(([material,coords])=>({material,positions:Float32Array.from(coords)}));
+}
+function drawLife(ctx,w,time=0,project){
+ if(!w.botanical)return M.drawLife(ctx,w,time,project);
+ const W=ctx.canvas.width,H=ctx.canvas.height,map=project||((x,y)=>({x:x*W,y:y*H,scale:1}));
+ const list=w.objects.map(o=>({o,p:M.objectPose(o,time)})).sort((a,b)=>a.p.y-b.p.y);
+ for(const {o,p} of list){
+  if(o.role==='plant'||o.role==='micro-material')continue; // The actual lamina/membrane mesh is the surface.
+  const b=map(p.x,p.y,o.z);if(!b||!Number.isFinite(b.x)||!Number.isFinite(b.y))continue;
+  ctx.save();ctx.translate(b.x,b.y);ctx.rotate(p.angle*.62);const z=Math.min(W,H)*o.radius*(b.scale??1)*.74;ctx.scale(z,z);
+  const wave=Math.sin(time*7+o.phase*Math.PI*2),lobes=o.genotype.lobes;
+  if(o.model==='canopy-glider'){
+   ctx.fillStyle='#e0c384';ctx.beginPath();ctx.moveTo(.49,0);ctx.lineTo(-.32,-.68-wave*.14);ctx.lineTo(-.12,-.14);ctx.lineTo(-.68,0);ctx.lineTo(-.12,.14);ctx.lineTo(-.32,.68+wave*.14);ctx.closePath();ctx.fill();
+  }else{
+   ctx.fillStyle='#c9a3d5';ctx.beginPath();ctx.ellipse(0,0,.52,.34,0,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#f1d2e8';ctx.lineWidth=.06;
+   for(let j=0;j<lobes+4;j++){
+    const a=j*Math.PI*2/(lobes+4),x=Math.cos(a),y=Math.sin(a);
+    ctx.beginPath();ctx.moveTo(x*.37,y*.22);ctx.lineTo(x*(.66+wave*.07),y*(.51-wave*.07));ctx.stroke();
+   }
+  }
+  ctx.restore();
+ }
+}
+return Object.freeze({ROOT,SIZE,VERSION:'zow3',MATERIALS:M.MATERIALS,root,descend,enter,enterObject,
+ hit:M.hit,materialAt:M.materialAt,objectMaterialAt:M.objectMaterialAt,objectPose:M.objectPose,partPose:M.partPose,pose:M.pose,
+ box:M.box,sampleMap:M.sampleMap,shade:M.shade,mesh,drawLife,ancestor,parse,replay,replayAsync});
+});
+
+</script>
+<script>
+(function(root,f){const x=f();if(typeof module==='object'&&module.exports)module.exports=x;else root.ZATObjectViewMath=x;})(globalThis,()=>{
+'use strict';
+const sat=v=>Math.max(0,Math.min(1,v)), smooth=v=>{v=sat(v);return v*v*(3-2*v)};
+function point(x,y,b){
+ if(![x,y,b.left,b.top,b.width,b.height].every(Number.isFinite)||b.width<=0||b.height<=0)throw Error('Нет видимой области');
+ return [sat((x-b.left)/b.width),sat((y-b.top)/b.height)];
+}
+function windowAt(b,t){t=smooth(t);return{x:t*b.x,y:t*b.y,width:1-t+t*b.width,height:1-t+t*b.height};}
+function read(input,engine){
+ let p=input.trim();if(!p.startsWith(engine.VERSION+':')){
+  if(!p.startsWith('#'))p=new URL(p).hash;
+  if(!p.startsWith('#route='))throw Error('В ссылке нет пути');
+  p=decodeURIComponent(p.slice(7));
+ }
+ engine.parse(p);return p;
+}
+return Object.freeze({sat,smooth,point,windowAt,read});
+});
+
+</script>
+<script>
+/* Russian material labels shared by readback and the visible renderer. */
+(function(g,f){const m=f();if(typeof module==='object'&&module.exports)module.exports=m;else g.ZATMaterialsUI=m;})(globalThis,()=>{
+'use strict';
+const observed={
+ rock:['Камень','трещины и сколы'],stone:['Камень','трещины и сколы'],fracture:['Камень','трещины и сколы'],
+ ember:['Тлеющая частица','горячие течения и структура жара'],'lava-crust':['Лавовая корка','горячие каналы под коркой'],'plant-cell':['Клетка растения','жилки и клеточные стенки'],melt:['Раскалённый расплав','каналы расплава и распределение тепла'],lava:['Раскалённый расплав','каналы расплава и распределение тепла'],
+ flame:['Пламя','горячие потоки и каналы'],
+ magma:['Магма','каналы расплава и распределение тепла'],
+ molten:['Раскалённый расплав','каналы расплава и распределение тепла'],
+ heat:['Горячая жила','движение расплава и распределение тепла'],
+ soil:['Почва','слои грунта'],sand:['Песок','зернистые слои'],water:['Вода','течения и взвесь'],
+ leaf:['Зелёная ткань листа','жилки и клетки'],plant:['Растительная ткань','жилки и клетки'],
+ chlorophyll:['Зелёная ткань листа','жилки и клетки'],green:['Растительная ткань','жилки и клетки'],
+ vein:['Жилка растения','проводящие каналы'],cell:['Клеточная ткань','клеточные оболочки и мембраны'],
+ living:['Живая ткань','жилки и клетки'],stem:['Ткань стебля','проводящие пучки'],tissue:['Живая ткань','клетки и мембраны'],
+ cuticle:['Кутикула','слои покрова'],skin:['Кожа','покровные слои'],organ:['Ткань тела','органные полости'],
+ membrane:['Мембрана','клеточные стенки'],protein:['Белковая ткань','внутренняя структура'],
+ crystal:['Кристалл','грани и разломы']
+};
+function key(src){
+ if(typeof src==='string')return src.toLowerCase();
+ if(!src)return '';
+ const k=src.material??src.key??src.kind??src.name??src.id??src.code;
+ return typeof k==='string'?k.toLowerCase():'';
+}
+function info(src){
+ const k=key(src);if(observed[k])return observed[k];
+ if(/ember|melt|molten|lava|flame|thermal|heat|magma|vent|fire/.test(k))return observed.lava;
+ if(/plant|leaf|green|chlorophyll|phloem|xylem|stom|vein/.test(k))return observed.leaf;
+ if(/stone|rock|crust|fracture|basalt|granite|mineral/.test(k))return observed.rock;
+ if(/cuticle|skin|tissue|protein|organ|gill|muscle|neural|membran/.test(k))return observed.tissue;
+ if(/cell/.test(k))return observed.cell;
+ if(/water/.test(k))return observed.water;
+ return ['Материал','внутренняя структура'];
+}
+return Object.freeze({key,info});
+});
+
+</script>
+<script>
+/* CPU perspective rasterizer. Terrain, water, roof, and plant meshes share one depth/pick buffer. */
+(function(root,f){if(typeof module==='object'&&module.exports)module.exports=f(require('../engine/engine.js'),require('./materials.js'));else root.ZATPerspective=f(root.ZATBotanical,root.ZATBotanicalsUI);})(globalThis,(engine,labels)=>{
+'use strict';
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x)), sat=x=>clamp(x,0,1), mix=(a,b,t)=>a+(b-a)*t;
+const dot=(a,b)=>a[0]*b[0]+a[1]*b[1]+a[2]*b[2];
+const cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]];
+const sub=(a,b)=>[a[0]-b[0],a[1]-b[1],a[2]-b[2]];
+const unit=a=>{const m=Math.hypot(...a)||1;return a.map(v=>v/m)};
+const mp=(x,y)=>Math.sin(x*83.613+y*57.619)*43758.5453;
+const grain=(x,y)=>{const a=mp(x,y);return a-Math.floor(a)};
+const STYLES={
+ cavern:{eye:[.51,.82,.235],look:[.47,.23,.28],sky0:[25,45,68],sky1:[88,130,147],fog:[45,37,48],stone:[[26,24,31],[66,51,54],[127,88,76],[183,125,100]],sun:[-.40,.28,.89]},
+ archipelago:{eye:[.30,-.38,.56],look:[.52,.72,.33],sky0:[63,121,155],sky1:[180,211,197],fog:[116,170,172],stone:[[29,61,61],[167,151,105],[96,123,71],[199,192,132]],sun:[-.39,-.36,.84]},
+ 'forest-ravine':{eye:[.46,.065,.65],look:[.55,.70,.35],sky0:[86,133,136],sky1:[171,193,165],fog:[108,143,124],stone:[[31,49,38],[65,83,47],[110,120,70],[159,145,97]],sun:[-.43,-.18,.88]},
+ lithic:{eye:[.34,-.035,.66],look:[.54,.76,.26],sky0:[35,43,59],sky1:[129,139,143],fog:[94,100,108],stone:[[26,29,40],[66,74,83],[123,128,134],[189,194,185]],sun:[-.51,-.20,.83]},
+ thermal:{eye:[.31,-.02,.64],look:[.52,.76,.29],sky0:[38,22,42],sky1:[118,58,65],fog:[98,60,66],stone:[[26,20,30],[73,33,45],[150,66,41],[237,151,72]],sun:[-.51,.33,.81]},
+ petri:{eye:[.47,.03,.51],look:[.53,.65,.22],sky0:[13,39,47],sky1:[24,72,68],fog:[26,69,64],stone:[[20,50,54],[44,103,69],[104,163,93],[212,218,127]],sun:[-.37,-.19,.91]},
+ canopy:{eye:[.43,.012,.58],look:[.53,.69,.39],sky0:[17,52,53],sky1:[92,138,104],fog:[52,101,72],stone:[[18,44,40],[39,92,62],[82,146,74],[186,184,101]],sun:[-.39,-.26,.88]},
+ botanical:{eye:[.34,-.06,.64],look:[.54,.76,.27],sky0:[31,62,49],sky1:[153,189,141],fog:[105,153,104],stone:[[21,45,37],[47,114,58],[100,160,75],[213,221,131]],sun:[-.36,-.30,.87]},
+ micro:{eye:[.38,.015,.66],look:[.54,.76,.21],sky0:[42,45,68],sky1:[87,127,131],fog:[82,106,111],stone:[[28,52,59],[105,155,103],[195,208,139],[234,207,168]],sun:[-.31,.36,.81]},
+ genesis:{eye:[.30,-.02,.64],look:[.55,.65,.24],sky0:[35,87,123],sky1:[164,194,180],fog:[112,153,153],stone:[[24,52,54],[70,109,77],[122,154,108],[199,190,134]],sun:[-.34,-.37,.89]}
+};
+const SCALE=.70;
+function projectCamera(config,w,h){
+ const forward=unit(sub(config.look,config.eye)),right=unit(cross(forward,[0,0,1])),up=cross(right,forward);
+ const focal=h*(config.focal??1.0);
+ return p=>{
+  const delta=sub(p,config.eye),z=dot(delta,forward),d=1/Math.max(.012,z);
+  return {sx:w*.5+dot(delta,right)*focal*d,sy:h*.5-dot(delta,up)*focal*d,z,wx:p[0],wy:p[1]};
+ };
+}
+function data(world,key){
+ const s=world.surface??world;
+ const a=s[key]??world.features?.[key]??world[key];
+ return a&&typeof a==='object'&&'grid' in a?a.grid:a;
+}
+function values(world){
+ const h=data(world,'heights'), c=data(world,'ceilingGrid');
+ if(!h||!h.length)throw Error('Нет поверхности мира');
+ const n=world.surface?.size??world.size??Math.sqrt(h.length);
+ const terrain=(x,y)=>sample(h,n,x,y)*(h instanceof Uint16Array?1/65535:1);
+ const ceil=(x,y)=>c?sample(c,n,x,y)*(c instanceof Uint16Array?1/65535:1):NaN;
+ const wl=world.surface?.waterLevel??world.features?.waterPlane?.z??world.waterLevel;
+ return {terrain,ceil,hasCeil:!!c,water:Number.isFinite(wl)&&wl>0?wl:null};
+}
+function sample(arr,n,u,v){
+ const x=clamp(u,0,1)*(n-1),y=clamp(v,0,1)*(n-1),i=Math.floor(x),j=Math.floor(y),r=Math.min(n-1,i+1),s=Math.min(n-1,j+1);
+ const q=[arr[j*n+i],arr[j*n+r],arr[s*n+i],arr[s*n+r]];
+ return q.some(v=>!Number.isFinite(v))?NaN:mix(mix(q[0],q[1],x-i),mix(q[2],q[3],x-i),y-j);
+}
+function render(world,width=480,height=360,core=engine){
+ const realm=String(world.realm??world.domain??world.origin?.realm??'').toLowerCase();
+ const inFire=/fire|thermal|lava|melt|heat/.test(realm),inPlant=/plant|veget|botan|green|leaf/.test(realm);
+ const kind=inFire?'thermal':inPlant&&world.botanical?(world.scale==='micro'?'petri':'canopy'):inPlant?'botanical':realm==='stone'?'lithic':world.scale==='micro'?'micro':world.structure==='cavern'||world.structure==='archipelago'||world.structure==='forest-ravine'?world.structure:'genesis';
+ const style=kind==='micro'&&!/leaf|stem|matrix/.test(world.structure)?{...STYLES.micro,sky0:[35,28,61],sky1:[109,85,108],fog:[92,64,102],stone:[[35,21,49],[119,64,96],[198,100,130],[250,194,147]]}:STYLES[kind], val=values(world), dims=width*height;
+ const pixels=new Uint8ClampedArray(dims*4), zbuf=new Float32Array(dims).fill(Infinity);
+ const pickX=new Float32Array(dims).fill(NaN),pickY=new Float32Array(dims).fill(NaN),mask=new Uint8Array(dims),meshHits=new Uint8Array(dims);
+ const meshNames=['background'];
+ const project=projectCamera(style,width,height),sun=unit(style.sun);
+ const field=world.materialField, perMaterial=field&&core.materialAt;
+ let counts=[0,0,0,0,0];  // sky, ground, water, ceiling, plants
+ const horizon=project([style.eye[0],100,style.eye[2]]).sy;
+ for(let y=0;y<height;y++){
+  const h=sat((y-horizon+height*.52)/(height*.52)),o=style.sky0.map((v,i)=>mix(v,style.sky1[i],h));
+  for(let x=0;x<width;x++){
+   const i=(y*width+x)*4,underLeaf=kind==='petri'||kind==='canopy';
+   const beam=underLeaf?16*Math.pow(sat(.61+.28*Math.sin(x*.027+y*.011)+.19*Math.sin(x*.014-y*.026)),3):0;
+   const cloud=kind==='cavern'||underLeaf?0:Math.pow(sat(.45+.32*Math.sin(x/32-y*.11)+.23*Math.sin(x/59+y*.14)-.91),1.07)*95;
+   const haze=kind==='cavern'?Math.max(0,1-Math.hypot((x-width*.52)/(width*.58),(y-height*.12)/(height*.62)))*24:0;
+   for(let c=0;c<3;c++)pixels[i+c]=o[c]+cloud+haze+beam;
+   pixels[i+3]=255;
+  }
+ }
+ const tinted={
+  burn:[248,89,33], ember:[252,117,35], molten:[246,78,32], lava:[250,96,35],
+  rock:[116,113,114], soil:[134,115,85], leaf:[84,157,70], water:[63,126,150], plant:[97,169,72]
+ };
+ function surfaceType(x,y){
+  if(!perMaterial||x<0||x>1||y<0||y>1)return '';
+  const n=world.size, q=v=>Math.min(n-1,Math.floor(Math.round(v*65535)*n/65535));
+  if(field.length===n*n){
+   switch(field[q(y)*n+q(x)]){
+    case 1:case 9:return 'rock';
+    case 2:case 11:return 'lava';
+    case 3:case 4:case 12:return 'leaf';
+    case 5:return 'water';case 6:return 'soil';case 10:return 'ember';
+    default:return '';
+   }
+  }
+  const k=labels.key(core.materialAt(world,x,y,0,'terrain'));
+  if(/lava|melt|molten|magma|flame|heat/.test(k))return 'lava';
+  if(/leaf|green|vein|plant|cell|chlorophyll/.test(k))return 'leaf';
+  if(/stone|rock|basalt|mineral|granite|crystal/.test(k))return 'rock';
+  if(/sediment|sand|soil/.test(k))return 'soil';
+  if(/water/.test(k))return 'water';
+  return '';
+ }
+ function triangle(a,b,c,color,material,opts){
+  const near=.025, polygon=[a,b,c],depths=polygon.map(p=>project(p).z);
+  if(depths.every(d=>d<near))return;
+  if(depths.some(d=>d<near)){
+   const out=[];
+   for(let i=0;i<3;i++){
+    const j=(i+1)%3,k=depths[i]>=near,v=depths[j]>=near;
+    if(k)out.push(polygon[i]);
+    if(k!==v){const t=(near-depths[i])/(depths[j]-depths[i]);out.push(polygon[i].map((x,axis)=>mix(x,polygon[j][axis],t)));}
+   }
+   for(let i=1;i+1<out.length;i++) clipped(out[0],out[i],out[i+1],color,material,opts);
+  }else clipped(a,b,c,color,material,opts);
+ }
+ function clipped(a,b,c,color,material,opts){
+  const A=project(a),B=project(b),C=project(c);
+  const loX=Math.max(0,Math.floor(Math.min(A.sx,B.sx,C.sx))),hiX=Math.min(width-1,Math.ceil(Math.max(A.sx,B.sx,C.sx)));
+  const loY=Math.max(0,Math.floor(Math.min(A.sy,B.sy,C.sy))),hiY=Math.min(height-1,Math.ceil(Math.max(A.sy,B.sy,C.sy)));
+  if(loX>hiX||loY>hiY)return;
+  const den=(B.sy-C.sy)*(A.sx-C.sx)+(C.sx-B.sx)*(A.sy-C.sy);
+  if(Math.abs(den)<1e-6)return;
+  const na=unit(cross(sub(b,a),sub(c,a)));
+  if(na[2]<0&&(material===1||opts?.botanical))for(let i=0;i<3;i++)na[i]*=-1;
+  let light=material===2?.94:clamp((material===3?.53:.59)+Math.abs(dot(na,sun))*.49,.32,1.20);
+  const variation=opts?.vary===false?1:opts?.botanical?.96+grain(a[0]*138.1,a[1]*138.1)*.07:.87+grain(a[0]*138.1,a[1]*138.1)*.21;
+  if(opts?.botanical)light=.47+.63*Math.max(0,dot(na,sun))+.15*Math.abs(na[2]);
+
+  light*=variation;
+  for(let y=loY;y<=hiY;y++)for(let x=loX;x<=hiX;x++){
+   const u=((B.sy-C.sy)*(x+.5-C.sx)+(C.sx-B.sx)*(y+.5-C.sy))/den;
+   if(u<-.00001)continue;
+   const v=((C.sy-A.sy)*(x+.5-C.sx)+(A.sx-C.sx)*(y+.5-C.sy))/den,w=1-u-v;
+   if(v<-.00001||w<-.00001)continue;
+   const ua=u/A.z,vb=v/B.z,wc=w/C.z,depth=1/(ua+vb+wc),off=y*width+x;
+   if(depth>=zbuf[off])continue;
+   const X=(ua*A.wx+vb*B.wx+wc*C.wx)*depth,Y=(ua*A.wy+vb*B.wy+wc*C.wy)*depth;
+   if(opts?.filter&&!opts.filter(X,Y))continue;
+   zbuf[off]=depth;pickX[off]=X>=0&&X<=1&&Y>=0&&Y<=1?X:NaN;pickY[off]=Number.isFinite(pickX[off])?Y:NaN;mask[off]=material;meshHits[off]=opts?.meshId??0;
+   const fog=clamp((depth-.48)/(kind==='cavern'?2.35:2.15),0,kind==='cavern'?.31:.70),i=off*4;
+   let ripple=material===2?5*Math.sin(X*165+Y*269)+3.6*Math.sin((X+Y)*44):0;
+   const striation=material===3?7*Math.sin((X+Y)*44+depth*28):0;
+   if(material===2&&kind==='archipelago'&&y<height*.48)ripple+=10;
+   const type=!opts?.botanical&&(material===1||material===2)?surfaceType(X,Y):'';
+   if(type==='lava'){
+    const hot=.62+.38*Math.abs(Math.sin(X*96+Math.sin(Y*109)*.86)*Math.cos(Y*121));
+    const rim=.82+.18*Math.abs(Math.sin(X*337+Y*178));
+    pixels[i]=224+30*hot;pixels[i+1]=56+125*hot*rim;pixels[i+2]=14+58*hot*hot;
+   }else{
+    const t=tinted[type], f=type==='rock'?.22:type==='leaf'?.32:type==='soil'?.12:.11;
+    const fleck=opts?.botanical?2.7*Math.sin(X*466+Y*317)*Math.sin(X*132-Y*489):0;
+    const glint=opts?.biolight?11+9*Math.sin(6*Y+X*17):0;
+    for(let c=0;c<3;c++)pixels[i+c]=mix((t?mix(color[c],t[c],f):color[c])*light+ripple+striation+fleck+glint,style.fog[c],fog);
+
+   }
+  }
+ }
+ const meshes=core?.mesh(world,{resolution:62});
+ if(!meshes)throw Error('Нет геометрии для перспективы');
+ const bot=(color,mask=4,biolight=false)=>({color,mask,botanical:true,biolight});
+ const shades={
+  'botanical-bed':bot([47,103,78],1),
+  'cell-membrane':bot([114,173,123],3,true),
+  'cell-rim':bot([160,209,143],4,true),
+  'cell-inner':bot([58,110,104],3),
+  'cell-floor':bot([39,98,91],1),
+  'cell-core':bot([173,200,111],4,true),
+  'stroma-bridge':bot([86,152,118],4),
+  'stroma-lumen':bot([142,205,158],4,true),
+  'vein-inner':bot([191,199,128],4,true),
+  'vein-outer':bot([68,129,86],3),
+  'plant-column':bot([85,132,69],3),
+  'giant-root':bot([116,132,70],3),
+  'canopy-branch':bot([97,137,71],3),
+  'lamina':bot([94,145,74],4),
+  'lamina-vein':bot([178,201,111],4,true),
+  'canopy-lamina':bot([71,145,82],4),
+
+  'open-water':{color:inFire?[236,83,30]:inPlant?[113,189,92]:[36,117,146],mask:2,vary:false},
+  'channel-water':{color:inFire?[222,71,27]:inPlant?[108,183,82]:[56,121,107],mask:2,vary:false},
+  'ceiling':{color:[71,56,61],mask:3},
+  'cave-wall':{color:[115,79,71],mask:3},
+  'vascular-ridge':{color:[123,194,94],mask:4},
+  'fracture-wall':{color:[55,49,45],mask:3},
+  'molten-channel':{color:[249,96,31],mask:2,vary:false},
+  'heat-channel':{color:[247,102,30],mask:2,vary:false},
+  'thermal-flow':{color:[246,99,23],mask:2,vary:false},
+  'fracture':{color:[43,39,42],mask:3},
+  'rock-wall':{color:[112,105,105],mask:3},
+  'plant-vein':{color:[103,179,74],mask:4},
+  'tissue-vein':{color:/leaf|stem|matrix/.test(world.structure)?[130,184,92]:[173,96,151],mask:4},
+  'tissue-wall':{color:/leaf|stem|matrix/.test(world.structure)?[164,150,119]:[198,134,137],mask:3},
+  'tissue-fluid':{color:/leaf|stem|matrix/.test(world.structure)?[46,120,132]:[92,79,144],mask:2,vary:false},
+  'trunk':{color:[85,64,49],mask:4},
+  'canopy':{color:[46,101,64],mask:4}
+ };
+ if(kind==='archipelago'&&val.water!==null){
+  const z=val.water*SCALE;
+  const k={vary:false};
+  triangle([-4,-2,z],[5,-2,z],[-4,7,z],[38,113,142],2,k);
+  triangle([5,-2,z],[5,7,z],[-4,7,z],[38,113,142],2,k);
+ }
+ for(const layer of meshes){
+  const {material,positions}=layer;const meshId=meshNames.push(material)-1;
+  const styleOverride=shades[material]??(world.botanical&&/membrane|lamina|stroma|vein|cell|root|canopy/.test(material)?bot(/membrane|cell/.test(material)?[102,177,115]:[111,149,69]):undefined)??(/heat|flame|magma|molten|lava|thermal/.test(material)?{color:[241,90,24],mask:2,vary:false}:undefined);
+  if(material==='ceiling'||(kind==='archipelago'&&material==='open-water'))continue;
+  const options={...styleOverride,meshId};
+  for(let i=0;i<positions.length;i+=9){
+   const a=[positions[i],positions[i+1],positions[i+2]*SCALE];
+   const b=[positions[i+3],positions[i+4],positions[i+5]*SCALE];
+   const c=[positions[i+6],positions[i+7],positions[i+8]*SCALE];
+   let color;
+   if(styleOverride) color=styleOverride.color;
+   else {
+    const k=sat(((a[2]+b[2]+c[2])/(3*SCALE))*1.28)*3,j=Math.min(2,Math.floor(k)),f=k-j;
+    color=style.stone[j].map((v,i)=>mix(v,style.stone[j+1][i],f));
+   }
+   triangle(a,b,c,color,styleOverride?.mask??1,options);
+  }
+ }
+ if(kind==='cavern'&&val.hasCeil){
+  const c=data(world,'ceilingGrid'),sz=world.surface?.size??world.size, roofAt=(x,y)=>{
+   const a=clamp(Math.round(x*sz-.5),0,sz-1),b=clamp(Math.round(y*sz-.5),0,sz-1);return c[b*sz+a];
+  };
+  const smoothRoof=(x,y)=>{
+   let sum=0,n=0;
+   for(const dx of [-.006,.006])for(const dy of [-.006,.006]){
+    const a=roofAt(x+dx,y+dy);if(Number.isFinite(a)){sum+=a;n++;}
+   }
+   return (n?sum/n:.66)*SCALE;
+  };
+  const n=92;
+  for(let j=0;j<n;j++)for(let i=0;i<n;i++){
+   const x=i/n,y=j/n,b=(i+1)/n,d=(j+1)/n;
+   if(!Number.isFinite(roofAt((x+b)*.5,(y+d)*.5)))continue;
+   const A=[x,y,smoothRoof(x,y)],B=[b,y,smoothRoof(b,y)],C=[x,d,smoothRoof(x,d)],D=[b,d,smoothRoof(b,d)];
+   triangle(A,B,C,[84,67,75],3);triangle(B,D,C,[84,67,75],3);
+  }
+ }
+ if(kind==='cavern'&&val.hasCeil)for(let k=0;k<48;k++){
+  const x=.05+.90*grain(k,.12),y=.09+.88*grain(k,.27),z=val.ceil(x,y)*SCALE,h=.024+.062*grain(k,.38),r=.003+.011*grain(k,.49);
+  if(!Number.isFinite(z))continue;
+  const tip=[x+.003,y+.004,z-h],q=[[x-r,y-r,z],[x+r,y-r,z],[x+r,y+r,z],[x-r,y+r,z]];
+  for(let j=0;j<4;j++)triangle(q[j],q[(j+1)%4],tip,j%2?[104,82,76]:[66,52,62],3);
+ }
+ const visibleGroups=Object.fromEntries(meshNames.map(name=>[name,0]));
+ for(let i=0;i<mask.length;i++){counts[mask[i]]++;visibleGroups[meshNames[meshHits[i]]]++;}
+ function pick(fx,fy){
+  if(!Number.isFinite(fx)||!Number.isFinite(fy)||fx<0||fy<0||fx>1||fy>1)return null;
+  const x=clamp(Math.floor(fx*width),0,width-1),y=clamp(Math.floor(fy*height),0,height-1),i=y*width+x;
+  return Number.isFinite(pickX[i])?{x:pickX[i],y:pickY[i],material:mask[i],geometry:meshNames[meshHits[i]]}:null;
+ }
+ return {pixels,width,height,pick,counts,visibleGroups,project:(x,y,z)=>project([x,y,z*SCALE]),terrain:val.terrain,depthAt:(u,v)=>zbuf[clamp(Math.floor(v*height),0,height-1)*width+clamp(Math.floor(u*width),0,width-1)]};
+}
+return Object.freeze({render});
+});
+
+</script>
+<script>
+/* The same visible primitives are painted and hit-tested. No buttons or hitboxes stand in for bodies. */
+(function(root,f){const m=f();if(typeof module==='object'&&module.exports)module.exports=m;else root.ZATObjectLayer=m;})(globalThis,()=>{
+'use strict';
+const sat=x=>Math.max(0,Math.min(1,x));
+const clamp=(x,l,h)=>Math.max(l,Math.min(h,x));
+const tone=(obj,key)=>{
+ const s=obj.kind?.toLowerCase()||'',t=key?.toLowerCase()||'';
+ if(t.includes('wing'))return s.includes('bird')?['#ffe2b1','#4d9fa5','#223c59']:['#f2c75d','#fd9569','#51376c'];
+ if(t.includes('eye'))return ['#f7f0dc','#e2dbb5','#1a2632'];
+ if(t.includes('petal')||t.includes('flower'))return ['#f7a3ba','#eb668c','#602650'];
+ if(t.includes('leaf')||t.includes('stem'))return ['#d3f57d','#5dbd67','#234e3d'];
+ if(s.includes('crystal'))return ['#e6ffff','#75b5ec','#384b84'];
+ if(s.includes('spore')||s.includes('pollen')||s.includes('cell'))return ['#fae887','#dda948','#653c68'];
+ if(obj.role==='fauna'||obj.role==='animal'||/beetle|mite|bird|fish|butterfly|moth|insect|tardigrade/.test(s))return ['#fff0ac','#db795d','#512f55'];
+ if(/seed|spore|crystal|lake|cell/.test(s))return ['#dcf0af','#a489d4','#465c7b'];
+ return ['#fcdfac','#78cd6f','#30543d'];
+};
+function roles(key, kind){
+ const k=String(key||'').toLowerCase(),s=String(kind||'').toLowerCase();
+ if(/wing|flap/.test(k))return 'wing';
+ if(/leaf|blade|petal|frond/.test(k))return 'leaf';
+ if(/stem|stalk|antenna|tail/.test(k))return 'stem';
+ if(/facet|crystal|prism/.test(k)||/crystal/.test(s))return 'stone';
+ if(/shell|body|head|thorax|eye|back|bell|leg|fin/.test(k))return 'body';
+ if(/flora|flower|fern|orchid|plant|willow|lotus/.test(s))return 'bud';
+ return 'body';
+}
+function geom(x,y,r,k,a){
+ const point=(u,v)=>[x+u*r*Math.cos(a)-v*r*Math.sin(a),y+u*r*Math.sin(a)+v*r*Math.cos(a)];
+ if(k==='leaf'||k==='wing')return {type:'poly',points:[[-1,0],[-.55,-.55],[.03,-.69],[.76,-.45],[1.06,-.05],[.62,.54],[-.08,.57],[-.61,.40]].map(p=>point(...p))};
+ if(k==='stem')return {type:'poly',points:[[-.93,-.10],[1,-.18],[1,.15],[-.94,.11]].map(p=>point(...p))};
+ if(k==='stone')return {type:'poly',points:[[-.76,.54],[-.82,-.13],[-.28,-.90],[.35,-.78],[.70,-.20],[.64,.67],[.21,.82]].map(p=>point(...p))};
+ if(k==='bud'){
+  const petals=[];for(let i=0;i<20;i++){const b=i*Math.PI/10,f=i%4===0?1:i%2===0?.72:.80;petals.push(point(f*Math.cos(b),f*Math.sin(b)));}
+  return {type:'poly',points:petals};
+ }
+ return {type:'ellipse',x,y,rx:r*.89,ry:r*.60,angle:a};
+}
+function hitShape(shape,x,y){
+ if(shape.type==='ellipse'){
+  const dx=x-shape.x,dy=y-shape.y,c=Math.cos(shape.angle),s=Math.sin(shape.angle);
+  return ((dx*c+dy*s)/shape.rx)**2+((-dx*s+dy*c)/shape.ry)**2<=1;
+ }
+ let inside=false;
+ for(let i=0,j=shape.points.length-1;i<shape.points.length;j=i++){
+  const [a,b]=shape.points[i],[c,d]=shape.points[j];
+  if((b>y)!==(d>y)&&x<(c-a)*(y-b)/(d-b)+a)inside=!inside;
+ }
+ return inside;
+}
+function toPath(ctx,s){
+ ctx.beginPath();
+ if(s.type==='ellipse'){ctx.ellipse(s.x,s.y,s.rx,s.ry,s.angle,0,2*Math.PI);return;}
+ for(const [i,[x,y]] of s.points.entries())if(i)ctx.lineTo(x,y);else ctx.moveTo(x,y);
+ ctx.closePath();
+}
+function layout(world,projection,engine,time=0){
+ const entries=[];
+ for(const object of world.objects??[]){
+  const place=engine.objectPose?.(object,time)??object;
+  const dx=(place.x??object.x)-object.x,dy=(place.y??object.y)-object.y;
+  const footprint=projection.project(object.x+dx,object.y+dy,object.z??projection.terrain(object.x,object.y));
+  if(footprint.z<.045)continue;
+  for(const part of object.parts??[]){
+   const actual=engine.partPose?.(object,part.key,time);
+   const anchorX=actual?.x??part.x+dx,anchorY=actual?.y??part.y+dy;
+   const z=(actual?.z??part.z??object.z??projection.terrain(anchorX,anchorY))+(object.role==='plant'?(part.key==='leaf'?.035:.016):.015);
+   const p=projection.project(anchorX,anchorY,z),surface=projection.depthAt(p.sx/projection.width,p.sy/projection.height);
+   if(p.z<.045||p.z>surface+.058||p.sx<-35||p.sx>projection.width+35||p.sy<-35||p.sy>projection.height+35)continue;
+   const raw=part.r??Math.max(.013,(object.scale??1)*.015),q=projection.project(anchorX+raw,anchorY,z);
+   const size=clamp(Math.hypot(q.sx-p.sx,q.sy-p.sy),9,47)*(/stem/.test(part.key)?1.10:1);
+   const k=roles(part.key,object.kind);
+   const a=(place.angle??0)+({wing:-.62,leaf:-.60,stem:-1.37,stone:.14,bud:0,body:.25}[k]);
+   const add=(x,y,r,kind,angle,palette=tone(object,part.key),priority=0)=>{
+    const adapted=world.realm==='fire'?(object.role==='animal'||object.role==='micro-organism'
+      ? ['#fff4a1','#ea6335','#6e2637'] : ['#ffbd64','#c44f36','#56303c'])
+      : world.realm==='stone'?['#deebf9','#8eacc7','#485363']
+      :world.realm==='plant'&&object.role!=='animal'?['#deed98','#76b863','#2b503a']:palette;
+    entries.push({object,part,kind,shape:geom(x,y,r,kind,angle),z:p.z+.01*priority,x,y,size:r,angle,tone:adapted});
+   };
+   const style=String(object.kind||'').toLowerCase();
+   if(object.role==='plant'&&part.key==='leaf'){
+    const x0=footprint.sx,y0=footprint.sy,dist=Math.hypot(x0-p.sx,y0-p.sy);
+    if(dist>4)add((x0+p.sx)/2,(y0+p.sy)/2,dist*.53+1.4,'stem',Math.atan2(y0-p.sy,x0-p.sx),['#94c584','#5a9356','#40603c'],2);
+    add(p.sx-size*.56,p.sy+size*.42,size*.62,'leaf',a+1.8,['#dbeb87','#67a95b','#285344'],1);
+    add(p.sx+size*.50,p.sy+size*.29,size*.54,'leaf',a-.43,['#c5e390','#59965a','#25443a'],1);
+   }
+   if(object.role==='animal'&&part.key==='body'){
+    const dir=a-.45;
+    if(/bird|moth|butterfly|dragonfly/.test(style)){
+     add(p.sx-size*.58,p.sy-size*.46,size*1.10,'wing',dir+.92,tone(object,'wing'),2);
+     add(p.sx+size*.56,p.sy-size*.45,size*1.10,'wing',dir-.79,tone(object,'wing'),2);
+     add(p.sx-size*.85,p.sy+size*.20,size*.63,'leaf',dir+1.66,['#b2ead1','#60b3b5','#284858'],1);
+     add(p.sx+size*.63,p.sy-size*.05,size*.46,'body',dir,['#f9d37f','#d6815c','#392a39'],0);
+     add(p.sx+size*.74,p.sy-size*.15,size*.11,'body',dir,['#ecfffa','#3e5965','#18242a'],-1);
+    }else if(/fish|ray/.test(style)){
+     add(p.sx-size*.91,p.sy+size*.24,size*.57,'leaf',dir+1.72,tone(object,'wing'),2);
+     add(p.sx-size*.06,p.sy+size*.45,size*.49,'leaf',dir-.42,tone(object,'wing'),1);
+    }else{
+     for(let j=-1;j<=1;j++){
+      add(p.sx+j*size*.44,p.sy+size*.42,size*.58,'stem',1.15,['#f8c471','#a76253','#523a43'],2);
+      add(p.sx+j*size*.40,p.sy-size*.41,size*.52,'stem',1.96,['#f8c471','#a76253','#523a43'],2);
+     }
+    }
+   }
+   add(p.sx,p.sy,size,k,a);
+  }
+ }
+ entries.sort((a,b)=>b.z-a.z||a.part.key.localeCompare(b.part.key)||a.object.id.localeCompare(b.object.id));
+ function hit(u,v){
+  const x=u*projection.width,y=v*projection.height;
+  for(let i=entries.length-1;i>=0;i--){
+   const e=entries[i];if(!hitShape(e.shape,x,y))continue;
+   const c=Math.cos(e.angle),s=Math.sin(e.angle),dx=x-e.x,dy=y-e.y;
+   return {object:e.object,part:e.part,localX:sat(.5+(dx*c+dy*s)/(2.25*e.size)),localY:sat(.5+(-dx*s+dy*c)/(2.25*e.size))};
+  }
+  return null;
+ }
+ return {entries,hit};
+}
+function draw(ctx,layer){
+ for(const e of layer.entries){
+  const [hi,mid,deep]=e.tone;
+  ctx.save();ctx.lineJoin='round';
+  toPath(ctx,e.shape);
+  const g=ctx.createLinearGradient(e.x-e.size*.72,e.y-e.size*.72,e.x+e.size*.57,e.y+e.size);
+  g.addColorStop(0,hi);g.addColorStop(.36,mid);g.addColorStop(1,deep);
+  ctx.fillStyle=g;ctx.fill();ctx.strokeStyle=deep;ctx.lineWidth=1.25;ctx.stroke();ctx.clip();
+  ctx.globalAlpha=.65;ctx.lineWidth=Math.max(.8,e.size*.055);ctx.strokeStyle=hi;
+  ctx.translate(e.x,e.y);ctx.rotate(e.angle);
+  const surface=e.part.surface;
+  if(surface?.field&&surface.size&&e.size>=10){
+   const n=surface.size,cell=e.size*2.25/n,origin=-e.size*1.125;
+   const swatch={1:'#b9ac9d',2:'#ffa229',3:'#93de63',4:'#dfeb9d',5:'#61bbd7',6:'#a69378',7:'#f28a94',8:'#e4af7d',9:'#b5d9eb',10:'#c67b52',11:'#ffca45',12:'#b7db73'};
+   ctx.globalAlpha=.34;
+   for(let i=0;i<surface.field.length;i++){
+    const color=swatch[surface.field[i]];if(!color)continue;
+    ctx.fillStyle=color;ctx.fillRect(origin+(i%n)*cell,origin+Math.floor(i/n)*cell,cell+.05,cell+.05);
+   }
+   ctx.globalAlpha=.65;
+  }
+  ctx.beginPath();
+  if(e.kind==='wing'||e.kind==='leaf'||e.kind==='stone'){
+   ctx.moveTo(-e.size*.75,0);ctx.lineTo(e.size*.83,0);
+   for(let j=-2;j<=2;j++){
+    const x=j*e.size*.19;ctx.moveTo(x,0);ctx.lineTo(x+e.size*.25,-e.size*.49);ctx.moveTo(x,0);ctx.lineTo(x+e.size*.16,e.size*.43);
+   }
+  }else{
+   ctx.ellipse(-e.size*.26,-e.size*.14,e.size*.36,e.size*.13,-.13,Math.PI*.13,Math.PI*.98);
+   if(e.kind==='bud')for(let j=0;j<5;j++){const a=j*Math.PI*.4;ctx.moveTo(0,0);ctx.lineTo(Math.cos(a)*e.size*.73,Math.sin(a)*e.size*.73);}
+  }
+  ctx.stroke();ctx.restore();
+ }
+}
+return Object.freeze({layout,draw,geom,hitShape});
+});
+
+</script>
+<script>
+(() => {
+'use strict';
+const E=globalThis.ZATBotanical, P=globalThis.ZATPerspective, M=globalThis.ZATObjectViewMath, O=globalThis.ZATObjectLayer, L=globalThis.ZATMaterialsUI, $=id=>document.getElementById(id);
+const cv=$('world'),ctx=cv.getContext('2d',{alpha:false}), motion=matchMedia('(prefers-reduced-motion: reduce)');
+const text=s=>{$('status').textContent=s};
+if(!E||!P||!M||!O||!L||!ctx){text('Не удалось загрузить движок. Откройте полную сборку.');return;}
+const W=cv.width,H=cv.height,N=128,CAP=3,cache=new Map();
+
+let token=0,busy=false,present=null,interruption=null;
+let live=false,lifeFrame=0,stamp=null,clock=0;
+function summary(material){const [name,detail]=L.info(material);return name+' → '+detail;}
+const info={
+ cavern:'Свод со сквозным отверстием и нависающим камнем.',
+ archipelago:'Острова отделены каналами воды. Клик по воде открывает точку под ней.',
+ 'forest-ravine':'Деревья стоят вдоль склонов, а овраг идёт между ними.',
+ genesis:'Обзорный мир. Выберите видимую поверхность, чтобы войти в неё.'
+};
+function view(world){
+ const projected=P.render(world,W,H),c=document.createElement('canvas');c.width=W;c.height=H;
+ const cc=c.getContext('2d',{alpha:false});
+ const ground=new ImageData(projected.pixels,W,H);cc.putImageData(ground,0,0);
+ const layer=O.layout(world,projected,E,0);O.draw(cc,layer);
+ return {world,projected,ground,layer,canvas:c,tap:null};
+}
+function keep(v){cache.delete(v.world.id);cache.set(v.world.id,v);if(cache.size>CAP)cache.delete(cache.keys().next().value);return v;}
+function totalDepth(w){return w.depth??E.parse(w.id).length;}
+const root=keep(view(E.root(N)));present=root;
+function paint(v){ctx.globalAlpha=1;ctx.drawImage(v.canvas,0,0);}
+let lifeScratch=document.createElement('canvas');lifeScratch.width=W;lifeScratch.height=H;
+function refreshPose(v,time){
+ const layer=O.layout(v.world,v.projected,E,time);
+ const draft=lifeScratch.getContext('2d',{alpha:false});draft.putImageData(v.ground,0,0);O.draw(draft,layer);
+ // Publish matching pixels and hit primitives together. No physics change or terrain rerender.
+ ctx.globalAlpha=1;ctx.drawImage(lifeScratch,0,0);
+ const previous=v.canvas;v.canvas=lifeScratch;lifeScratch=previous;v.layer=layer;
+}
+function stopLife(){
+ if(lifeFrame)cancelAnimationFrame(lifeFrame);
+ lifeFrame=0;stamp=null;
+}
+function canAnimate(){return live&&!busy&&!document.hidden&&!motion.matches;}
+function startLife(){
+ if(lifeFrame||!canAnimate())return;
+ const tick=timestamp=>{
+  lifeFrame=0;if(!canAnimate())return;
+  stamp??=timestamp;
+  if(timestamp-stamp>=100){
+   clock+=(timestamp-stamp)/1000;stamp=timestamp;
+   try{refreshPose(present,clock);}catch{live=false;update();return;}
+  }
+  lifeFrame=requestAnimationFrame(tick);
+ };
+ lifeFrame=requestAnimationFrame(tick);
+}
+function syncLife(){
+ if(!canAnimate())stopLife();else startLife();
+}
+function hash(){
+ const h=totalDepth(present.world)?'#route='+present.world.id:'';
+ try{if(location.hash!==h){const u=new URL(location.href);u.hash=h;history.replaceState(null,'',u);}}catch{}
+}
+function update(){
+ const w=present.world,path=E.parse(w.id),d=totalDepth(w);
+ $('depth').textContent=String(d);$('world-kind').textContent=w.scale==='micro'?'МИКРОМИР':'МАКРОМИР';
+ $('world-title').textContent=w.title||'Genesis №0';
+ const habitat={stone:'Этот путь остаётся каменным: трещины, кристаллы и грани.',
+  fire:'Этот путь остаётся огненным: горячие жилы, лавовая корка и тлеющие частицы.',
+  plant:w.scale==='micro'?'Клеточные камеры, мембраны и жилки имеют объём. Выберите поверхность или видимый организм.':'Вы внутри растительной кроны: сосуды и пластины листьев продолжают микромир.',
+  animal:'Этот путь остаётся внутри тканей животного.',
+  water:'Этот путь остаётся водным.',soil:'Этот путь остаётся внутри грунта.'};
+ $('life').textContent=habitat[w.realm]??'Начальный мир. Коснитесь камня, горячей жилы или самой формы растения.';
+ const origin=w.origin?.material;
+ $('material').hidden=!origin;
+ if(origin)$('material').textContent='Из точки входа: '+summary(origin);
+ $('breadcrumbs').textContent=d?'Шагов: '+d+'. Путь хранит точку выбранной поверхности.':'Панорама Genesis. Маршрут ещё не начат.';
+ $('back').disabled=busy||!d;$('copy').disabled=busy||!d;$('open').disabled=busy;$('center').disabled=busy;
+ $('cancel').hidden=!busy;cv.setAttribute('aria-busy',String(busy));
+ const toggle=$('life-toggle');toggle.setAttribute('aria-pressed',String(live&&!motion.matches));toggle.disabled=busy||motion.matches;
+ toggle.title=motion.matches?'Устройство запрашивает меньше движения.':'Включить или приостановить движения обитателей.';
+}
+function ready(s){text((s?s+' ':'')+'Коснитесь тела, листа или поверхности.');}
+function marker(p,confirmed=false){
+ const m=$('target');m.style.left=(p[0]*100)+'%';m.style.top=(p[1]*100)+'%';m.hidden=false;m.dataset.confirmed=String(confirmed);
+}
+function clear(){$('target').hidden=true;}
+const point=e=>M.point(e.clientX,e.clientY,cv.getBoundingClientRect());
+function resolveNear(p){
+ if(present.layer.hit(...p)||present.projected.pick(...p))return p;
+ for(let d=1;d<=7;d++)for(const q of [[0,d],[d,0],[-d,0],[0,-d],[d,d],[-d,d]]){
+  const xy=[p[0]+q[0]/12,p[1]+q[1]/12];if(present.layer.hit(...xy)||present.projected.pick(...xy))return xy;
+ }
+ return null;
+}
+const stage=()=>new Promise(resolve=>requestAnimationFrame(resolve));
+function animate(parent,child,p,reverse,run){
+ if(motion.matches){paint(reverse?parent:child);return Promise.resolve(true);}
+ return new Promise((resolve,reject)=>{
+  let first;
+  function step(ts){
+   if(run!==token){resolve(false);return;}
+   first??=ts;const pos=Math.min(1,(ts-first)/560),t=reverse?1-pos:pos;
+   try{
+    if(t<=0)paint(parent);
+    else if(t>=1)paint(child);
+    else {
+     const r=M.windowAt({x:.64*p[0],y:.64*p[1],width:.36,height:.36},t/.72);
+     ctx.globalAlpha=1;ctx.drawImage(parent.canvas,r.x*W,r.y*H,r.width*W,r.height*H,0,0,W,H);
+     if(t>.72){ctx.globalAlpha=M.smooth((t-.72)/.28);ctx.drawImage(child.canvas,0,0);ctx.globalAlpha=1;}
+    }
+   }catch(e){reject(e);return;}
+   if(pos===1)resolve(true);else requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+ });
+}
+async function transaction(fn){
+ if(busy)return;const run=++token;busy=true;stopLife();interruption=new AbortController();update();
+ try{await fn(run);}catch(e){if(run===token){paint(present);text(e?.message||'Кадр не готов. Предыдущий мир сохранён.');}}
+ finally{if(run===token){busy=false;interruption=null;clear();update();syncLife();}}
+}
+function install(v){present=keep(v);hash();update();}
+async function dive(screen) {
+ if(busy)return;
+ const visible=present.layer.hit(...screen), picked=visible?null:present.projected.pick(...screen);
+ if(!visible&&!picked){text('Здесь небо. Коснитесь тела, листа или поверхности.');return;}
+ marker(screen,true);
+ await transaction(async run=>{
+  const parent=present;
+  const source=visible?
+   E.objectMaterialAt(parent.world,visible.object.id,visible.part.key,visible.localX,visible.localY):
+   E.materialAt(parent.world,picked.x,picked.y,0,'terrain');
+  text('Выбрано: '+summary(source)+'.');await stage();if(run!==token)return;
+  const entry=visible?E.enterObject(parent.world,visible.object.id,visible.part.key,visible.localX,visible.localY):E.descend(parent.world,picked.x,picked.y);
+  const child=view(entry);child.tap=screen;
+  clear();if(!await animate(parent,child,screen,false,run)||run!==token)return;
+  install(child);ready((child.world.scale==='micro'?'Микромир':'Макромир')+' открыт. '+summary(entry.origin?.material??source)+'.');
+ });
+}
+async function rebuild(id,run){
+ const hit=cache.get(id);if(hit)return hit;
+ let w=root.world;
+ if(typeof E.replayAsync==='function'){
+  w=await E.replayAsync(id,N,{yieldEvery:1,signal:interruption?.signal});
+  if(run!==token)return null;
+ }else for(const p of E.parse(id)){
+  await stage();if(run!==token)return null;
+  w=p.type==='object'?E.enterObject(w,p.id,p.partKey,p.u,p.v):E.descend(w,p.x,p.y);
+ }
+ if(w.id!==id)throw Error('Не совпал пересчитанный адрес.');
+ return view(w);
+}
+function open(id){
+ return transaction(async run=>{
+  text('Восстанавливаю выбранный путь…');await stage();if(run!==token)return;
+  const v=await rebuild(id,run);if(!v||run!==token)return;
+  install(v);paint(v);ready('Путь восстановлен.');
+ });
+}
+async function back(){
+ if(!totalDepth(present.world)||busy)return;
+ await transaction(async run=>{
+  const child=present; text('Возврат на предыдущую глубину…');
+  const parent=await rebuild(E.ancestor(child.world.id),run);if(!parent||run!==token)return;
+  // Use the actual clicked screen position when retained, or reopen saved parent directly.
+  if(child.tap&&!await animate(parent,child,child.tap,true,run))return;
+  if(run!==token)return;install(parent);paint(parent);ready('Предыдущее место восстановлено.');
+ });
+}
+function cancel(){if(!busy)return;++token;interruption?.abort();interruption=null;busy=false;clear();paint(present);update();syncLife();text('Переход отменён. Текущий мир сохранён.');}
+function diveNearCenter(){const at=resolveNear([.5,.5]);if(at)void dive(at);}
+cv.addEventListener('pointermove',e=>{if(!busy&&e.pointerType!=='touch'){const p=point(e);const target=present.layer.hit(...p);if(target||present.projected.pick(...p)){marker(p);cv.title=target?(target.object.title??target.object.kind)+' · '+target.part.key:'';}else{cv.title='';clear();}}});
+cv.addEventListener('pointerleave',()=>{if(!busy)clear();});cv.addEventListener('click',e=>void dive(point(e)));
+cv.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.repeat){e.preventDefault();diveNearCenter();}});
+$('center').addEventListener('click',diveNearCenter);$('back').addEventListener('click',()=>void back());$('cancel').addEventListener('click',cancel);
+$('copy').addEventListener('click',async()=>{
+ const id=present.world.id,u=new URL(location.href);u.hash='route='+id;const value=location.protocol==='file:'?id:u.href;
+ try{await navigator.clipboard.writeText(value);text('Путь скопирован. Откройте его в другой копии ZomATON.');}
+ catch{$('route').value=value;$('route').focus();$('route').select();text('Путь выделен для копирования.');}
+});
+function address(input){
+ return M.read(input,E);
+}
+function bad(){text('Ссылка не распознана. Текущее место сохранено.');}
+$('route-form').addEventListener('submit',e=>{e.preventDefault();if(!busy)try{void open(address($('route').value));}catch{bad();}});
+window.addEventListener('hashchange',()=>{if(busy)cancel();try{void open(location.hash?address(location.hash):E.ROOT);}catch{bad();}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')cancel();});
+$('life-toggle').addEventListener('click',()=>{
+ if(busy||motion.matches)return;
+ live=!live;update();syncLife();
+ text(live?'Движение обитателей включено. Коснитесь объекта там, где он сейчас виден.':'Движение обитателей приостановлено.');
+});
+document.addEventListener('visibilitychange',syncLife);
+motion.addEventListener?.('change',()=>{update();syncLife();});
+paint(root);update();ready();
+if(location.hash)try{void open(address(location.hash));}catch{bad();}
+})();
+
+</script>
+</body></html>

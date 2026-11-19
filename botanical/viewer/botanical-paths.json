@@ -1,0 +1,404 @@
+[
+  {
+    "label": "ТКАНЬ ЛИСТА",
+    "first": {
+      "type": "object",
+      "screen": [
+        0.3302083333333333,
+        0.5347222222222222
+      ],
+      "id": "120a877a7a",
+      "part": "leaf",
+      "localU": 0.8020818127443996,
+      "localV": 0.32568382426587605,
+      "material": {
+        "code": 3,
+        "material": "leaf",
+        "realm": "plant",
+        "heat": 0.12147707331960021,
+        "strain": 0.24728770885786222,
+        "flow": 0,
+        "vascular": 0.3640039673456931,
+        "lattice": 0.14999618524452582,
+        "kind": "object",
+        "objectId": "120a877a7a",
+        "partKey": "leaf",
+        "u": 0.8020752269779508,
+        "v": 0.32568856336308843,
+        "cell": [
+          13,
+          5
+        ],
+        "x": 0.3436331731136034,
+        "y": 0.3693141069657435,
+        "sourceSubstrate": "stone"
+      }
+    },
+    "second": {
+      "type": "object",
+      "screen": [
+        0.7447945473975608,
+        0.4027015880214501
+      ],
+      "id": "5cbfba3840",
+      "part": "core",
+      "localU": 0.5,
+      "localV": 0.5,
+      "material": {
+        "code": 3,
+        "material": "leaf",
+        "realm": "plant",
+        "heat": 0.1727016098268101,
+        "strain": 0.15556572823682002,
+        "flow": 0,
+        "vascular": 0.24118410009918365,
+        "lattice": 0.004577706569008927,
+        "kind": "object",
+        "objectId": "5cbfba3840",
+        "partKey": "core",
+        "u": 0.5000076295109483,
+        "v": 0.5000076295109483,
+        "cell": [
+          8,
+          8
+        ],
+        "x": 0.7071488517586023,
+        "y": 0.5495994506752118,
+        "sourceSubstrate": "leaf"
+      }
+    },
+    "microId": "zow3:7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1:o120a877a7a-leaf-cd545360",
+    "macroId": "zow3:7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1:o120a877a7a-leaf-cd545360.o5cbfba3840-core-80008000",
+    "micro": {
+      "scale": "micro",
+      "realm": "plant",
+      "structure": "cellular-lamina",
+      "botanical": {
+        "cells": 22,
+        "veins": 5,
+        "roots": 0,
+        "leaves": 0,
+        "primaryRadius": 0.060939546616311895
+      },
+      "visibleGeometry": {
+        "background": 51538,
+        "botanical-bed": 6387,
+        "cell-membrane": 16189,
+        "cell-rim": 30762,
+        "cell-inner": 26187,
+        "cell-floor": 0,
+        "vein-outer": 17899,
+        "vein-inner": 5665,
+        "stroma-bridge": 18168,
+        "stroma-lumen": 5
+      }
+    },
+    "macro": {
+      "scale": "macro",
+      "realm": "plant",
+      "structure": "root-canopy-architecture",
+      "botanical": {
+        "cells": 0,
+        "veins": 0,
+        "roots": 26,
+        "leaves": 10,
+        "primaryRadius": null
+      },
+      "visibleGeometry": {
+        "background": 49573,
+        "botanical-bed": 23426,
+        "plant-column": 8109,
+        "giant-root": 21368,
+        "canopy-branch": 1236,
+        "lamina": 23398,
+        "lamina-vein": 20449,
+        "canopy-lamina": 25241
+      }
+    },
+    "microOrigin": {
+      "type": "object",
+      "parentId": "zow3:7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1:-",
+      "objectId": "120a877a7a",
+      "objectKind": "willow",
+      "objectRole": "plant",
+      "partKey": "leaf",
+      "selectedScale": "micro",
+      "anchor": [
+        0.33591805215259374,
+        0.37773911154190215
+      ],
+      "genotypeSeed": 1540277596,
+      "material": {
+        "code": 3,
+        "material": "leaf",
+        "realm": "plant",
+        "heat": 0.12147707331960021,
+        "strain": 0.24728770885786222,
+        "flow": 0,
+        "vascular": 0.3640039673456931,
+        "lattice": 0.14999618524452582,
+        "kind": "object",
+        "objectId": "120a877a7a",
+        "partKey": "leaf",
+        "u": 0.8020752269779508,
+        "v": 0.32568856336308843,
+        "cell": [
+          13,
+          5
+        ],
+        "x": 0.3436331731136034,
+        "y": 0.3693141069657435,
+        "sourceSubstrate": "stone"
+      },
+      "realm": "plant",
+      "local": [
+        0.8020752269779508,
+        0.32568856336308843
+      ]
+    },
+    "macroOrigin": {
+      "type": "object",
+      "parentId": "zow3:7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1:o120a877a7a-leaf-cd545360",
+      "objectId": "5cbfba3840",
+      "objectKind": "ciliate",
+      "objectRole": "micro-organism",
+      "partKey": "core",
+      "selectedScale": "macro",
+      "anchor": [
+        0.7071525268820981,
+        0.5495955018177422
+      ],
+      "genotypeSeed": 3894252987,
+      "material": {
+        "code": 3,
+        "material": "leaf",
+        "realm": "plant",
+        "heat": 0.1727016098268101,
+        "strain": 0.15556572823682002,
+        "flow": 0,
+        "vascular": 0.24118410009918365,
+        "lattice": 0.004577706569008927,
+        "kind": "object",
+        "objectId": "5cbfba3840",
+        "partKey": "core",
+        "u": 0.5000076295109483,
+        "v": 0.5000076295109483,
+        "cell": [
+          8,
+          8
+        ],
+        "x": 0.7071488517586023,
+        "y": 0.5495994506752118,
+        "sourceSubstrate": "leaf"
+      },
+      "realm": "plant",
+      "local": [
+        0.5000076295109483,
+        0.5000076295109483
+      ]
+    },
+    "firstPng": "0d28afca0df36e1ca59094a9a0c3430d6f7ebc74c5d956c65b415184c3c4caab",
+    "secondPng": "75302e46160594be180e9711c6fea2a70639f55e3c51b673edd203ec114fadee"
+  },
+  {
+    "label": "ЖИЛКА ТОГО ЖЕ ЛИСТА",
+    "first": {
+      "type": "object",
+      "screen": [
+        0.3177083333333333,
+        0.5458333333333333
+      ],
+      "id": "120a877a7a",
+      "part": "leaf",
+      "localU": 0.5690729333751497,
+      "localV": 0.24886186062623677,
+      "material": {
+        "code": 4,
+        "material": "vein",
+        "realm": "plant",
+        "heat": 0.11456473640039673,
+        "strain": 0.22317845426108188,
+        "flow": 0,
+        "vascular": 0.7785000381475548,
+        "lattice": 0.14999618524452582,
+        "kind": "object",
+        "objectId": "120a877a7a",
+        "partKey": "leaf",
+        "u": 0.5690699626153963,
+        "v": 0.24885938811322195,
+        "cell": [
+          9,
+          4
+        ],
+        "x": 0.3355916685740444,
+        "y": 0.36922255283436334,
+        "sourceSubstrate": "stone"
+      }
+    },
+    "second": {
+      "type": "object",
+      "screen": [
+        0.5278947278917617,
+        0.42116546701176066
+      ],
+      "id": "5b9c68927d",
+      "part": "core",
+      "localU": 0.5000000000000007,
+      "localV": 0.4999999999999998,
+      "material": {
+        "code": 3,
+        "material": "leaf",
+        "realm": "plant",
+        "heat": 0.1539635309376669,
+        "strain": 0.1467765316243229,
+        "flow": 0,
+        "vascular": 0.3355916685740444,
+        "lattice": 0.17735561150530252,
+        "kind": "object",
+        "objectId": "5b9c68927d",
+        "partKey": "core",
+        "u": 0.5000076295109483,
+        "v": 0.49999237048905165,
+        "cell": [
+          8,
+          8
+        ],
+        "x": 0.5426260776684214,
+        "y": 0.5606469825284199,
+        "sourceSubstrate": "leaf"
+      }
+    },
+    "microId": "zow3:7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1:o120a877a7a-leaf-91ae3fb5",
+    "macroId": "zow3:7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1:o120a877a7a-leaf-91ae3fb5.o5b9c68927d-core-80007fff",
+    "micro": {
+      "scale": "micro",
+      "realm": "plant",
+      "structure": "vascular-cross-section",
+      "botanical": {
+        "cells": 13,
+        "veins": 8,
+        "roots": 0,
+        "leaves": 0,
+        "primaryRadius": 0.11187237544823377
+      },
+      "visibleGeometry": {
+        "background": 55091,
+        "botanical-bed": 5394,
+        "cell-membrane": 6251,
+        "cell-rim": 8422,
+        "cell-inner": 4847,
+        "cell-floor": 0,
+        "vein-outer": 64249,
+        "vein-inner": 22755,
+        "stroma-bridge": 5791,
+        "stroma-lumen": 0
+      }
+    },
+    "macro": {
+      "scale": "macro",
+      "realm": "plant",
+      "structure": "root-canopy-architecture",
+      "botanical": {
+        "cells": 0,
+        "veins": 0,
+        "roots": 21,
+        "leaves": 8,
+        "primaryRadius": null
+      },
+      "visibleGeometry": {
+        "background": 56132,
+        "botanical-bed": 28224,
+        "plant-column": 12210,
+        "giant-root": 19883,
+        "canopy-branch": 6636,
+        "lamina": 27437,
+        "lamina-vein": 14776,
+        "canopy-lamina": 7502
+      }
+    },
+    "microOrigin": {
+      "type": "object",
+      "parentId": "zow3:7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1:-",
+      "objectId": "120a877a7a",
+      "objectKind": "willow",
+      "objectRole": "plant",
+      "partKey": "leaf",
+      "selectedScale": "micro",
+      "anchor": [
+        0.33591805215259374,
+        0.37773911154190215
+      ],
+      "genotypeSeed": 1540277596,
+      "material": {
+        "code": 4,
+        "material": "vein",
+        "realm": "plant",
+        "heat": 0.11456473640039673,
+        "strain": 0.22317845426108188,
+        "flow": 0,
+        "vascular": 0.7785000381475548,
+        "lattice": 0.14999618524452582,
+        "kind": "object",
+        "objectId": "120a877a7a",
+        "partKey": "leaf",
+        "u": 0.5690699626153963,
+        "v": 0.24885938811322195,
+        "cell": [
+          9,
+          4
+        ],
+        "x": 0.3355916685740444,
+        "y": 0.36922255283436334,
+        "sourceSubstrate": "stone"
+      },
+      "realm": "plant",
+      "local": [
+        0.5690699626153963,
+        0.24885938811322195
+      ]
+    },
+    "macroOrigin": {
+      "type": "object",
+      "parentId": "zow3:7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1:o120a877a7a-leaf-91ae3fb5",
+      "objectId": "5b9c68927d",
+      "objectKind": "ciliate",
+      "objectRole": "micro-organism",
+      "partKey": "core",
+      "selectedScale": "macro",
+      "anchor": [
+        0.5426316163355879,
+        0.5606528952175857
+      ],
+      "genotypeSeed": 2488224994,
+      "material": {
+        "code": 3,
+        "material": "leaf",
+        "realm": "plant",
+        "heat": 0.1539635309376669,
+        "strain": 0.1467765316243229,
+        "flow": 0,
+        "vascular": 0.3355916685740444,
+        "lattice": 0.17735561150530252,
+        "kind": "object",
+        "objectId": "5b9c68927d",
+        "partKey": "core",
+        "u": 0.5000076295109483,
+        "v": 0.49999237048905165,
+        "cell": [
+          8,
+          8
+        ],
+        "x": 0.5426260776684214,
+        "y": 0.5606469825284199,
+        "sourceSubstrate": "leaf"
+      },
+      "realm": "plant",
+      "local": [
+        0.5000076295109483,
+        0.49999237048905165
+      ]
+    },
+    "firstPng": "32452c79008f9ac3204084ab317d89712b4eeefb6e7c2fdf1aa3efc4534bfd38",
+    "secondPng": "58b98ef0c585a94a5a5a52fb9520f41bab8ee39f3adb89a5665aa8ff00cf4c99"
+  }
+]

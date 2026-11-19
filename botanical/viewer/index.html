@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark"><meta name="referrer" content="no-referrer">
+<title>ZomATON · Лист внутри мира</title><link rel="stylesheet" href="./viewer.css">
+<script src="../engine/baseline/living-baseline.js" defer></script><script src="../engine/baseline/diverse.js" defer></script><script src="../engine/baseline/engine.js" defer></script><script src="../engine/baseline/material-engine.js" defer></script><script src="../engine/engine.js" defer></script>
+<script src="./route.js" defer></script><script src="./materials.js" defer></script><script src="./perspective.js" defer></script>
+<script src="./objects.js" defer></script><script src="./viewer.js" defer></script>
+</head><body><main>
+<header><div class="brand">Zom<span>ATON</span> <small>БОТАНИКА</small></div><span class="mode">GENESIS №0</span></header>
+<section class="explorer" aria-label="Живой мир">
+ <div class="intro"><div><div class="eyebrow" id="world-kind">МАТЕРИЯ ВНУТРИ МИРА</div><h1 id="world-title">Genesis №0</h1></div><div class="depth"><strong id="depth">0</strong><span>ГЛУБИНА</span></div></div>
+ <div class="frame"><canvas id="world" width="480" height="360" tabindex="0" aria-label="Коснитесь растения, животного или поверхности местности. Клавиша Enter входит в видимую точку в центре." aria-describedby="status"></canvas><i id="target" hidden aria-hidden="true"></i></div>
+ <p class="status" id="status" role="status">Готовлю первый мир…</p>
+ <div class="actions" aria-label="Управление исследованием"><button id="back" disabled>← Назад</button><button id="cancel" hidden>Отменить</button><button id="center" class="action">Погрузиться</button><button id="copy" disabled>Копировать путь</button></div>
+ <button type="button" id="life-toggle" class="life-toggle" aria-pressed="false">Жизнь в движении</button>
+</section>
+<aside class="explore-info">
+ <div><div class="eyebrow">ОТКРЫТОЕ МЕСТО</div><h2>Из чего открыт мир</h2><p id="life"></p><p class="material" id="material" hidden></p><p class="fine">Откройте лист или его жилку. В клеточной ткани отдельные организмы ведут к кронам и сосудам растительного макромира.</p></div>
+ <div><form id="route-form"><label for="route">Вставить путь</label><textarea rows="2" id="route" placeholder="Код маршрута или ссылка" required spellcheck="false" autocomplete="off"></textarea><button id="open" type="submit">Открыть</button></form><p class="fine" id="breadcrumbs"></p></div>
+</aside>
+<footer>Процедурный прототип работает без сети. В маршруте сохраняются объект и точка входа. NFT не выпускаются.</footer>
+</main></body></html>

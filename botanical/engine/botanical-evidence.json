@@ -1,0 +1,402 @@
+{
+  "leaf": {
+    "id": "zow3:7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1:o007e3be789-leaf-2e144ccd",
+    "signal": {
+      "material": "leaf",
+      "coordinate": [
+        0.09469748989089799,
+        0.6604257267109178
+      ],
+      "local": [
+        0.179995422293431,
+        0.30000762951094834
+      ],
+      "vascular": 0.09275959411001755,
+      "anatomical": 0.09275959411001755,
+      "parentGradient": [
+        0,
+        0
+      ],
+      "gradient": [
+        0.3781112382696269,
+        0.15448111696040281
+      ],
+      "orientation": 1.9586601400025947,
+      "strength": 0.4300970092317083,
+      "seed": 4092559798
+    },
+    "cells": 22,
+    "bridges": 28,
+    "primary_vessel_radius": 0.05775242523079271,
+    "mesh": {
+      "botanical-bed": {
+        "triangles": 2048,
+        "z": [
+          0.2730907201766968,
+          0.38956281542778015
+        ],
+        "digest": "9323c06291343227e75ea1d0090f8e1e8fe6085f24ff84504806d9570d8f1b3c"
+      },
+      "cell-membrane": {
+        "triangles": 232,
+        "z": [
+          0.2659992277622223,
+          0.4666021764278412
+        ],
+        "digest": "ae5a168b238447eec459d0e5b0732fa0c7f8b4b46bda36019d6b59eeabfd7069"
+      },
+      "cell-rim": {
+        "triangles": 232,
+        "z": [
+          0.39280006289482117,
+          0.4726021885871887
+        ],
+        "digest": "088248cb1ce3c0de73e8f76288b33aa3ffe444fb0f82a688ce78c12b9a9eb72f"
+      },
+      "cell-inner": {
+        "triangles": 232,
+        "z": [
+          0.27399924397468567,
+          0.4726021885871887
+        ],
+        "digest": "599fc6a9de32831edccc1da14b280bb35cea15b05908182d08c3e9f8f7181095"
+      },
+      "cell-floor": {
+        "triangles": 116,
+        "z": [
+          0.27399924397468567,
+          0.28525811433792114
+        ],
+        "digest": "6f51c9b69235a0d57b99821e0170a857479c214e59cb41532cec747629b67fef"
+      },
+      "vein-outer": {
+        "triangles": 420,
+        "z": [
+          0.288277268409729,
+          0.5011334419250488
+        ],
+        "digest": "a7331a6392e6da6c807c7ac0a10720e734a186aebb72db38580410fdce13dad9"
+      },
+      "vein-inner": {
+        "triangles": 114,
+        "z": [
+          0.3112665116786957,
+          0.4919036626815796
+        ],
+        "digest": "c68e07660adeb09ead57e3a6fcc839fdd37e0b0d85e2bc1a7b2edf2638a6ee66"
+      },
+      "stroma-bridge": {
+        "triangles": 1568,
+        "z": [
+          0.353163480758667,
+          0.48741579055786133
+        ],
+        "digest": "e7596011e573b94b40d684fe7517bec6ebbb36cb206cb94022dd11746ac64b39"
+      },
+      "stroma-lumen": {
+        "triangles": 784,
+        "z": [
+          0.3603963553905487,
+          0.47598251700401306
+        ],
+        "digest": "3dc2b982aaabed765658502876f43c361e8ecec992eeb4d39525c1ec3b016ea4"
+      }
+    }
+  },
+  "vein": {
+    "id": "zow3:7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1:o007e3be789-leaf-6b858000",
+    "signal": {
+      "material": "vein",
+      "coordinate": [
+        0.10159456778820478,
+        0.6669108110170138
+      ],
+      "local": [
+        0.420004577706569,
+        0.5000076295109483
+      ],
+      "vascular": 0.8771801327534905,
+      "anatomical": 0.8771801327534905,
+      "parentGradient": [
+        0,
+        0
+      ],
+      "gradient": [
+        -0.32895765621423667,
+        0.028960402838178127
+      ],
+      "orientation": 4.62457850022787,
+      "strength": 1,
+      "seed": 202393440
+    },
+    "cells": 13,
+    "bridges": 16,
+    "primary_vessel_radius": 0.11299999999999999,
+    "mesh": {
+      "botanical-bed": {
+        "triangles": 2048,
+        "z": [
+          0.2730907201766968,
+          0.3921568691730499
+        ],
+        "digest": "9d7cb57c8f6b7c81978e6780642971b35fb2af979e71ca0744018f72fcdd2574"
+      },
+      "cell-membrane": {
+        "triangles": 130,
+        "z": [
+          0.2659992277622223,
+          0.43386995792388916
+        ],
+        "digest": "9687ef7f613ce82a65b23d2f3ab8ebde92cb932775fd26f99beded7617185096"
+      },
+      "cell-rim": {
+        "triangles": 130,
+        "z": [
+          0.36740925908088684,
+          0.4398699700832367
+        ],
+        "digest": "ba89b86ebb7841f755b969a0a81d1d6fca6e2439afd0b86ad715da1bd6dea850"
+      },
+      "cell-inner": {
+        "triangles": 130,
+        "z": [
+          0.27399924397468567,
+          0.4398699700832367
+        ],
+        "digest": "69698913ba3ee44d6b785a098d3c168e48a640a99727d02934a6f5d6e5ccb46e"
+      },
+      "cell-floor": {
+        "triangles": 65,
+        "z": [
+          0.27399924397468567,
+          0.28525811433792114
+        ],
+        "digest": "9deb3e375f15df47530c43088f23643b8d72657835439868012321ac8e543348"
+      },
+      "vein-outer": {
+        "triangles": 672,
+        "z": [
+          0.28630125522613525,
+          0.5842815041542053
+        ],
+        "digest": "f7ab07ff60e097eff3196a536c23f500ef6319032e1bf02e899be09722ca0538"
+      },
+      "vein-inner": {
+        "triangles": 168,
+        "z": [
+          0.3228442072868347,
+          0.542412281036377
+        ],
+        "digest": "d804750aba7711d6a0b1bee80e50bb9bbab03efc60bd5585c3c8bda6192f0478"
+      },
+      "stroma-bridge": {
+        "triangles": 896,
+        "z": [
+          0.32836011052131653,
+          0.4534963369369507
+        ],
+        "digest": "7fb50d956d194ec2080d6e549f0a24d46a77db9a928a3e580e52c4a528e3d9a1"
+      },
+      "stroma-lumen": {
+        "triangles": 448,
+        "z": [
+          0.3351935148239136,
+          0.4428704082965851
+        ],
+        "digest": "1bd581728467012e6158500533d86a67cacbdac265f53e5087decc422fe925c9"
+      }
+    }
+  },
+  "macro_exits": [
+    {
+      "id": "zow3:7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1:o007e3be789-leaf-2e144ccd.o01c2b8b04b-core-70a38ccc",
+      "roots": 24,
+      "laminas": 9,
+      "organisms": 8,
+      "mesh": {
+        "botanical-bed": {
+          "triangles": 2048,
+          "z": [
+            0.21684595942497253,
+            0.34010833501815796
+          ],
+          "digest": "8b6b80c3bd20cd6f1789775662a4e22c3161b9fb3cb1c3416d2bb433edb52cf9"
+        },
+        "plant-column": {
+          "triangles": 80,
+          "z": [
+            0.24716436862945557,
+            0.7545271515846252
+          ],
+          "digest": "0589d9b9db5f06abcfcd662709d29c07c1471385bbe85b8a5817705ad51ee65f"
+        },
+        "giant-root": {
+          "triangles": 1120,
+          "z": [
+            0.20715709030628204,
+            0.45603761076927185
+          ],
+          "digest": "98879773c063eeaea08ad0fc4409394b3ff16ecc043b25c74a0f764e74c5c4d5"
+        },
+        "canopy-branch": {
+          "triangles": 720,
+          "z": [
+            0.47227585315704346,
+            0.766221284866333
+          ],
+          "digest": "a4b16c38ec5f8d3d3b85f87776b9677d8079752c0ad9d096d5a1bdc1191ed334"
+        },
+        "lamina": {
+          "triangles": 720,
+          "z": [
+            0.6553272604942322,
+            0.8557265400886536
+          ],
+          "digest": "ddb20ab141f95bee5987e57f64e7771fae8677100b8beb0371358da76634bfcd"
+        },
+        "lamina-vein": {
+          "triangles": 6336,
+          "z": [
+            0.6364135146141052,
+            0.8681966662406921
+          ],
+          "digest": "83a6ec979a04b1aaaea74634229fc40496ad670e19154c5b1a1df026047a3a1d"
+        },
+        "canopy-lamina": {
+          "triangles": 576,
+          "z": [
+            0.6219301819801331,
+            0.836435854434967
+          ],
+          "digest": "9d094947d2abbdacfba70245a37e7f3ad8d77e71cae0fca94bd75d8e2a311c46"
+        }
+      }
+    },
+    {
+      "id": "zow3:7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1:o007e3be789-leaf-6b858000.o01c2b8b04b-core-70a38ccc",
+      "roots": 21,
+      "laminas": 8,
+      "organisms": 8,
+      "mesh": {
+        "botanical-bed": {
+          "triangles": 2048,
+          "z": [
+            0.21535058319568634,
+            0.35805293917655945
+          ],
+          "digest": "6536ab52ab689cb78555d5ee761b8be665bad3623934e252060163a5c527ed69"
+        },
+        "plant-column": {
+          "triangles": 80,
+          "z": [
+            0.2456914782524109,
+            0.7739814519882202
+          ],
+          "digest": "17532af923e5ee5dc162cfaba90bdd779b8f5169b21a682d31b0f6a5beb6ecf5"
+        },
+        "giant-root": {
+          "triangles": 960,
+          "z": [
+            0.21426674723625183,
+            0.4459056556224823
+          ],
+          "digest": "f5e3841e65db4dd8bd2b34ea8b678c009e1a86c7d3e077f09cea2a73f006ec3c"
+        },
+        "canopy-branch": {
+          "triangles": 640,
+          "z": [
+            0.49806928634643555,
+            0.745746374130249
+          ],
+          "digest": "765f7d28ec0932e75ba9b9fcfd488aa1dd12b48b63ca1e8d4c4e9981f5bd25c7"
+        },
+        "lamina": {
+          "triangles": 576,
+          "z": [
+            0.6561190485954285,
+            0.8505828976631165
+          ],
+          "digest": "df4b3e93d7facd2c0083a8271558884be8fc3c9d68c6bffc70aa65ee11acf9b8"
+        },
+        "lamina-vein": {
+          "triangles": 5232,
+          "z": [
+            0.6607008576393127,
+            0.865459144115448
+          ],
+          "digest": "a675575c24df8324a121419b01761848d8f84cbc5fe04fdeed560f5f5824d142"
+        },
+        "canopy-lamina": {
+          "triangles": 576,
+          "z": [
+            0.6497464776039124,
+            0.853529691696167
+          ],
+          "digest": "c2af5a20a8fe42bfc4426d11388fe84120eba8d4b1b5229e29cc5bca0f5760bc"
+        }
+      }
+    }
+  ],
+  "inherited_vein_counterfactual": {
+    "same_address": true,
+    "same_height_source": true,
+    "before_strength": 0.4300970092317083,
+    "after_strength": 0.8120136949721524,
+    "changed_tube_triangles": true
+  },
+  "deep_replay": {
+    "levels": 11,
+    "trace": [
+      {
+        "scale": "micro",
+        "id": "zow3:7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1:o007e3be789-leaf-2e144ccd",
+        "signature": "leaf"
+      },
+      {
+        "scale": "macro",
+        "id": "zow3:7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1:o007e3be789-leaf-2e144ccd.o00a955101f-core-63d775c2",
+        "signature": "plant-cell"
+      },
+      {
+        "scale": "macro",
+        "id": "zow3:7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1:o007e3be789-leaf-2e144ccd.o00a955101f-core-63d775c2.t75c29eb8",
+        "signature": "vein"
+      },
+      {
+        "scale": "micro",
+        "id": "zow3:7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1:o007e3be789-leaf-2e144ccd.o00a955101f-core-63d775c2.t75c29eb8.o00a8992735-leaf-63d775c2",
+        "signature": "leaf"
+      },
+      {
+        "scale": "macro",
+        "id": "zow3:7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1:o007e3be789-leaf-2e144ccd.o00a955101f-core-63d775c2.t75c29eb8.o00a8992735-leaf-63d775c2.o00a5dfdda2-core-63d775c2",
+        "signature": "plant-cell"
+      },
+      {
+        "scale": "macro",
+        "id": "zow3:7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1:o007e3be789-leaf-2e144ccd.o00a955101f-core-63d775c2.t75c29eb8.o00a8992735-leaf-63d775c2.o00a5dfdda2-core-63d775c2.t75c29eb8",
+        "signature": "leaf"
+      },
+      {
+        "scale": "micro",
+        "id": "zow3:7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1:o007e3be789-leaf-2e144ccd.o00a955101f-core-63d775c2.t75c29eb8.o00a8992735-leaf-63d775c2.o00a5dfdda2-core-63d775c2.t75c29eb8.o00725d0903-leaf-63d775c2",
+        "signature": "leaf"
+      },
+      {
+        "scale": "macro",
+        "id": "zow3:7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1:o007e3be789-leaf-2e144ccd.o00a955101f-core-63d775c2.t75c29eb8.o00a8992735-leaf-63d775c2.o00a5dfdda2-core-63d775c2.t75c29eb8.o00725d0903-leaf-63d775c2.o00cf8be513-core-63d775c2",
+        "signature": "plant-cell"
+      },
+      {
+        "scale": "macro",
+        "id": "zow3:7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1:o007e3be789-leaf-2e144ccd.o00a955101f-core-63d775c2.t75c29eb8.o00a8992735-leaf-63d775c2.o00a5dfdda2-core-63d775c2.t75c29eb8.o00725d0903-leaf-63d775c2.o00cf8be513-core-63d775c2.t75c29eb8",
+        "signature": "vein"
+      },
+      {
+        "scale": "micro",
+        "id": "zow3:7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1:o007e3be789-leaf-2e144ccd.o00a955101f-core-63d775c2.t75c29eb8.o00a8992735-leaf-63d775c2.o00a5dfdda2-core-63d775c2.t75c29eb8.o00725d0903-leaf-63d775c2.o00cf8be513-core-63d775c2.t75c29eb8.o00242d16a2-leaf-63d775c2",
+        "signature": "leaf"
+      }
+    ]
+  }
+}
