@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark"><meta name="referrer" content="no-referrer">
+<title>ZomATON · Живые миры</title><link rel="stylesheet" href="./viewer.css">
+<script src="../engine/engine.js" defer></script>
+<script src="./route.js" defer></script>
+<script src="./viewer.js" defer></script>
+</head><body><main>
+<header><a class="brand" href="./" aria-label="ZomATON">Zom<span>ATON</span></a><span class="mode">GENESIS №0</span></header>
+<section class="explorer" aria-label="Живой мир">
+ <div class="intro"><div><div class="eyebrow" id="world-kind">ЖИВОЙ МИР</div><h1 id="world-title">Genesis №0</h1></div><div class="depth"><strong id="depth">0</strong><span>ГЛУБИНА</span></div></div>
+ <div class="frame"><canvas id="world" width="448" height="448" tabindex="0" aria-label="Живой мир. Касание или клик приближает выбранную точку. Enter приближает центр." aria-describedby="status"></canvas><i id="target" hidden aria-hidden="true"></i></div>
+ <p class="status" id="status" role="status">Готовлю первый мир…</p>
+ <div class="actions" aria-label="Управление исследованием"><button id="back" disabled>← Назад</button><button id="cancel" hidden>Отменить</button><button id="center" class="action">Приблизить центр</button><button id="copy" disabled>Копировать путь</button></div>
+</section>
+<aside class="explore-info">
+ <div><div class="eyebrow">ЭКОСИСТЕМА</div><h2>Кто здесь живёт</h2><p id="life"></p><p class="fine">Флора и фауна строятся и двигаются внутри мира. Откройте соседнюю точку, чтобы увидеть другую местность.</p></div>
+ <div><form id="route-form"><label for="route">Вставить путь</label><textarea rows="2" id="route" placeholder="Код маршрута или ссылка" required spellcheck="false" autocomplete="off"></textarea><button id="open" type="submit">Открыть</button></form><p class="fine" id="breadcrumbs"></p></div>
+</aside>
+<footer>Локальный процедурный прототип. Без загрузки фотографий, сетевой генерации и NFT.</footer>
+</main></body></html>

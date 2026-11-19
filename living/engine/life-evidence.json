@@ -1,0 +1,288 @@
+{
+  "unit": "u16 elevations",
+  "source_patch_cells": 221,
+  "same_id_and_seed_detail_delta": 15354,
+  "sibling_elevation_mae_le16": 19276.77099609375,
+  "branches": [
+    {
+      "id": "zlw1:7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1:4b85b893",
+      "biome": "river",
+      "structure": "canyon",
+      "changed_heights": 15375,
+      "inherited_rim": 1008,
+      "flora": 48,
+      "fauna": 10,
+      "flora_kinds": [
+        "reed",
+        "willow"
+      ],
+      "fauna_kinds": [
+        "dragonfly",
+        "fish"
+      ],
+      "water_fraction": 0.27703857421875,
+      "height_sha256": "81704c4f2159970d435c6dddee5f3f0a790fbbc583ec0cb776619d4e4dab131c",
+      "rgba_sha256": "706e8a13a0050063e7f3ccdc3316d428a30243ad757d9b59e7897cb4ee4ff16e"
+    },
+    {
+      "id": "zlw1:7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1:a51e4147",
+      "biome": "reef",
+      "structure": "archipelago",
+      "changed_heights": 15375,
+      "inherited_rim": 1008,
+      "flora": 44,
+      "fauna": 10,
+      "flora_kinds": [
+        "coral",
+        "fan"
+      ],
+      "fauna_kinds": [
+        "fish",
+        "ray"
+      ],
+      "water_fraction": 0.5595703125,
+      "height_sha256": "1f74231be2185f18ebd56c1a8db4c27971764d8d3a17b5555de67ed6db3c1d19",
+      "rgba_sha256": "ba56d446f08e8858196c9c2277a7788174b0fead5ebee8b8914f8517a0b07213"
+    },
+    {
+      "id": "zlw1:7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1:4b85b893.a51e4147",
+      "biome": "filament",
+      "structure": "woven-veins",
+      "changed_heights": 15374,
+      "inherited_rim": 1008,
+      "flora": 42,
+      "fauna": 10,
+      "flora_kinds": [
+        "filament",
+        "crystal"
+      ],
+      "fauna_kinds": [
+        "larva",
+        "mite"
+      ],
+      "water_fraction": 0.37188720703125,
+      "height_sha256": "aa8a3227c9496bf77439485270d8a159f0da6c88c08073413b6057ede3cb15fa",
+      "rgba_sha256": "1fd2875f3726448cc0cf93ebae1f6334131903a2a3f72ba88ea98cd34e0e1bf1"
+    },
+    {
+      "id": "zlw1:7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1:a51e4147.574be1ca",
+      "biome": "spores",
+      "structure": "spore-knolls",
+      "changed_heights": 15189,
+      "inherited_rim": 1008,
+      "flora": 39,
+      "fauna": 10,
+      "flora_kinds": [
+        "fungus",
+        "colony"
+      ],
+      "fauna_kinds": [
+        "ciliate",
+        "beetle"
+      ],
+      "water_fraction": 0.27960205078125,
+      "height_sha256": "3316d171cfb16e4603d4cc6666822b8df246f7be8c788a440346caf902985c0d",
+      "rgba_sha256": "93aad822887cbaa961ff9208b0bc09269654ae9f3c3fae9d1c531754ba59246b"
+    }
+  ],
+  "deep_test": {
+    "levels": 24,
+    "grid": 64,
+    "structures": [
+      "canyon",
+      "cellular-hollows",
+      "terraced-shelves",
+      "mineral-basins",
+      "archipelago",
+      "nested-calderas",
+      "organic-fibres",
+      "collapsed-chambers",
+      "spore-knolls",
+      "crystal-facets",
+      "woven-veins",
+      "branching-filaments"
+    ],
+    "fauna_kinds": [
+      "dragonfly",
+      "fish",
+      "ciliate",
+      "larva",
+      "bird",
+      "ray",
+      "mite",
+      "beetle",
+      "lizard"
+    ],
+    "chain": [
+      {
+        "depth": 1,
+        "structure": "canyon",
+        "biome": "river",
+        "id": "zlw1:7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1:1c292666",
+        "height_sha256": "f5de284c9ccf4b8916185418538a5bac5d785da149efbf0f6c3a7f85470ede43"
+      },
+      {
+        "depth": 2,
+        "structure": "cellular-hollows",
+        "biome": "cells",
+        "id": "zlw1:7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1:1c292666.5eb847ae",
+        "height_sha256": "e263ad734d35c38712f9765c8ec9e4bdcd7bef4b3d44721cf57317422f2c577a"
+      },
+      {
+        "depth": 3,
+        "structure": "terraced-shelves",
+        "biome": "shelf",
+        "id": "zlw1:7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1:1c292666.5eb847ae.a14768f5",
+        "height_sha256": "bc1be271e683a91ed00e95cac7996993726b99f9731f1ef6aca07e522c7842e9"
+      },
+      {
+        "depth": 4,
+        "structure": "mineral-basins",
+        "biome": "springs",
+        "id": "zlw1:7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1:1c292666.5eb847ae.a14768f5.e3d68a3d",
+        "height_sha256": "d70a6222059a542bf7bf624fafefaa33ab6b242902f7126815a4e469c08dfaa4"
+      },
+      {
+        "depth": 5,
+        "structure": "archipelago",
+        "biome": "reef",
+        "id": "zlw1:7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1:1c292666.5eb847ae.a14768f5.e3d68a3d.23d7ab84",
+        "height_sha256": "533cbfa4c9055e8ebcbb6d79dc09f6de3ac142c4435481423de66ea03e7b067f"
+      },
+      {
+        "depth": 6,
+        "structure": "nested-calderas",
+        "biome": "basin",
+        "id": "zlw1:7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1:1c292666.5eb847ae.a14768f5.e3d68a3d.23d7ab84.6666cccc",
+        "height_sha256": "cdaa8e6e23776174114bf937e7e843a35bff2c613843e40bf43b05fb9d3e1920"
+      },
+      {
+        "depth": 7,
+        "structure": "organic-fibres",
+        "biome": "threads",
+        "id": "zlw1:7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1:1c292666.5eb847ae.a14768f5.e3d68a3d.23d7ab84.6666cccc.a8f5ee14",
+        "height_sha256": "759d4ace618223208919b4a5b27a18e4abde9dc53576695592f3fa8db45f5d7f"
+      },
+      {
+        "depth": 8,
+        "structure": "collapsed-chambers",
+        "biome": "caves",
+        "id": "zlw1:7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1:1c292666.5eb847ae.a14768f5.e3d68a3d.23d7ab84.6666cccc.a8f5ee14.eb840ccd",
+        "height_sha256": "c028e8dddb8f255c300b82dce31c691cf3d60ea014be0b08a5c88f5c073eed38"
+      },
+      {
+        "depth": 9,
+        "structure": "nested-calderas",
+        "biome": "basin",
+        "id": "zlw1:7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1:1c292666.5eb847ae.a14768f5.e3d68a3d.23d7ab84.6666cccc.a8f5ee14.eb840ccd.2b852e14",
+        "height_sha256": "53f20bd503cca1fd0b1e28102cd48d8528b3c2d9819412a7c3115e195b0390c7"
+      },
+      {
+        "depth": 10,
+        "structure": "collapsed-chambers",
+        "biome": "caves",
+        "id": "zlw1:7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1:1c292666.5eb847ae.a14768f5.e3d68a3d.23d7ab84.6666cccc.a8f5ee14.eb840ccd.2b852e14.6e144f5c",
+        "height_sha256": "4e45ed1a16ee00d1a22dadd3ceb1379fc9fb255a1b23cbf37504ca8dc15d77af"
+      },
+      {
+        "depth": 11,
+        "structure": "spore-knolls",
+        "biome": "spores",
+        "id": "zlw1:7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1:1c292666.5eb847ae.a14768f5.e3d68a3d.23d7ab84.6666cccc.a8f5ee14.eb840ccd.2b852e14.6e144f5c.b0a370a3",
+        "height_sha256": "057e2cf3b227ae306712be73af93ba17c0ae8cf2c83598007dadab9aaac0ec88"
+      },
+      {
+        "depth": 12,
+        "structure": "nested-calderas",
+        "biome": "basin",
+        "id": "zlw1:7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1:1c292666.5eb847ae.a14768f5.e3d68a3d.23d7ab84.6666cccc.a8f5ee14.eb840ccd.2b852e14.6e144f5c.b0a370a3.f33291eb",
+        "height_sha256": "df6c6a8f5c24aab371c00b9aadb166417063264d42bbb306fe54fbea3dd2e1ad"
+      },
+      {
+        "depth": 13,
+        "structure": "terraced-shelves",
+        "biome": "shelf",
+        "id": "zlw1:7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1:1c292666.5eb847ae.a14768f5.e3d68a3d.23d7ab84.6666cccc.a8f5ee14.eb840ccd.2b852e14.6e144f5c.b0a370a3.f33291eb.3333b333",
+        "height_sha256": "5cd1b5e2a5e7039a672700c7014689fb04a27c26dffd3eae03c7a6ac7aa085c1"
+      },
+      {
+        "depth": 14,
+        "structure": "crystal-facets",
+        "biome": "crystal",
+        "id": "zlw1:7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1:1c292666.5eb847ae.a14768f5.e3d68a3d.23d7ab84.6666cccc.a8f5ee14.eb840ccd.2b852e14.6e144f5c.b0a370a3.f33291eb.3333b333.75c2d47a",
+        "height_sha256": "79c49fbad7ac2e008ab788cf843ed10e42d5716d1eb3875bdea65077b6c0a5f5"
+      },
+      {
+        "depth": 15,
+        "structure": "organic-fibres",
+        "biome": "threads",
+        "id": "zlw1:7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1:1c292666.5eb847ae.a14768f5.e3d68a3d.23d7ab84.6666cccc.a8f5ee14.eb840ccd.2b852e14.6e144f5c.b0a370a3.f33291eb.3333b333.75c2d47a.b851f5c2",
+        "height_sha256": "ed96cc84599829c8f53f81db591c4a061ff5efd522d86973a870a17cdcb51342"
+      },
+      {
+        "depth": 16,
+        "structure": "crystal-facets",
+        "biome": "crystal",
+        "id": "zlw1:7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1:1c292666.5eb847ae.a14768f5.e3d68a3d.23d7ab84.6666cccc.a8f5ee14.eb840ccd.2b852e14.6e144f5c.b0a370a3.f33291eb.3333b333.75c2d47a.b851f5c2.fae0147b",
+        "height_sha256": "eb41470e4f9b36bf35e6b965425ea4e0dfc5536734fdf4885f64a9538bc44566"
+      },
+      {
+        "depth": 17,
+        "structure": "archipelago",
+        "biome": "reef",
+        "id": "zlw1:7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1:1c292666.5eb847ae.a14768f5.e3d68a3d.23d7ab84.6666cccc.a8f5ee14.eb840ccd.2b852e14.6e144f5c.b0a370a3.f33291eb.3333b333.75c2d47a.b851f5c2.fae0147b.3ae135c2",
+        "height_sha256": "89a22f5238b2c132512028d31907400f8c11dab5c2eb50643edcf31a92f4a318"
+      },
+      {
+        "depth": 18,
+        "structure": "woven-veins",
+        "biome": "filament",
+        "id": "zlw1:7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1:1c292666.5eb847ae.a14768f5.e3d68a3d.23d7ab84.6666cccc.a8f5ee14.eb840ccd.2b852e14.6e144f5c.b0a370a3.f33291eb.3333b333.75c2d47a.b851f5c2.fae0147b.3ae135c2.7d70570a",
+        "height_sha256": "f6afcb830197c2a8189a1f7eff79d4921ab0bb3c341201f0bc2139917016af9b"
+      },
+      {
+        "depth": 19,
+        "structure": "cellular-hollows",
+        "biome": "cells",
+        "id": "zlw1:7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1:1c292666.5eb847ae.a14768f5.e3d68a3d.23d7ab84.6666cccc.a8f5ee14.eb840ccd.2b852e14.6e144f5c.b0a370a3.f33291eb.3333b333.75c2d47a.b851f5c2.fae0147b.3ae135c2.7d70570a.bfff7851",
+        "height_sha256": "3e6ab67f52f694e0905f1cc674cdf25bf0a3f5214dcb3f06cb7e75ae654e5996"
+      },
+      {
+        "depth": 20,
+        "structure": "crystal-facets",
+        "biome": "crystal",
+        "id": "zlw1:7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1:1c292666.5eb847ae.a14768f5.e3d68a3d.23d7ab84.6666cccc.a8f5ee14.eb840ccd.2b852e14.6e144f5c.b0a370a3.f33291eb.3333b333.75c2d47a.b851f5c2.fae0147b.3ae135c2.7d70570a.bfff7851.00009999",
+        "height_sha256": "b368b44097c0021f17a52ac0ca7624b429df153d588700f691ee7875e3457fb3"
+      },
+      {
+        "depth": 21,
+        "structure": "spore-knolls",
+        "biome": "spores",
+        "id": "zlw1:7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1:1c292666.5eb847ae.a14768f5.e3d68a3d.23d7ab84.6666cccc.a8f5ee14.eb840ccd.2b852e14.6e144f5c.b0a370a3.f33291eb.3333b333.75c2d47a.b851f5c2.fae0147b.3ae135c2.7d70570a.bfff7851.00009999.428fbae1",
+        "height_sha256": "424cff2eb02a8c0f824e2fcdbe26f13990898db82285860d381461eb2b89e49e"
+      },
+      {
+        "depth": 22,
+        "structure": "woven-veins",
+        "biome": "filament",
+        "id": "zlw1:7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1:1c292666.5eb847ae.a14768f5.e3d68a3d.23d7ab84.6666cccc.a8f5ee14.eb840ccd.2b852e14.6e144f5c.b0a370a3.f33291eb.3333b333.75c2d47a.b851f5c2.fae0147b.3ae135c2.7d70570a.bfff7851.00009999.428fbae1.851edc28",
+        "height_sha256": "decdfcc4db4c4252f40d2b9b974d938327e1e4eabb6d51ad40fb70cd7903b835"
+      },
+      {
+        "depth": 23,
+        "structure": "archipelago",
+        "biome": "reef",
+        "id": "zlw1:7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1:1c292666.5eb847ae.a14768f5.e3d68a3d.23d7ab84.6666cccc.a8f5ee14.eb840ccd.2b852e14.6e144f5c.b0a370a3.f33291eb.3333b333.75c2d47a.b851f5c2.fae0147b.3ae135c2.7d70570a.bfff7851.00009999.428fbae1.851edc28.c7adfd70",
+        "height_sha256": "3af0fe908b30ff54d1c788dac946cefcdf45cb41a362ca782807b4a1b9af5708"
+      },
+      {
+        "depth": 24,
+        "structure": "branching-filaments",
+        "biome": "mycelium",
+        "id": "zlw1:7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1:1c292666.5eb847ae.a14768f5.e3d68a3d.23d7ab84.6666cccc.a8f5ee14.eb840ccd.2b852e14.6e144f5c.b0a370a3.f33291eb.3333b333.75c2d47a.b851f5c2.fae0147b.3ae135c2.7d70570a.bfff7851.00009999.428fbae1.851edc28.c7adfd70.07ae1c29",
+        "height_sha256": "4d4cb7eafeb0a7efb08c22e1b017580eb84a2165b7aa4b3d30af34b06cb4c9b0"
+      }
+    ],
+    "sha256": "4d4cb7eafeb0a7efb08c22e1b017580eb84a2165b7aa4b3d30af34b06cb4c9b0"
+  }
+}
