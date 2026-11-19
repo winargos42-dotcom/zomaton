@@ -1,0 +1,14 @@
+{
+  "status": "LOCAL_CANDIDATE_NOT_DEPLOYED",
+  "upstream_commit": "1182ad99413242f09925d50e70ccb7e0e09f94d4",
+  "artifacts": {
+    "collection": {
+      "code_cell_hash": "73ff3f1ccf39d91a10dee851a804829d7f4bc587244ceba0d46e7f195b346dd3",
+      "boc_sha256": "9b484bb11200fb35c9b573630001369f13b2a151e16dafccc257f9fb60031a5b"
+    },
+    "item": {
+      "code_cell_hash": "483f552373afbf4145df8203fab5d36c71340f9e54491e7b88b7277369382bc9",
+      "boc_sha256": "ef71baf6b6fbfeff719b381857e7e83304e87eeae4854b64677430af409a67a7"
+    }
+  }
+}

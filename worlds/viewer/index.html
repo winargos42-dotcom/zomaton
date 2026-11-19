@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark"><meta name="referrer" content="no-referrer">
+<title>ZomATON · Мир внутри</title>
+<link rel="stylesheet" href="./viewer.css">
+<!-- ENGINE -->
+<script src="../engine/engine.js" defer></script>
+<!-- VIEWER -->
+<script src="./route.js" defer></script><script src="./viewer.js" defer></script>
+</head><body>
+<main>
+<header><div class="brand">Zom<span>ATON</span></div><div class="badge">GENESIS / 00</div></header>
+<div class="hero"><div class="eyebrow">ДВА МАСШТАБА ОДНОГО МИРА</div><h1>Мир внутри.</h1>
+<p>Выберите любую точку. Первый клик открывает местность крупным планом, второй погружает в её детали.</p></div>
+<div class="layout"><section aria-label="Интерактивный мир">
+<div class="frame" id="frame"><canvas id="world" width="448" height="448" tabindex="0" aria-label="Поле мира. Клик или касание выбирает точку; Enter приближает центр." aria-describedby="status"></canvas><span id="target" aria-hidden="true" hidden></span></div>
+<div class="viewport-meta"><span id="depth">00 / ПАНОРАМА</span><span id="scale">1×</span></div>
+<p id="status" class="status" role="status" aria-live="polite">Рисую панораму…</p>
+</section><aside aria-label="Маршрут">
+<div class="run"><div class="eyebrow">ПУТЬ ВНУТРЬ</div><ol id="trail" aria-label="Глубина пути"><li>Панорама</li></ol></div>
+<div class="actions"><button type="button" id="back" disabled>Назад</button><button type="button" id="cancel" hidden>Отменить</button><button type="button" class="primary" id="copy" disabled>Копировать маршрут</button></div>
+<form id="route-form"><label for="route">Открыть маршрут</label><input id="route" maxlength="160" placeholder="Вставьте маршрут или ссылку" spellcheck="false" autocomplete="off" required><button type="submit" id="open">Открыть</button></form>
+<p class="fine">Маршрут хранит координаты обоих погружений. Его можно открыть в другой копии проекта без сети. Изображения не загружаются.</p>
+</aside></div>
+</main></body></html>

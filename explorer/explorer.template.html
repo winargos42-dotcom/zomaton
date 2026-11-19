@@ -1,0 +1,72 @@
+<!doctype html><html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="dark"><title>ZomATON · Поле Genesis</title>
+<style>
+:root{font-family:system-ui,sans-serif;background:#090f18;color:#e9f3fa;color-scheme:dark;--muted:#9fb2c1;--accent:#f0cf82}*{box-sizing:border-box}body{margin:0}main{margin:auto;max-width:1120px;padding:clamp(14px,4vw,48px)}header{display:flex;justify-content:space-between;gap:.7rem;border-bottom:1px solid #2b4653;padding-bottom:1rem;color:var(--accent);font-size:.8rem;letter-spacing:.09em}.layout{margin-top:1.2rem;display:grid;grid-template-columns:minmax(0,1.42fr) minmax(260px,1fr);align-items:center;gap:clamp(18px,5vw,56px)}section{min-width:0}h1{font-family:Georgia,serif;font-weight:400;font-size:clamp(40px,7vw,90px);line-height:.95;margin:10px 0 14px}.stage{aspect-ratio:1;position:relative;box-shadow:0 0 0 1px #395765;background:#040913;overflow:hidden}canvas{display:block;width:100%;height:100%;cursor:crosshair;touch-action:manipulation}.marker{position:absolute;display:none;width:25%;height:25%;border:1px solid var(--accent);box-shadow:0 0 0 1px #263940;pointer-events:none}.stage[data-point] .marker{display:block}.label,small,p,label{color:var(--muted)}p{line-height:1.56;max-width:40ch}.status{font-size:.88rem;min-height:2.8rem;margin-top:.85rem}.actions{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:.8rem}button,input{font:inherit}button{cursor:pointer;min-height:44px;padding:.5em .78em;border:1px solid #5d7481;background:#152630;color:#f3f7fb}button:disabled{opacity:.45;cursor:default}button:focus-visible,canvas:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}form{display:grid;gap:.4rem}form input{min-width:0;width:100%;min-height:44px;padding:.4rem;background:#08121b;border:1px solid #4a616e;color:#f4db9b;font:12px ui-monospace,monospace}.route-output{cursor:text}form button{justify-self:start;margin-top:.15rem}.numbers{color:var(--accent);font:700 1.1rem ui-monospace,monospace}.fine{font-size:.77rem;line-height:1.5;margin-top:.7rem}.error{color:#ffb9ad}@media(max-width:720px){.layout{grid-template-columns:1fr}.stage{max-width:540px}}
+</style>
+<main>
+<header><strong>ZomATON</strong><span>GENESIS №0 / 2D</span></header>
+<div class="layout">
+<section><div class="stage" id="stage"><canvas id="view" width="256" height="256" tabindex="0" aria-label="Фрактальное поле. Клик или Enter приближает, стрелки двигают курсор."></canvas><div class="marker" id="marker"></div></div><div id="status" class="status" role="status"></div></section>
+<section>
+<div class="numbers" id="level">00 / ×1</div>
+<h1>Поле Genesis</h1>
+<p>Выбери любое место, потом ещё одно внутри. Каждый раз окно уменьшается в 4 раза, а все 256 × 256 точек снова вычисляются по тому же полю.</p>
+<div class="actions"><button type="button" id="back">На шаг назад</button><button type="button" id="reset">К Genesis</button></div>
+<form id="route-form"><label for="address">Текущий адрес zp1</label><input id="address" class="route-output" readonly spellcheck="false"><label for="restore">Восстановить свой маршрут</label><input id="restore" spellcheck="false" placeholder="zp1:0:… или ссылка с #zp1="><button type="submit">Открыть адрес</button></form><div id="error" class="error" role="alert"></div>
+<p class="fine">Офлайн. Геометрия Mandelbrot · 104 итерации · до 15 уровней с текущей точностью. Цветовой профиль geometry-a1: координаты zp1 совместимы, цвета могут отличаться от старого просмотра.</p>
+</section></div>
+</main>
+<script>
+@CORE@
+@ENGINE@
+(() => {
+ 'use strict';
+ const G=window.ZATGeom, $=id=>document.getElementById(id), view=$('view'),ctx=view.getContext('2d');
+ let current=G.ROOT, revision=0, px=.5, py=.5;
+ function marker(x,y){
+  px=Math.max(0,Math.min(1,x));py=Math.max(0,Math.min(1,y));const b=G.box(px,py);
+  $('marker').style.left=(b.x*100)+'%';$('marker').style.top=(b.y*100)+'%';$('stage').dataset.point='1';
+ }
+ function selectLink(e){e.currentTarget.select()}
+ function goto(id){
+  const cam=G.camera(id);current=id;const ticket=++revision;
+  const next='#zp1='+encodeURIComponent(current);if(location.hash!==next)history.replaceState(null,'',next);
+  $('address').value=id;$('level').textContent=String(cam.depth).padStart(2,'0')+' / ×'+(1/cam.s).toLocaleString('ru-RU');
+  $('back').disabled=$('reset').disabled=!cam.depth;
+  $('error').textContent='';delete $('stage').dataset.point;
+  $('status').textContent='Пересчитываем точки поля…';$('stage').setAttribute('aria-busy','true');
+  const pixels=ctx.createImageData(G.N,G.N);let y=0;
+  function chunk(){
+   if(ticket!==revision)return;
+   const end=Math.min(G.N,y+32);G.rows(pixels.data,cam,G.N,y,end); y=end;
+   if(y<G.N){requestAnimationFrame(chunk);return}
+   ctx.putImageData(pixels,0,0);$('stage').setAttribute('aria-busy','false');
+   let uniform=true;
+   for(let j=4;j<pixels.data.length-2;j+=4){if(pixels.data[j]!==pixels.data[0]||pixels.data[j+1]!==pixels.data[1]||pixels.data[j+2]!==pixels.data[2]){uniform=false;break}}
+   $('status').textContent=uniform?'Одноцветный участок при текущем масштабе и бюджете итераций. Можно вернуться или выбрать точку снова.':'Готово. Выбери любую точку в этом окне.';
+  }
+  requestAnimationFrame(chunk);
+ }
+ function safeGo(id){try{goto(id)}catch(e){$('error').textContent=e.message}}
+ function clickPoint(x,y){if($('stage').getAttribute('aria-busy')==='true')return;safeGo(G.descend(current,x,y))}
+ const pointer=(e)=>{const b=view.getBoundingClientRect();marker((e.clientX-b.left)/b.width,(e.clientY-b.top)/b.height)};
+ view.addEventListener('pointermove',pointer);
+ view.addEventListener('pointerleave',()=>{delete $('stage').dataset.point});
+ view.addEventListener('click',e=>{pointer(e);clickPoint(px,py)});
+ view.addEventListener('keydown',e=>{
+  const d={ArrowLeft:[-.025,0],ArrowRight:[.025,0],ArrowUp:[0,-.025],ArrowDown:[0,.025]}[e.key];
+  if(d){e.preventDefault();marker(px+d[0],py+d[1]);}
+  if(e.key==='Enter'){e.preventDefault();clickPoint(px,py)}
+ });
+ $('back').addEventListener('click',()=>safeGo(G.ancestor(current)));
+ $('reset').addEventListener('click',()=>safeGo(G.ROOT));
+ $('address').addEventListener('focus',selectLink);
+ $('route-form').addEventListener('submit',e=>{e.preventDefault();try{
+  const value=$('restore').value.trim(),i=value.indexOf('#zp1=');
+  safeGo(i<0?value:decodeURIComponent(value.slice(i+5)));
+ }catch(e){$('error').textContent=e.message}});
+ const fromHash=()=>location.hash.startsWith('#zp1=')?decodeURIComponent(location.hash.slice(5)):G.ROOT;
+ window.addEventListener('hashchange',()=>{try{safeGo(fromHash())}catch(e){$('error').textContent=e.message}});
+ try{goto(fromHash())}catch(e){goto(G.ROOT);$('error').textContent='Неверный адрес. Открыт корень.'}
+})();
+</script>
+</html>

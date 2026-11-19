@@ -1,0 +1,85 @@
+{
+  "pixels": 256,
+  "source": "existing ZAT zp1 camera; geometry-a1 palette",
+  "root": "zp1:0:7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1:-",
+  "levels": [
+    {
+      "route": "zp1:0:7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1:3000000090000000",
+      "selection": [
+        0.1875,
+        0.5625
+      ],
+      "parent_window_px": [
+        36,
+        108,
+        64,
+        64
+      ],
+      "fresh_native_digest": "2e77ab234a43e39bd9eccf6e1a7f3183853f0673be6764b203eb3feb2e14177f",
+      "aligned_4x_parent_subwindow_digest": "2e77ab234a43e39bd9eccf6e1a7f3183853f0673be6764b203eb3feb2e14177f",
+      "upscaled_bilinear_digest": "8b6eed17869194f120b4d5971c5faf70fe8e68135b6ea8b7eaa40eab7f773438",
+      "changed_pixels_vs_bilinear": 18035,
+      "substantial_change_pixels_vs_bilinear": 4618,
+      "mae_rgb_0_255": 4.7053,
+      "orbit_split": {
+        "child_pixels": [
+          [
+            0,
+            0
+          ],
+          [
+            3,
+            3
+          ]
+        ],
+        "one_parent_cell": [
+          36,
+          108
+        ],
+        "escape_counts": [
+          46,
+          104
+        ]
+      }
+    },
+    {
+      "route": "zp1:0:7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1:3000000090000000.7000000098000000",
+      "selection": [
+        0.4375,
+        0.59375
+      ],
+      "parent_window_px": [
+        84,
+        114,
+        64,
+        64
+      ],
+      "fresh_native_digest": "1fdae5ace51d1ff84674d5e1ec3a0c5b6f98dbe617410dcf2e8be4f250f5626c",
+      "aligned_4x_parent_subwindow_digest": "1fdae5ace51d1ff84674d5e1ec3a0c5b6f98dbe617410dcf2e8be4f250f5626c",
+      "upscaled_bilinear_digest": "ac53adc3b5ec98e45b7ee6c20b03d7754c5eae8d1f315b0095a38e8ae72b65d0",
+      "changed_pixels_vs_bilinear": 38469,
+      "substantial_change_pixels_vs_bilinear": 8790,
+      "mae_rgb_0_255": 9.032,
+      "orbit_split": {
+        "child_pixels": [
+          [
+            160,
+            0
+          ],
+          [
+            163,
+            3
+          ]
+        ],
+        "one_parent_cell": [
+          124,
+          114
+        ],
+        "escape_counts": [
+          104,
+          86
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,192 @@
+<!doctype html><html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="dark"><title>ZomATON · Поле Genesis</title>
+<style>
+:root{font-family:system-ui,sans-serif;background:#090f18;color:#e9f3fa;color-scheme:dark;--muted:#9fb2c1;--accent:#f0cf82}*{box-sizing:border-box}body{margin:0}main{margin:auto;max-width:1120px;padding:clamp(14px,4vw,48px)}header{display:flex;justify-content:space-between;gap:.7rem;border-bottom:1px solid #2b4653;padding-bottom:1rem;color:var(--accent);font-size:.8rem;letter-spacing:.09em}.layout{margin-top:1.2rem;display:grid;grid-template-columns:minmax(0,1.42fr) minmax(260px,1fr);align-items:center;gap:clamp(18px,5vw,56px)}section{min-width:0}h1{font-family:Georgia,serif;font-weight:400;font-size:clamp(40px,7vw,90px);line-height:.95;margin:10px 0 14px}.stage{aspect-ratio:1;position:relative;box-shadow:0 0 0 1px #395765;background:#040913;overflow:hidden}canvas{display:block;width:100%;height:100%;cursor:crosshair;touch-action:manipulation}.marker{position:absolute;display:none;width:25%;height:25%;border:1px solid var(--accent);box-shadow:0 0 0 1px #263940;pointer-events:none}.stage[data-point] .marker{display:block}.label,small,p,label{color:var(--muted)}p{line-height:1.56;max-width:40ch}.status{font-size:.88rem;min-height:2.8rem;margin-top:.85rem}.actions{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:.8rem}button,input{font:inherit}button{cursor:pointer;min-height:44px;padding:.5em .78em;border:1px solid #5d7481;background:#152630;color:#f3f7fb}button:disabled{opacity:.45;cursor:default}button:focus-visible,canvas:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}form{display:grid;gap:.4rem}form input{min-width:0;width:100%;min-height:44px;padding:.4rem;background:#08121b;border:1px solid #4a616e;color:#f4db9b;font:12px ui-monospace,monospace}.route-output{cursor:text}form button{justify-self:start;margin-top:.15rem}.numbers{color:var(--accent);font:700 1.1rem ui-monospace,monospace}.fine{font-size:.77rem;line-height:1.5;margin-top:.7rem}.error{color:#ffb9ad}@media(max-width:720px){.layout{grid-template-columns:1fr}.stage{max-width:540px}}
+</style>
+<main>
+<header><strong>ZomATON</strong><span>GENESIS №0 / 2D</span></header>
+<div class="layout">
+<section><div class="stage" id="stage"><canvas id="view" width="256" height="256" tabindex="0" aria-label="Фрактальное поле. Клик или Enter приближает, стрелки двигают курсор."></canvas><div class="marker" id="marker"></div></div><div id="status" class="status" role="status"></div></section>
+<section>
+<div class="numbers" id="level">00 / ×1</div>
+<h1>Поле Genesis</h1>
+<p>Выбери любое место, потом ещё одно внутри. Каждый раз окно уменьшается в 4 раза, а все 256 × 256 точек снова вычисляются по тому же полю.</p>
+<div class="actions"><button type="button" id="back">На шаг назад</button><button type="button" id="reset">К Genesis</button></div>
+<form id="route-form"><label for="address">Текущий адрес zp1</label><input id="address" class="route-output" readonly spellcheck="false"><label for="restore">Восстановить свой маршрут</label><input id="restore" spellcheck="false" placeholder="zp1:0:… или ссылка с #zp1="><button type="submit">Открыть адрес</button></form><div id="error" class="error" role="alert"></div>
+<p class="fine">Офлайн. Геометрия Mandelbrot · 104 итерации · до 15 уровней с текущей точностью. Цветовой профиль geometry-a1: координаты zp1 совместимы, цвета могут отличаться от старого просмотра.</p>
+</section></div>
+</main>
+<script>
+function sha256BytesHex(bytes){
+ const length=bytes.length;
+ const paddedLength=Math.ceil((length+9)/64)*64;
+ const msg=new Uint8Array(paddedLength);msg.set(bytes);msg[length]=0x80;
+ const view=new DataView(msg.buffer);const bitLength=BigInt(length)*8n;
+ view.setUint32(paddedLength-8,Number((bitLength>>32n)&0xffffffffn),false);
+ view.setUint32(paddedLength-4,Number(bitLength&0xffffffffn),false);
+ const K=[0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2];
+ let H=[0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19];
+ const rotr=(x,n)=>(x>>>n)|(x<<(32-n));
+ for(let offset=0;offset<paddedLength;offset+=64){
+  const W=new Uint32Array(64);
+  for(let i=0;i<16;i++)W[i]=view.getUint32(offset+i*4,false);
+  for(let i=16;i<64;i++){
+   const a=W[i-15],b=W[i-2];
+   const s0=rotr(a,7)^rotr(a,18)^(a>>>3);
+   const s1=rotr(b,17)^rotr(b,19)^(b>>>10);
+   W[i]=(W[i-16]+s0+W[i-7]+s1)>>>0;
+  }
+  let [a,b,c,d,e,f,g,h]=H;
+  for(let i=0;i<64;i++){
+   const S1=rotr(e,6)^rotr(e,11)^rotr(e,25);
+   const ch=(e&f)^(~e&g);
+   const t1=(h+S1+ch+K[i]+W[i])>>>0;
+   const S0=rotr(a,2)^rotr(a,13)^rotr(a,22);
+   const maj=(a&b)^(a&c)^(b&c);
+   const t2=(S0+maj)>>>0;
+   h=g;g=f;f=e;e=(d+t1)>>>0;d=c;c=b;b=a;a=(t1+t2)>>>0;
+  }
+  H=H.map((v,i)=>(v+[a,b,c,d,e,f,g,h][i])>>>0);
+ }
+ return H.map(n=>n.toString(16).padStart(8,'0')).join('');
+}
+
+// ZomATON Genesis 0 v1.3 | Off-chain prototype, no TON mint.
+const ROOT_HASH='7e62552bea7203e6fc9c3c21a481b995e6847dac9f42135fd1a3a665885e99b1';
+const ROOT=`zp1:0:${ROOT_HASH}:-`;
+const NFT_CAP=42000000;
+const ROOT_INDEX=0;
+const GRID=2**32;
+const GALLERY_POINTS=Object.freeze(Array.from({length:6},(_,i)=>[(i+.5)/6,.5]));
+const FAMILIES=['mandelbrot','julia','burning_ship','tricorn','multibrot3','perpendicular_burning_ship','celtic','buffalo'];
+const BIOMES=['Crystal Abyss','Aerial Garden','Submerged Archive','Moss Cathedral','Saffron Dunes','Luminous Canopy','Obsidian Valley','Clockwork Ruins','Meteoric Reef','Frosted Spires','Bioluminescent Caves','Celestial Machine'];
+function q32(x){if(!Number.isFinite(x)||x<0||x>1)throw Error('Coordinate outside [0,1]');return Math.min(4294967295,Math.floor(x*GRID));}
+function segment(x,y){return q32(x).toString(16).padStart(8,'0')+q32(y).toString(16).padStart(8,'0');}
+function parse(id){if(typeof id!=='string'|| !new RegExp('^zp1:0:'+ROOT_HASH+':(-|[a-f0-9]{16}(\\.[a-f0-9]{16})*)$').test(id))throw Error('Invalid Genesis World ID'); const p=id.split(':').at(-1);return p==='-'?[]:p.split('.');}
+function descend(id,x,y){const path=parse(id);path.push(segment(x,y));return `zp1:0:${ROOT_HASH}:${path.join('.')}`;}
+function ancestor(id){const path=parse(id);path.pop();return `zp1:0:${ROOT_HASH}:${path.length?path.join('.'):'-'}`;}
+function worldSeed(id){return sha256Hex('ZAT/GENESIS/0/v1.3|'+id);}
+function bit(hex,n=0){return parseInt(hex.slice(n*8,n*8+8),16)>>>0;}
+function seededPRNG(seed){
+ // xoshiro128**: 128-bit state to avoid the 32-bit PRNG bottleneck in large world graphs.
+ let a=bit(seed,0),b=bit(seed,1),c=bit(seed,2),d=bit(seed,3);
+ if(!(a|b|c|d))a=0x9e3779b9;
+ const rot=(n,k)=>(n<<k)|(n>>>(32-k));
+ return ()=>{const value=Math.imul(rot(Math.imul(b,5),7),9)>>>0;
+ const t=b<<9;
+ c^=a;d^=b;b^=c;a^=d;c^=t;d=rot(d,11);
+ return value/4294967296;};
+}
+function specFor(id){let path=parse(id),seed=worldSeed(id),roll=seededPRNG(seed);const pos=path.length;
+ const preset=path.length?GALLERY_POINTS.findIndex(([x,y])=>path[0]===segment(x,y)):-1;
+ const family=FAMILIES[bit(seed,1)%FAMILIES.length];const a=roll(),b=roll();
+ const paletteAngle=(a*360 + 47*pos)%360;
+ return {world_id:id,seed,depth:pos,parent:pos?ancestor(id):null,
+ family,biome:BIOMES[bit(seed,2)%BIOMES.length],
+ art_index:preset>=0?preset:bit(seed,3)%6,art_zoom:0.83+roll()*1.45,art_x:roll(),art_y:roll(),
+ julia_re:roll()*1.4-0.7,julia_im:roll()*1.4-0.7,
+ hue:paletteAngle,hue2:(paletteAngle+90+roll()*160)%360,
+ complexity:4+(bit(seed,4)%8),landform:bit(seed,5)%6,
+ rarity:bit(seed,6)/4294967296<.006?'legendary':bit(seed,6)/4294967296<.05?'rare':'common',
+ fractal_cx:(b-.5)*1.2,fractal_cy:(roll()-.5)*1.2};}
+function sha256Hex(text){return sha256BytesHex(new TextEncoder().encode(text));}
+function validateProof(proof){if(!proof||proof.schema!=='ZAT/GENESIS/PROOF/1.3')return false;
+ const canonical=JSON.stringify(proof.data);return proof.sha256===sha256Hex(canonical)&&proof.data.world_seed===worldSeed(proof.data.world_id);
+}
+window.ZAT={ROOT,ROOT_HASH,NFT_CAP,ROOT_INDEX,FAMILIES,BIOMES,segment,parse,descend,ancestor,worldSeed,GALLERY_POINTS,seededPRNG,specFor,validateProof,sha256Hex,sha256BytesHex};
+
+(function(g,f){if(typeof module==='object'&&module.exports){
+ const fs=require('node:fs'),vm=require('node:vm');const s={window:{}};vm.runInNewContext(fs.readFileSync(require('node:path').join(__dirname,'core-zp1.js'),'utf8'),s);module.exports=f(s.window.ZAT);
+}else g.ZATGeom=f(window.ZAT);})(globalThis,Z=>{
+'use strict';
+const SPAN=3.25, SCALE=4, LIMIT=15, BUDGET=104, N=256;
+const ramp=[[0,7,15,28],[20,11,37,64],[39,12,78,99],[61,16,130,139],[89,79,190,164],[111,228,208,139],[132,250,160,61],[164,170,72,82],[191,87,41,114],[224,22,31,73],[255,7,15,28]];
+function camera(id){
+ if(typeof id!=='string'||id.length>350)throw Error('Неверный адрес');
+ const p=Z.parse(id);
+ if(p.length>LIMIT)throw Error('Предел глубины');
+ let x=0,y=0,s=1;
+ for(const seg of p){
+  const u=parseInt(seg.slice(0,8),16)/4294967296,v=parseInt(seg.slice(8),16)/4294967296,next=s/SCALE;
+  x+=(u-.5)*SPAN*(s-next);y+=(v-.5)*SPAN*(s-next);s=next;
+ }
+ return {id,depth:p.length,x,y,s,span:SPAN*s};
+}
+function point(c,u,v){return [c.x+(u-.5)*c.span,c.y+(v-.5)*c.span];}
+function box(u,v){return {x:.75*u,y:.75*v,width:.25,height:.25};}
+function orbit(re,im){let x=0,y=0,i=0,r=0;for(;i<BUDGET;i++){
+ const n=x*x-y*y+re;y=2*x*y+im;x=n;r=x*x+y*y;if(r>256)break;
+ }return {i,r};}
+function rgb(i,r){
+ if(i===BUDGET)return [4,9,19];
+ const smooth=i+2-Math.log2(Math.log(Math.sqrt(r)));
+ const phase=Math.min(255,Math.floor((Math.max(0,smooth)*8.3)%255));
+ let k=1;while(ramp[k][0]<phase)k++;
+ const a=ramp[k-1],b=ramp[k];const f=(phase-a[0])/(b[0]-a[0]);
+ return [1,2,3].map(c=>Math.round(a[c]+(b[c]-a[c])*f));
+}
+function rows(out,c,n,start,end){
+ for(let y=start;y<end;y++){
+  const im=c.y+((y+.5)/n-.5)*SPAN*c.s;
+  for(let x=0;x<n;x++){
+   const re=c.x+((x+.5)/n-.5)*SPAN*c.s,{i,r}=orbit(re,im),j=4*(y*n+x),color=rgb(i,r);
+   out[j]=color[0];out[j+1]=color[1];out[j+2]=color[2];out[j+3]=255;
+  }
+ }
+ return out;
+}
+function render(id,n=N){if(!Number.isInteger(n)||n<1||n>2048)throw Error('Неверный размер');return rows(new Uint8ClampedArray(n*n*4),camera(id),n,0,n);}
+return Object.freeze({ROOT:Z.ROOT,descend:Z.descend,ancestor:Z.ancestor,parse:Z.parse,camera,point,box,orbit,rows,render,N,SCALE,LIMIT,BUDGET,FRAME_VERSION:'geometry-a1'});
+});
+
+(() => {
+ 'use strict';
+ const G=window.ZATGeom, $=id=>document.getElementById(id), view=$('view'),ctx=view.getContext('2d');
+ let current=G.ROOT, revision=0, px=.5, py=.5;
+ function marker(x,y){
+  px=Math.max(0,Math.min(1,x));py=Math.max(0,Math.min(1,y));const b=G.box(px,py);
+  $('marker').style.left=(b.x*100)+'%';$('marker').style.top=(b.y*100)+'%';$('stage').dataset.point='1';
+ }
+ function selectLink(e){e.currentTarget.select()}
+ function goto(id){
+  const cam=G.camera(id);current=id;const ticket=++revision;
+  const next='#zp1='+encodeURIComponent(current);if(location.hash!==next)history.replaceState(null,'',next);
+  $('address').value=id;$('level').textContent=String(cam.depth).padStart(2,'0')+' / ×'+(1/cam.s).toLocaleString('ru-RU');
+  $('back').disabled=$('reset').disabled=!cam.depth;
+  $('error').textContent='';delete $('stage').dataset.point;
+  $('status').textContent='Пересчитываем точки поля…';$('stage').setAttribute('aria-busy','true');
+  const pixels=ctx.createImageData(G.N,G.N);let y=0;
+  function chunk(){
+   if(ticket!==revision)return;
+   const end=Math.min(G.N,y+32);G.rows(pixels.data,cam,G.N,y,end); y=end;
+   if(y<G.N){requestAnimationFrame(chunk);return}
+   ctx.putImageData(pixels,0,0);$('stage').setAttribute('aria-busy','false');
+   let uniform=true;
+   for(let j=4;j<pixels.data.length-2;j+=4){if(pixels.data[j]!==pixels.data[0]||pixels.data[j+1]!==pixels.data[1]||pixels.data[j+2]!==pixels.data[2]){uniform=false;break}}
+   $('status').textContent=uniform?'Одноцветный участок при текущем масштабе и бюджете итераций. Можно вернуться или выбрать точку снова.':'Готово. Выбери любую точку в этом окне.';
+  }
+  requestAnimationFrame(chunk);
+ }
+ function safeGo(id){try{goto(id)}catch(e){$('error').textContent=e.message}}
+ function clickPoint(x,y){if($('stage').getAttribute('aria-busy')==='true')return;safeGo(G.descend(current,x,y))}
+ const pointer=(e)=>{const b=view.getBoundingClientRect();marker((e.clientX-b.left)/b.width,(e.clientY-b.top)/b.height)};
+ view.addEventListener('pointermove',pointer);
+ view.addEventListener('pointerleave',()=>{delete $('stage').dataset.point});
+ view.addEventListener('click',e=>{pointer(e);clickPoint(px,py)});
+ view.addEventListener('keydown',e=>{
+  const d={ArrowLeft:[-.025,0],ArrowRight:[.025,0],ArrowUp:[0,-.025],ArrowDown:[0,.025]}[e.key];
+  if(d){e.preventDefault();marker(px+d[0],py+d[1]);}
+  if(e.key==='Enter'){e.preventDefault();clickPoint(px,py)}
+ });
+ $('back').addEventListener('click',()=>safeGo(G.ancestor(current)));
+ $('reset').addEventListener('click',()=>safeGo(G.ROOT));
+ $('address').addEventListener('focus',selectLink);
+ $('route-form').addEventListener('submit',e=>{e.preventDefault();try{
+  const value=$('restore').value.trim(),i=value.indexOf('#zp1=');
+  safeGo(i<0?value:decodeURIComponent(value.slice(i+5)));
+ }catch(e){$('error').textContent=e.message}});
+ const fromHash=()=>location.hash.startsWith('#zp1=')?decodeURIComponent(location.hash.slice(5)):G.ROOT;
+ window.addEventListener('hashchange',()=>{try{safeGo(fromHash())}catch(e){$('error').textContent=e.message}});
+ try{goto(fromHash())}catch(e){goto(G.ROOT);$('error').textContent='Неверный адрес. Открыт корень.'}
+})();
+</script>
+</html>
